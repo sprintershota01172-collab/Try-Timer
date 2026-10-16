@@ -382,6 +382,12 @@ body>header #dataButton{background:var(--panel);color:var(--ink);border:1px soli
 .tabs button[aria-selected=true]{box-shadow:none;border:1px solid var(--line);background:var(--soft);color:var(--ink)}
 #toast{background:var(--ink);color:var(--panel);box-shadow:none}
 @media(max-height:700px){#measurePage .quick-events[data-rows="4"]{height:104px}#measurePage .quick-events[data-rows="3"]{height:78px}#measurePage .quick-events[data-rows="2"]{height:52px}#measurePage .timer-button{height:59px!important;min-height:55px}#recentPanel{padding:2px 5px}}
+
+#measurePage .event-tap{position:relative;gap:2px;flex-direction:column;transition:background-color .11s,border-color .11s}
+#measurePage .event-tap.event-recorded{background:var(--ink)!important;color:var(--panel)!important;border-color:var(--ink)!important}
+#measurePage .event-tap .event-name{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;line-height:1.12}
+#measurePage .event-tap .event-mark{font-size:9px;font-weight:800;line-height:1;color:inherit;opacity:.85}
+#measurePage .recent-rows{grid-template-rows:repeat(5,minmax(0,1fr))}
 </style>
 </head>
 <body>
@@ -550,7 +556,7 @@ $('fKind').addEventListener('change',()=>{
 });
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const blank=()=>({app:'try-timer',version:3,theme:'system',eventTypes:[{id:'preset-stop',name:'設備停止'},{id:'preset-trouble',name:'トラブル'},{id:'preset-short',name:'チョコ停'},{id:'preset-adjust',name:'条件調整'}],activeId:null,trials:[]});
-let db=blank(),lastRaw=null,damaged=null,blocked=false,clock=null,view='measure',editingId=null,detailId=null,memoMode='current',editingEventId=null,wake=null,wakePending=false,toastTimer,needsRewrite=false;
+let db=blank(),lastRaw=null,damaged=null,blocked=false,clock=null,view='measure',editingId=null,detailId=null,memoMode='current',editingEventId=null,lastPressedEventType=null,wake=null,wakePending=false,toastTimer,needsRewrite=false;
 const shown=new Map();
 function warn(message){$('storageWarning').textContent=message;$('storageWarning').hidden=false;$('saveStatus').textContent='保存状態を確認してください';$('saveStatus').style.color='var(--danger)';}
 try{lastRaw=localStorage.getItem(KEY);if(lastRaw){db=validate(JSON.parse(lastRaw));needsRewrite=JSON.stringify(db)!==lastRaw;}}catch(e){if(lastRaw){damaged=lastRaw;blocked=true;warn('保存データを読み込めません。上書きを防止しています。「データ」からJSONの復元・初期化ができます。');}else warn('端末への保存が利用できません。「データ」からJSONをこまめに書き出してください。');}
@@ -569,7 +575,7 @@ function save(){
 }
 function blockOtherTab(){if(blocked)return;clock?.pause();releaseWake();blocked=true;renderMeasure();warn('別の画面でデータが更新されました。上書きを防いでいます。必要ならJSONを書き出してから再読み込みしてください。');}
 function touch(t){t.updatedAt=Date.now();save();}
-function applyTheme(){document.documentElement.dataset.theme=db.theme;$('theme').value=db.theme;document.querySelector('meta[name="theme-color"]').content=db.theme==='dark'?'#0c1421':'#f1f4f7';}
+function applyTheme(){document.documentElement.dataset.theme=db.theme;$('theme').value=db.theme;document.querySelector('meta[name="theme-color"]').content=db.theme==='dark'?'#090909':'#f4f4f4';}
 function statsHTML(t){const s=stats(t?.shots||[]);return [['平均',sec(s.mean)],['MAX',sec(s.max)],['MIN',sec(s.min)],['有効',s.n+'<small> / '+(t?.shots.length||0)+'</small>'],['σ',sec(s.sd)],['範囲',sec(s.range)]].map(([k,v])=>'<div class="stat"><span>'+k+'</span><b class="num">'+v+'</b></div>').join('');}
 function renderStats(){const t=active();$('liveStats').innerHTML=statsHTML(t);$('excludedCount').textContent=(t?.shots.filter(s=>s.excluded).length||0)+' 件除外';$('shotCount').textContent=(t?.shots.length||0)+' ショット';$('tabShotCount').textContent=t?.shots.length||0;if(detailId){const d=db.trials.find(x=>x.id===detailId);if(d&&$('detailStats')){$('detailStats').innerHTML=statsHTML(d);renderCompare(d);}}}
 function shotHTML(t,scope){
@@ -622,7 +628,12 @@ function renderActionPad(){
   $('memoTarget').textContent=memoMode==='last'?'確定済み #'+t.shots.length+' のメモ':'今回 #'+((t?.shots.length||0)+1)+' のショットに紐づけ';
   if(document.activeElement!==$('quickMemoInput'))$('quickMemoInput').value=t?(memoMode==='last'?last?.memo||'':t.pendingMemo||''):'';
   $('quickEvents').dataset.rows=String(Math.max(1,Math.ceil(db.eventTypes.length/3)));
-  $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" title="'+esc(x.name)+'" '+(!t||blocked||t.finishedAt?'disabled':'')+'>'+esc(x.name)+'</button>').join(''):'<span class="muted" style="font-size:12px">項目設定からボタンを登録</span>';
+  const totals=new Map();
+  for(const evt of t?.events||[])totals.set(evt.typeId,(totals.get(evt.typeId)||0)+1);
+  $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>{
+    const count=totals.get(x.id)||0;
+    return '<button class="event-tap '+(lastPressedEventType===x.id?'event-recorded':'')+'" data-record-event="'+esc(x.id)+'" title="'+esc(x.name)+'" '+(!t||blocked||t.finishedAt?'disabled':'')+'><span class="event-name">'+esc(x.name)+'</span>'+(count?'<span class="event-mark num">✓'+count+'</span>':'')+'</button>';
+  }).join(''):'<span class="muted" style="font-size:12px">項目設定からボタンを登録</span>';
   $('configEvents').disabled=blocked;
   const e=t?.events.at(-1);
   $('lastEvent').innerHTML=e?'<span><strong>✓ '+esc(e.label)+'</strong>　'+esc(formatEventTime(e.at))+'　#'+e.shot+'</span><button data-undo-event="'+esc(e.id)+'">取消</button>':'<span>ワンタッチの記録結果をここに表示</span>';
@@ -650,7 +661,7 @@ function openEventSettings(){
   $('dataDialog').close();$('eventSettingsDialog').showModal();
 }
 function renderMeasure(){
-  const t=active();$('trialTitle').textContent=t?t.name:'トライを登録して計測開始';$('trialMeta').textContent=t?t.date:'日付とトライ名だけで始められます';
+  const t=active();if(t&&lastPressedEventType&&!t.events.some(e=>e.typeId===lastPressedEventType))lastPressedEventType=t.events.at(-1)?.typeId||null;$('trialTitle').textContent=t?t.name:'トライを登録して計測開始';$('trialMeta').textContent=t?t.date:'日付とトライ名だけで始められます';
   $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.finishedAt?'▶ 次の計測を開始':t.running?'ラップを記録':(t.elapsedMs||t.shots.length)?'計測を再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
   $('lapHint').textContent=t?.running?'タップした瞬間に記録し、次のショットへ':'1タップ目で開始、以後は1タップで1ショット';$('runState').textContent=t?.finishedAt?'✓ 保存・終了済み':t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
   $('stopButton').disabled=!t?.running||blocked||!!t?.finishedAt;$('undoButton').disabled=!t?.shots.length||blocked||!!t?.finishedAt;$('resetButton').disabled=!t||blocked||!!t?.finishedAt;$('finishButton').disabled=!t||blocked;$('finishButton').textContent=t?.finishedAt?'▶ 次の計測':'✓ 保存して終了';$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=!t?.uncertain;
@@ -785,11 +796,11 @@ $('clearFilters').onclick=()=>{['search','filterFrom','filterTo'].forEach(id=>$(
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(d.close){$(d.close).close();return;}if(d.tab){showTab(d.tab);return;}
-  if(d.recordEvent){if(!editable())return;const t=active(),type=db.eventTypes.find(x=>x.id===d.recordEvent);if(!t||!type)return;if(t.events.length>=2000){toast('イベント記録の上限は2,000件です。');return;}t.events.push({id:uid(),typeId:type.id,label:type.name,ms:clock.now(),at:Date.now(),shot:t.shots.length+1});touch(t);try{navigator.vibrate?.(18);}catch(e){}renderActionPad();renderRecentTimeline();toast('✓ '+type.name+' を記録しました');return;}
-  if(d.undoEvent){if(!editable())return;const t=active();if(!t||t.events.at(-1)?.id!==d.undoEvent)return;t.events.pop();touch(t);renderActionPad();renderRecentTimeline();toast('直前のイベント記録を取り消しました。');return;}
+  if(d.recordEvent){if(!editable())return;const t=active(),type=db.eventTypes.find(x=>x.id===d.recordEvent);if(!t||!type)return;if(t.events.length>=2000){toast('イベント記録の上限は2,000件です。');return;}t.events.push({id:uid(),typeId:type.id,label:type.name,ms:clock.now(),at:Date.now(),shot:t.shots.length+1});lastPressedEventType=type.id;touch(t);try{navigator.vibrate?.(18);}catch(e){}renderActionPad();renderRecentTimeline();toast('✓ '+type.name+' を記録しました');return;}
+  if(d.undoEvent){if(!editable())return;const t=active();if(!t||t.events.at(-1)?.id!==d.undoEvent)return;t.events.pop();lastPressedEventType=t.events.at(-1)?.typeId||null;touch(t);renderActionPad();renderRecentTimeline();toast('直前のイベント記録を取り消しました。');return;}
   if(d.editEvent){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.editEvent);if(!x)return;editingEventId=x.id;$('eventItemName').value=x.name;renderEventSettings();$('eventItemName').focus();return;}
   if(d.deleteType){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.deleteType);if(!x)return;if(!confirm('ワンタッチ項目「'+x.name+'」を削除しますか？既存の記録は残ります。'))return;db.eventTypes=db.eventTypes.filter(y=>y.id!==x.id);if(editingEventId===x.id){editingEventId=null;$('eventItemForm').reset();}save();renderEventSettings();renderActionPad();toast('項目を削除しました。');return;}
-  if(d.deleteEvent){if(!editable())return;const t=db.trials.find(x=>x.id===d.trial),ev=t?.events.find(x=>x.id===d.deleteEvent);if(!ev)return;if(!confirm('イベント「'+ev.label+'」の記録を削除しますか？'))return;t.events=t.events.filter(x=>x.id!==d.deleteEvent);touch(t);renderActionPad();renderRecentTimeline();if(detailId===t.id)renderDetail();return;}
+  if(d.deleteEvent){if(!editable())return;const t=db.trials.find(x=>x.id===d.trial),ev=t?.events.find(x=>x.id===d.deleteEvent);if(!ev)return;if(!confirm('イベント「'+ev.label+'」の記録を削除しますか？'))return;t.events=t.events.filter(x=>x.id!==d.deleteEvent);if(t.id===db.activeId)lastPressedEventType=t.events.at(-1)?.typeId||null;touch(t);renderActionPad();renderRecentTimeline();if(detailId===t.id)renderDetail();return;}
   if(d.moreEvents){const t=db.trials.find(x=>x.id===d.moreEvents);if(!t)return;shown.set('events-'+d.scope+t.id,(shown.get('events-'+d.scope+t.id)||20)+20);$(d.scope==='live'?'liveEvents':'detailEvents').innerHTML=eventHTML(t,d.scope);return;}
   if(d.detail){detailId=d.detail;renderDetail();$('detailDialog').showModal();return;}
   if(d.more){const t=db.trials.find(x=>x.id===d.more);shown.set(d.scope+t.id,(shown.get(d.scope+t.id)||30)+30);$(d.scope==='live'?'liveShots':'detailShots').innerHTML=shotHTML(t,d.scope);return;}
