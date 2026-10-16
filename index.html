@@ -263,7 +263,7 @@ function eventHTML(t,scope){
   const limit=shown.get('events-'+scope+t.id)||20,start=Math.max(0,t.events.length-limit);
   let out='';
   for(let i=t.events.length-1;i>=start;i--){const e=t.events[i];
-    out+='<div class="event-row"><div><strong>'+esc(e.label)+'</strong><small>'+esc(formatEventTime(e.at))+' ／ #'+e.shot+' 計測中 ／ '+sec(e.ms)+' 秒時点</small></div><button data-delete-event="'+esc(e.id)+'" data-trial="'+esc(t.id)+'" aria-label="'+esc(e.label)+'の記録を削除">削除</button></div>';
+    out+='<div class="event-row"><div><strong>'+esc(e.label)+'</strong><small>'+esc(formatEventTime(e.at))+' ／ ショット #'+e.shot+' ／ '+sec(e.ms)+' 秒時点</small></div><button data-delete-event="'+esc(e.id)+'" data-trial="'+esc(t.id)+'" aria-label="'+esc(e.label)+'の記録を削除">削除</button></div>';
   }
   if(start)out+='<button class="show-more" data-more-events="'+esc(t.id)+'" data-scope="'+scope+'">古いイベントを表示（残り'+start+'件）</button>';
   return out;
