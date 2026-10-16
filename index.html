@@ -735,14 +735,7 @@ window.addEventListener('orientationchange',()=>{
   if(document.activeElement===$('quickMemoInput'))document.activeElement.blur();
   requestAnimationFrame(()=>document.documentElement.style.setProperty('--app-height',Math.round(window.visualViewport?.height||window.innerHeight)+'px'));
 });
-$('quickMemoInput').addEventListener('pointerdown',e=>{
-  if(document.activeElement!==e.currentTarget){
-    e.preventDefault();
-    e.currentTarget.focus({preventScroll:true});
-    const n=e.currentTarget.value.length;
-    try{e.currentTarget.setSelectionRange(n,n);}catch(_){}
-  }
-});
+// Native iOS focus preserves keyboard support; fixed container prevents the prior jumping UI.
 $('quickMemoInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur();}});
 document.addEventListener('touchmove',e=>{if(view==='measure'&&!e.target.closest('dialog,input,textarea,select'))e.preventDefault();},{passive:false});
 renderAll();if(needsRewrite||active()?.running)save();if(active()?.running)requestWake();requestAnimationFrame(frame);
