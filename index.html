@@ -452,6 +452,25 @@ body>header #dataButton{background:var(--panel);color:var(--ink);border:1px soli
  #measurePage .timer-button{height:78px!important;min-height:78px!important;max-height:78px!important}
  #recentPanel{min-height:110px!important}
 }
+
+/* Five row guarantee on compact iPhone webviews. */
+#recentPanel .recent-rows{grid-template-rows:repeat(5,minmax(0,1fr))}
+@media(max-height:800px){
+ #recentPanel{min-height:106px!important}
+ #recentPanel .recent-heading{height:19px!important;min-height:19px!important;flex-basis:19px!important}
+ #recentPanel .recent-row{min-height:0!important;padding-block:0}
+ #recentPanel .recent-detail{display:block;-webkit-line-clamp:1;line-clamp:1;white-space:nowrap;max-height:1.2em;line-height:1.2}
+ #measurePage .timer-button{height:76px!important;min-height:76px!important;max-height:76px!important}
+ #measurePage .timer-value{font-size:clamp(23px,6.5vw,33px)}
+}
+@media(max-height:670px){
+ #measurePage .timer-button{height:69px!important;min-height:69px!important;max-height:69px!important}
+ #recentPanel{min-height:97px!important}
+ #measurePage .event-tap{min-height:0!important}
+ #measurePage .action-box{padding:2px 5px}
+ #measurePage .quick-events[data-rows="4"]{height:96px}
+ #measurePage .quick-events[data-rows="3"]{height:73px}
+}
 </style>
 </head>
 <body>
