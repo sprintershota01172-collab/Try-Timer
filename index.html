@@ -302,6 +302,27 @@ const {uid,total,stats,Clock,validate}=TryTimerCore;
 const $=id=>document.getElementById(id),KEY='try-timer.v1';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sec=v=>v===null?'—':(v/1000).toFixed(2),norm=v=>String(v).normalize('NFKC').toLowerCase().trim();
+const TRIAL_KINDS=['プレトライ','工程検証トライ','工程確認会','量産トライ','ハイボリュームトライ'];
+const trialFormat=(kind,number)=>kind+' (#'+number+')';
+function parseTrialName(name){
+  const match=/^(.*) \(#([1-9]\d*)\)$/.exec(name);
+  return match&&TRIAL_KINDS.includes(match[1])?{kind:match[1],number:Number(match[2])}:null;
+}
+function suggestRun(kind){
+  const used=db.trials.map(t=>parseTrialName(t.name)).filter(x=>x?.kind===kind).map(x=>x.number);
+  return Math.min(99,Math.max(0,...used)+1);
+}
+function syncTrialForm(){
+  const legacy=$('fKind').value==='legacy';
+  $('legacyNameWrap').hidden=!legacy;
+  $('fRun').disabled=legacy;
+  $('fRun').parentElement.hidden=legacy;
+}
+$('fRun').innerHTML=Array.from({length:99},(_,i)=>'<option value="'+(i+1)+'">#'+(i+1)+'</option>').join('');
+$('fKind').addEventListener('change',()=>{
+  if($('fKind').value!=='legacy')$('fRun').value=String(suggestRun($('fKind').value));
+  syncTrialForm();
+});
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const blank=()=>({app:'try-timer',version:3,theme:'system',eventTypes:[{id:'preset-stop',name:'設備停止'},{id:'preset-trouble',name:'トラブル'},{id:'preset-short',name:'チョコ停'},{id:'preset-adjust',name:'条件調整'}],activeId:null,trials:[]});
 let db=blank(),lastRaw=null,damaged=null,blocked=false,clock=null,view='measure',editingId=null,detailId=null,memoMode='current',editingEventId=null,wake=null,wakePending=false,toastTimer,needsRewrite=false;
@@ -356,7 +377,8 @@ function renderActionPad(){
   $('quickMemoInput').placeholder=!t?'トライを登録するとメモできます':memoMode==='last'?'直前ショットの内容を編集':'今回のショットの気づきを入力';
   $('memoTarget').textContent=memoMode==='last'?'確定済み #'+t.shots.length+' のメモ':'今回 #'+((t?.shots.length||0)+1)+' のショットに紐づけ';
   if(document.activeElement!==$('quickMemoInput'))$('quickMemoInput').value=t?(memoMode==='last'?last?.memo||'':t.pendingMemo||''):'';
-  $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" '+(!t||blocked?'disabled':'')+'>'+esc(x.name)+'</button>').join(''):'<span class="muted" style="font-size:13px">「項目設定」からボタンを追加できます。</span>';
+  const kinds=db.eventTypes,visible=kinds.length>4?kinds.slice(0,3):kinds;
+  $('quickEvents').innerHTML=kinds.length?visible.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" '+(!t||blocked?'disabled':'')+'>'+esc(x.name)+'</button>').join('')+(kinds.length>4?'<button class="event-tap" data-show-more-event '+(!t||blocked?'disabled':'')+'>その他 '+(kinds.length-3)+'件</button>':''):'<span class="muted" style="font-size:13px">「項目設定」からボタンを追加できます。</span>';
   $('configEvents').disabled=blocked;
   const e=t?.events.at(-1);
   $('lastEvent').hidden=!e;
@@ -387,15 +409,19 @@ function renderHistory(){
   $('historyCount').textContent=list.length+' / '+db.trials.length+' トライ';
   $('historyList').innerHTML=list.length?list.map(t=>'<button class="history-item" data-detail="'+esc(t.id)+'"><div><small>'+esc(t.date)+(t.running?' · 計測中':'')+'</small><strong>'+esc(t.name)+'</strong><small>'+t.shots.length+' ショット</small></div><div class="history-avg num">'+sec(stats(t.shots).mean)+'<small>平均 / 秒 →</small></div></button>').join(''):'<div class="empty full"><strong>該当する履歴がありません</strong>計測したトライは自動でここに残ります。</div>';
 }
-function showTab(name){view=name;for(const v of ['measure','history'])$(v+'Page').hidden=v!==name;document.querySelectorAll('[data-tab]').forEach(b=>{b.setAttribute('aria-selected',String(b.dataset.tab===name));b.tabIndex=b.dataset.tab===name?0:-1;});if(name==='history')renderHistory();if(name==='measure')renderMeasure();window.scrollTo({top:0,behavior:'instant'});}
+function showTab(name){document.activeElement?.blur?.();view=name;for(const v of ['measure','history'])$(v+'Page').hidden=v!==name;document.querySelectorAll('[data-tab]').forEach(b=>{b.setAttribute('aria-selected',String(b.dataset.tab===name));b.tabIndex=b.dataset.tab===name?0:-1;});if(name==='history')renderHistory();if(name==='measure')renderMeasure();window.scrollTo(0,0);syncViewport();}
 function renderAll(){applyTheme();renderMeasure();renderHistory();$('rescueArea').hidden=!damaged;}
 function openTrial(t=null,copy=false){
   if(!editable())return;
   if((!t||copy)&&active()?.running){toast('新しいトライを作る前に計測を停止してください。');return;}
   editingId=t&&!copy?t.id:null;
   $('trialForm').reset();$('trialDialogTitle').textContent=editingId?'トライ情報を編集':'新しいトライ';
-  $('fName').value=t?.name||'';$('fDate').value=t&&!copy?t.date:today();
-  $('trialDialog').showModal();
+  const parsed=t?parseTrialName(t.name):null;
+  if(parsed){$('fKind').value=parsed.kind;$('fRun').value=String(copy?suggestRun(parsed.kind):Math.min(99,parsed.number));}
+  else if(t&&!copy){$('fKind').value='legacy';$('fLegacyName').value=t.name;}
+  else{$('fKind').value='プレトライ';$('fRun').value=String(suggestRun('プレトライ'));}
+  $('fDate').value=t&&!copy?t.date:today();
+  syncTrialForm();$('trialDialog').showModal();
 }
 function renderCompare(t){
   const matches=db.trials.filter(x=>norm(x.name)===norm(t.name)).sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt);
@@ -424,8 +450,11 @@ function exportCSV(trials){
 function exportJSON(){const data=snapshot();data.trials=data.trials.map(t=>({...t,running:false}));download(JSON.stringify({...data,exportedAt:new Date().toISOString()},null,2),'try-timer_backup_'+today()+'.json','application/json');toast('JSONバックアップを書き出しました。');}
 $('trialForm').addEventListener('submit',e=>{
   e.preventDefault();if(!editable())return;
-  const existing=db.trials.find(t=>t.id===editingId),fields={name:$('fName').value.trim(),date:$('fDate').value};
-  if(!fields.name||fields.name.length>120||!/^\d{4}-\d{2}-\d{2}$/.test(fields.date)||!Number.isFinite(Date.parse(fields.date))||new Date(fields.date).toISOString().slice(0,10)!==fields.date){toast('トライ名と正しい日付を入力してください。');return;}
+  const existing=db.trials.find(t=>t.id===editingId);
+  const kind=$('fKind').value,run=Number($('fRun').value);
+  const name=kind==='legacy'&&existing?$('fLegacyName').value.trim():trialFormat(kind,run);
+  const fields={name,date:$('fDate').value};
+  if((kind==='legacy'&&!existing)||(kind!=='legacy'&&(!TRIAL_KINDS.includes(kind)||!Number.isInteger(run)||run<1||run>99))||!fields.name||fields.name.length>120||!/^\d{4}-\d{2}-\d{2}$/.test(fields.date)||!Number.isFinite(Date.parse(fields.date))||new Date(fields.date).toISOString().slice(0,10)!==fields.date){toast('トライ名と正しい日付を入力してください。');return;}
   if(existing)Object.assign(existing,fields,{updatedAt:Date.now()});else{if(active()?.running){toast('計測を停止してください。');return;}if(db.trials.length>=3000){toast('トライは3,000件までです。バックアップ後に古い履歴を整理してください。');return;}const t={id:uid(),...fields,shots:[],events:[],pendingMemo:'',elapsedMs:0,running:false,uncertain:false,savedAt:Date.now(),createdAt:Date.now(),updatedAt:Date.now()};db.trials.push(t);db.activeId=t.id;clock=new Clock(t);}
   save();$('trialDialog').close();if(!existing){$('detailDialog').close();detailId=null;showTab('measure');}renderAll();if(detailId)renderDetail();toast(existing?'トライ情報を更新しました。':'トライを登録しました。スタートで計測できます。');
 });
@@ -458,6 +487,7 @@ $('cancelEventEdit').onclick=()=>{editingEventId=null;$('eventItemForm').reset()
 $('stopButton').addEventListener('click',()=>{if(!editable()||!clock)return;clock.pause();touch(active());releaseWake();renderMeasure();toast('停止しました。未確定のショットは再開後に続きます。');});
 $('undoButton').addEventListener('click',()=>{if(!editable()||!active()?.shots.length)return;clock.undo();touch(active());renderMeasure();toast('直前の区切りを取り消しました。時間は現在のショットに戻ります。');});
 $('resetButton').addEventListener('click',()=>{if(!editable()||!clock)return;if(!confirm('このトライの全ショットと計測時間をリセットします。登録情報は残ります。よろしいですか？'))return;clock.reset();touch(active());releaseWake();renderMeasure();toast('計測をリセットしました。');});
+$('openRecords').onclick=()=>$('recordsDialog').showModal();
 $('newTrial').onclick=()=>openTrial();$('editCurrent').onclick=()=>openTrial(active());$('dataButton').onclick=()=>$('dataDialog').showModal();
 $('theme').onchange=()=>{if(!editable())return;db.theme=$('theme').value;applyTheme();save();};$('exportAll').onclick=()=>exportCSV(db.trials);$('exportJson').onclick=exportJSON;
 $('importJson').onclick=()=>{if(active()?.running){toast('JSONを読み込む前に計測を停止してください。');return;}$('jsonFile').click();};
@@ -477,7 +507,8 @@ $('clearFilters').onclick=()=>{['search','filterFrom','filterTo'].forEach(id=>$(
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(d.close){$(d.close).close();return;}if(d.tab){showTab(d.tab);return;}
-  if(d.recordEvent){if(!editable())return;const t=active(),type=db.eventTypes.find(x=>x.id===d.recordEvent);if(!t||!type)return;if(t.events.length>=2000){toast('イベント記録の上限は2,000件です。');return;}t.events.push({id:uid(),typeId:type.id,label:type.name,ms:clock.now(),at:Date.now(),shot:t.shots.length+1});touch(t);try{navigator.vibrate?.(18);}catch(e){}renderActionPad();toast(type.name+' を記録しました。計測は継続中です。');return;}
+  if(d.showMoreEvent){if(!editable()||!active())return;$('moreEventChoices').innerHTML=db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'">'+esc(x.name)+'</button>').join('');$('moreEventsDialog').showModal();return;}
+  if(d.recordEvent){if(!editable())return;const t=active(),type=db.eventTypes.find(x=>x.id===d.recordEvent);if(!t||!type)return;if(t.events.length>=2000){toast('イベント記録の上限は2,000件です。');return;}t.events.push({id:uid(),typeId:type.id,label:type.name,ms:clock.now(),at:Date.now(),shot:t.shots.length+1});touch(t);try{navigator.vibrate?.(18);}catch(e){}renderActionPad();if($('moreEventsDialog').open)$('moreEventsDialog').close();toast(type.name+' を記録しました。計測は継続中です。');return;}
   if(d.undoEvent){if(!editable())return;const t=active();if(!t||t.events.at(-1)?.id!==d.undoEvent)return;t.events.pop();touch(t);renderActionPad();toast('直前のイベント記録を取り消しました。');return;}
   if(d.editEvent){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.editEvent);if(!x)return;editingEventId=x.id;$('eventItemName').value=x.name;renderEventSettings();$('eventItemName').focus();return;}
   if(d.deleteType){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.deleteType);if(!x)return;if(!confirm('ワンタッチ項目「'+x.name+'」を削除しますか？既存の記録は残ります。'))return;db.eventTypes=db.eventTypes.filter(y=>y.id!==x.id);if(editingEventId===x.id){editingEventId=null;$('eventItemForm').reset();}save();renderEventSettings();renderActionPad();toast('項目を削除しました。');return;}
@@ -509,6 +540,26 @@ document.addEventListener('visibilitychange',()=>{clock?.checkGap();save();if(!d
 window.addEventListener('pagehide',save);window.addEventListener('pageshow',()=>{clock?.checkGap();drawTime();requestWake();});
 setInterval(()=>{if(active()?.running){clock.checkGap();save();$('uncertainNotice').hidden=!active().uncertain;}},5000);
 function frame(){if(view==='measure'&&!document.hidden)drawTime();requestAnimationFrame(frame);}
+/* Fix the measurement cockpit to iOS VisualViewport, including keyboard resizing. */
+let baseViewportHeight=window.visualViewport?.height||window.innerHeight;
+function syncViewport(){
+  const vv=window.visualViewport;
+  const h=vv?.height||window.innerHeight,top=vv?.offsetTop||0;
+  if(document.activeElement!==$('quickMemoInput')&&h>baseViewportHeight)baseViewportHeight=h;
+  document.documentElement.style.setProperty('--app-height',Math.round(h)+'px');
+  document.documentElement.style.setProperty('--viewport-top',Math.round(top)+'px');
+  const keyboard=document.activeElement===$('quickMemoInput')&&(baseViewportHeight-h)>110&&view==='measure';
+  document.body.classList.toggle('keyboard-open',keyboard);
+  if(view==='measure'&&window.scrollY)window.scrollTo(0,0);
+}
+syncViewport();
+window.visualViewport?.addEventListener('resize',syncViewport);
+window.visualViewport?.addEventListener('scroll',syncViewport);
+window.addEventListener('resize',syncViewport);
+$('quickMemoInput').addEventListener('focus',()=>requestAnimationFrame(syncViewport));
+$('quickMemoInput').addEventListener('blur',()=>requestAnimationFrame(syncViewport));
+$('quickMemoInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur();}});
+document.addEventListener('touchmove',e=>{if(view==='measure'&&!e.target.closest('dialog'))e.preventDefault();},{passive:false});
 renderAll();if(needsRewrite||active()?.running)save();if(active()?.running)requestWake();requestAnimationFrame(frame);
 })();
 </script>
