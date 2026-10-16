@@ -20,514 +20,181 @@ dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:
 .modal-head h2{min-width:0;overflow-wrap:anywhere;font-size:19px}.close{flex-shrink:0}
 @media(min-width:800px){.measure-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.timer-button{height:max(290px,34svh)}.history-list{grid-template-columns:repeat(2,minmax(0,1fr))}.shots-panel{align-self:start}}@media(max-width:370px){.card{padding:12px}.form-grid{grid-template-columns:1fr}.brand h1{font-size:17px}.shot-time{font-size:25px}.exclude{padding:6px;font-size:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
-/* 計測中の操作は画面上部に集約し、メモやイベント記録のための縦スクロールを減らす。 */
-#measurePage .page-head{margin-bottom:9px}
-#measurePage .trial-summary{padding:10px 14px}
-#measurePage .measure-grid{margin-top:10px}
-#measurePage .measure-left{gap:9px}
-#measurePage .timer-button{height:clamp(155px,23svh,225px);gap:5px}
-#measurePage .timer-action{font-size:24px}
-#measurePage .timer-caption,#measurePage .timer-sub{font-size:12px}
-#measurePage .controls{margin-top:0}
-#measurePage .controls button{min-height:49px}
-.action-pad{display:grid;gap:8px}
-.action-box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
-.action-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;font-size:13px}
-.action-title strong{font-size:14px}
-.action-title .chip{min-height:33px;padding:4px 10px;font-size:12px}
-.memo-switch{display:flex;gap:4px}
-.memo-switch button{min-height:32px;padding:4px 10px;font-size:12px;border-radius:9px}
-.memo-switch button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
-#quickMemoInput{height:44px;min-height:44px;padding:8px 11px;font-size:16px}
-.memo-caption{font-size:11px;color:var(--muted);margin-top:4px;display:flex;gap:8px;justify-content:space-between}
-.quick-events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:116px;overflow-y:auto;overscroll-behavior:contain}
-.event-tap{min-height:47px;padding:8px 9px;background:var(--soft);border:1px solid var(--line);font-size:14px;line-height:1.25;overflow-wrap:anywhere}
-.event-tap:active:not(:disabled){background:var(--accent);color:var(--accent-ink)}
-.recent-event{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:7px;font-size:12px;color:var(--muted)}
-.recent-event button{min-height:32px;padding:3px 10px;font-size:12px}
-.event-list{display:grid;gap:8px}
-.event-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--soft);border-radius:10px;font-size:13px}
-.event-row>div{min-width:0}.event-row strong{display:block;overflow-wrap:anywhere}.event-row small{display:block}
-.event-row button{min-height:34px;padding:4px 9px;font-size:12px;flex-shrink:0}
-.event-settings-list{display:grid;gap:8px}.event-settings-list .event-row{background:var(--soft)}
-@media(max-height:740px) and (max-width:799px){
- header{padding-top:calc(6px + env(safe-area-inset-top,0px));padding-bottom:6px}
- main{padding-top:10px}
- #measurePage .timer-button{height:clamp(135px,20svh,175px)}
- #measurePage .timer-value{font-size:clamp(34px,10vw,54px)}
- #measurePage .controls button{min-height:45px}
- #measurePage .timer-state{font-size:11px}
- .action-pad{gap:6px}.action-box{padding:7px 9px}.action-title{margin-bottom:5px}
- .event-tap{min-height:42px}
-}
-@media(min-width:800px){#measurePage .timer-button{height:max(235px,30svh)}}
 
-@media(max-width:799px){
- header{padding-top:calc(6px + env(safe-area-inset-top,0px));padding-bottom:6px}
- .brand-icon{width:36px;height:38px}.brand h1{font-size:17px}.eyebrow{font-size:9px}#saveStatus{font-size:10px}
- main{padding-top:9px}
- #measurePage .page-head{margin-bottom:7px}
- #measurePage .trial-summary{padding:8px 11px}
- #measurePage .trial-title{font-size:16px}
- #measurePage .trial-meta{margin-top:2px;font-size:12px}
- #measurePage .measure-grid{margin-top:9px}
- #measurePage .measure-left{gap:7px}
- #measurePage .timer-button{height:155px;gap:3px;border-radius:16px}
- #measurePage .timer-action{font-size:23px}
- #measurePage .timer-sub{font-size:11px}
- #measurePage .controls button{min-height:46px}
- .action-pad{gap:6px}.action-box{padding:8px 10px}
- .action-title{margin-bottom:5px}
- #quickMemoInput{height:41px;min-height:41px}
- .memo-caption{margin-top:2px;font-size:10px}
- .quick-events{gap:6px;max-height:100px}
- .event-tap{min-height:45px;padding:6px 7px}
- .recent-event{margin-top:4px}
+/* Rebuilt design — based on the four-screen monochrome mockup. */
+:root{
+  color-scheme:light;--bg:#f7f7f7;--panel:#fff;--ink:#111;--muted:#737373;
+  --soft:#f4f4f4;--line:#e5e5e5;--accent:#111;--accent-ink:#fff;
+  --good:#111;--danger:#333;--shadow:0 4px 18px #1717170b;
 }
-@media(max-width:799px) and (max-height:750px){
- #measurePage .timer-button{height:136px}
- #measurePage .timer-value{font-size:clamp(36px,10vw,52px)}
- #measurePage .timer-sub{display:none}
- #measurePage .controls button{min-height:43px}
- .event-tap{min-height:42px}
- .quick-events{max-height:92px}
-}
-
-/* Fixed measurement cockpit. Only history and dialogs scroll. */
-html{height:100%;overflow:hidden;overscroll-behavior:none}
-body{position:fixed;top:var(--viewport-top,0px);left:0;right:0;height:var(--app-height,100dvh);width:100%;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none}
-body>header{flex:0 0 auto;padding:calc(3px + env(safe-area-inset-top,0px)) 12px 4px}
-.brand-icon{width:34px;height:35px}.brand h1{font-size:16px}.eyebrow,#saveStatus{display:none}
-body>header #dataButton{min-height:36px;padding:5px 12px}
-main{flex:1 1 auto;min-height:0;width:100%;overflow:hidden;padding:5px 10px}
-#measurePage{height:100%;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none}
-#measurePage .page-head{flex:0 0 auto;margin:0 0 4px}
-#measurePage .page-head h2{font-size:15px}
-#measurePage .page-head button{min-height:34px;padding:5px 8px;font-size:12px;white-space:nowrap}
-#measurePage .trial-summary{flex:0 0 auto;padding:5px 10px;border-radius:10px}
-#measurePage .trial-summary .row{flex-wrap:nowrap;gap:5px}
-#measurePage .trial-title{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#measurePage .trial-meta{font-size:11px;margin:0}
-#measurePage .trial-summary .chip{min-height:30px;padding:3px 7px;font-size:11px;flex-shrink:0}
-#measurePage .measure-grid{flex:1 1 auto;min-height:0;margin-top:5px;display:flex;flex-direction:column;overflow:hidden}
-#measurePage .measure-left{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:5px;overflow:hidden}
-#measurePage .timer-state{flex:0 0 auto;font-size:11px;min-height:14px;line-height:1.2}
-#measurePage #wakeState{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#measurePage .timer-button{flex:1 1 auto;width:100%;min-height:68px;height:auto!important;max-height:none;gap:1px;border-radius:15px;box-shadow:0 3px 0 #b64413}
-#measurePage .timer-value{font-size:clamp(32px,8.8vw,61px);line-height:1}
-#measurePage .timer-value .unit{font-size:14px}
-#measurePage .timer-action{font-size:clamp(17px,4.7vw,23px)}
-#measurePage .timer-caption{font-size:11px}
+:root[data-theme=dark]{color-scheme:dark;--bg:#101010;--panel:#1b1b1b;--ink:#f3f3f3;--muted:#bbb;--soft:#282828;--line:#444;--accent:#f3f3f3;--accent-ink:#111;--good:#f3f3f3;--shadow:none}
+@media(prefers-color-scheme:dark){:root:not([data-theme=dark]){color-scheme:light;--bg:#f7f7f7;--panel:#fff;--ink:#111;--muted:#737373;--soft:#f4f4f4;--line:#e5e5e5;--accent:#111;--accent-ink:#fff;--good:#111}}
+html{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+body{margin:0;position:fixed;inset:0;width:100%;height:var(--app-height,100dvh);display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Sans",sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+button,input,select,textarea{font-family:inherit}
+body>header{flex:0 0 auto;padding:calc(3px + env(safe-area-inset-top,0px)) 13px 4px;border-bottom:1px solid var(--line);background:var(--panel)}
+body>header .header-inner{max-width:900px}
+body>header .brand-icon{width:34px;height:34px;display:block;object-fit:cover;border-radius:9px}
+body>header .brand h1{font-size:16px;font-weight:850;letter-spacing:.025em;color:var(--ink)}
+body>header .eyebrow,body>header #saveStatus{display:none}
+body>header #dataButton{min-height:34px;border-radius:10px;background:var(--soft);border:1px solid var(--line);font-size:12px;padding:5px 12px}
+main{flex:1 1 auto;min-height:0;max-width:900px;width:100%;overflow:hidden;margin:0 auto;padding:5px 12px}
+.page{min-height:0}
+#measurePage{display:flex;flex-direction:column;height:100%;min-height:0;overflow:hidden}
+#measurePage .page-head{margin:0 0 5px;flex:0 0 auto;gap:5px}
+#measurePage .page-head h2{font-size:13px;font-weight:750;letter-spacing:.02em}
+#measurePage .page-head .row{flex-wrap:nowrap;gap:5px}
+#measurePage .page-head button{min-height:31px;padding:4px 9px;font-size:11px;border-radius:9px;white-space:nowrap}
+#measurePage .page-head #newTrial{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#measurePage .trial-summary{flex:0 0 auto;padding:7px 11px;border:1px solid var(--line);border-radius:13px;background:var(--panel);box-shadow:var(--shadow)}
+#measurePage .trial-summary .row{flex-wrap:nowrap;gap:6px}
+#measurePage .trial-summary .trial-title{font-size:14px;font-weight:830;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+#measurePage .trial-summary .trial-meta{font-size:10px;color:var(--muted);margin-top:0;white-space:nowrap}
+#measurePage .trial-summary .chip{min-height:30px;padding:5px 8px;font-size:10px;flex-shrink:0;border-radius:10px;background:var(--soft)}
+#measurePage .measure-grid{flex:1 1 auto;min-height:0;margin-top:0;display:flex;flex-direction:column;overflow:hidden}
+#measurePage .measure-left{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;gap:5px;overflow:hidden;align-content:initial}
+#measurePage .timer-state{display:flex;justify-content:space-between;gap:8px;flex:0 0 auto;min-height:12px;font-size:9px;line-height:1.2;color:var(--muted)}
+#measurePage #runState{font-weight:750;color:var(--ink)}
+#uncertainNotice{display:none!important}
+#measurePage .clock-face{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:0 0 auto;min-height:68px;padding:2px 0 0;gap:1px}
+#measurePage .timer-caption{font-size:12px;line-height:1.2;font-weight:650;color:var(--muted)}
+#measurePage .timer-value{display:flex;align-items:baseline;gap:5px;justify-content:center;font-size:clamp(36px,11vw,54px);line-height:1.03;font-weight:850;white-space:nowrap;letter-spacing:-.055em;font-variant-numeric:tabular-nums;max-width:100%;min-width:0;color:var(--ink)}
+#measurePage .timer-value #elapsed{white-space:nowrap;max-width:calc(100vw - 70px);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;letter-spacing:-.05em;overflow:hidden}
+#measurePage .timer-value #elapsed[data-digits="8"],#measurePage .timer-value #elapsed[data-digits="9"]{font-size:.78em}
+#measurePage .timer-value #elapsed[data-digits="10"],#measurePage .timer-value #elapsed[data-digits="11"]{font-size:.65em}
+#measurePage .timer-value .unit{font:700 11px sans-serif;letter-spacing:0;margin:0;color:var(--ink)}
+#measurePage .clock-previous{display:flex;justify-content:center;align-items:baseline;gap:5px;flex:0 0 auto;min-width:0;max-width:100%;color:var(--muted);font-size:10px;line-height:1.35}
+#measurePage #lastLapLabel{font-size:10px}
+#measurePage #lastLapTime{font-size:11px!important;font-family:-apple-system,sans-serif;font-weight:780;color:var(--ink);letter-spacing:0}
+#measurePage .clock-previous small{font-size:10px}
+#measurePage #prevLapTime{font-size:10px;max-width:40vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#measurePage .controls{display:flex;align-items:center;justify-content:space-evenly;flex:0 0 auto;gap:8px;margin:0;padding:1px 6px;min-height:98px}
+#measurePage .controls button{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;white-space:normal;border-radius:50%;min-width:0;box-sizing:border-box}
+#measurePage .controls .disc-action{width:73px;height:73px;min-height:73px;padding:8px 2px;background:var(--panel);border:1.5px solid var(--line);color:var(--ink);font-size:11px;line-height:1.1;box-shadow:0 3px 9px #00000008}
+#measurePage .controls #stopButton{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#measurePage .controls .disc-icon{font-size:19px;line-height:1;font-weight:650}
+#measurePage #resetButton{background:var(--panel);color:var(--ink);border:1.5px solid #bdbdbd}
+#measurePage #resetButton:disabled{opacity:.37}
+#measurePage .controls .timer-button{width:103px;height:103px;min-height:103px;max-height:103px;flex:0 0 103px;padding:7px;border:6px solid #bcbcbc;background:var(--ink);color:var(--panel);box-shadow:0 2px 0 1px #eee,0 4px 16px #0002}
+#measurePage .controls .timer-button:active:not(:disabled){transform:scale(.976);box-shadow:0 2px 0 1px #eee;background:#333}
+#measurePage .disc-play{font-size:26px;line-height:1;margin-left:3px;color:inherit}
+#measurePage .timer-button.is-running .disc-play{font-size:21px}
+#measurePage .timer-button.is-running .disc-play::after{content:''}
+#measurePage #lapAction{font-size:13px;line-height:1.1;white-space:nowrap;font-weight:800;letter-spacing:0;color:inherit}
 #measurePage .timer-sub{display:none}
-#measurePage .controls{flex:0 0 auto;gap:5px;margin:0}
-#measurePage .controls button{min-height:39px;padding:6px 3px;font-size:12px;border-radius:9px}
-#measurePage .action-pad{flex:0 0 auto;gap:5px;min-height:0}
-#measurePage .action-box{padding:6px 8px;border-radius:11px}
-#measurePage .action-title{margin-bottom:4px;min-height:26px}
-#measurePage .action-title strong{font-size:12px}
-#measurePage .action-title button{min-height:27px;padding:3px 8px;font-size:11px}
-#measurePage .memo-switch{gap:4px}
-#measurePage #quickMemoInput{height:40px;min-height:40px;font-size:16px;padding:7px 10px;line-height:22px}
+#measurePage .control-foot{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6px;min-height:30px}
+#measurePage .control-foot button{min-height:30px;height:30px;font-size:11px;padding:4px 7px;border-radius:8px}
+#measurePage #finishButton{background:var(--ink);border:1px solid var(--ink);color:var(--panel)}
+#measurePage #finishButton:disabled{background:var(--soft);color:var(--muted);border-color:var(--line)}
+#measurePage #undoButton{background:var(--panel);border:1px solid var(--line);color:var(--ink)}
+#measurePage .action-pad{display:flex;flex-direction:column;gap:5px;flex:0 0 auto;min-height:0}
+#measurePage .action-box{flex:0 0 auto;border:0;border-radius:0;background:transparent;box-shadow:none;padding:0}
+#measurePage .action-title{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:24px;margin:0 0 3px}
+#measurePage .action-title strong{font-size:11px;font-weight:800;letter-spacing:.02em}
+#measurePage .action-title strong small{color:var(--muted);font-size:9px;font-weight:500}
+#measurePage .action-title button{min-height:23px;padding:3px 8px;font-size:10px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}
+#measurePage .memo-switch{display:flex;gap:4px}
+#measurePage .memo-switch button{min-height:22px;padding:2px 9px;border-radius:10px;font-size:10px}
+#measurePage .memo-switch button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#measurePage .memo-entry{height:39px;display:flex;align-items:center;gap:7px;padding:0 10px;border:1px solid var(--line);border-radius:11px;background:var(--panel)}
+#measurePage .memo-pencil{font-size:18px;color:var(--muted);flex:0 0 auto}
+#measurePage #quickMemoInput{font-size:16px!important;line-height:1.2;min-height:34px;height:34px;padding:3px 0;border:0;border-radius:0;outline:0;box-shadow:none;background:transparent;color:var(--ink)}
+#measurePage #quickMemoInput::placeholder{color:#aaa}
 #measurePage .memo-caption{display:none}
-#measurePage .quick-events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;height:auto;max-height:none;overflow:visible}
-#measurePage .event-tap{min-height:39px;font-size:12px;padding:6px 4px;border-radius:8px;touch-action:manipulation}
-#measurePage #lastEvent{display:none!important}
-#measurePage #uncertainNotice{flex:0 0 auto;font-size:11px;padding:5px 8px;margin:0}
+#measurePage .quick-events{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(var(--event-grid-rows),minmax(0,1fr));gap:5px;height:auto;max-height:none;min-height:0;overflow:visible}
+#measurePage .event-tap{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1px;width:100%;min-width:0;min-height:var(--event-row-height);height:auto;max-height:none;padding:3px 4px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--ink);font-size:clamp(10px,2.65vw,12px);font-weight:730;line-height:1.17;overflow:visible;text-align:center;box-shadow:0 1px 3px #00000008;white-space:normal;overflow-wrap:anywhere;transition:background .12s,color .12s}
+#measurePage .event-tap .event-name{display:block;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.18}
+#measurePage .event-tap .event-mark{font-size:9px;line-height:1.05}
+#measurePage .event-tap.event-recorded{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#measurePage #lastEvent{display:flex;align-items:center;justify-content:space-between;gap:5px;min-height:21px;height:21px;font-size:10px;margin-top:3px;color:var(--muted);overflow:hidden}
+#measurePage #lastEvent.has-event{background:var(--soft);border-radius:6px;padding:1px 5px;color:var(--ink)}
+#measurePage #lastEvent span{min-width:0;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#measurePage #lastEvent button{min-height:19px;height:19px;padding:1px 5px;font-size:10px;border-radius:6px}
+#recentPanel{display:flex;flex:1 1 auto;min-height:99px;flex-direction:column;overflow:hidden;padding:0 1px;background:transparent;border:0;border-radius:0;box-shadow:none}
+#recentPanel .recent-heading{flex:0 0 24px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--line);margin:0}
+#recentPanel .recent-heading strong{font-size:11px;font-weight:800;white-space:nowrap}
+#recentPanel .recent-heading span{font-size:10px;color:var(--muted);flex:1}
+#recentPanel .recent-heading button{font-size:10px;min-height:21px;padding:1px 5px;border:0;background:transparent;color:var(--ink)}
+#recentPanel .recent-rows{flex:1 1 auto;min-height:0;display:grid;grid-template-rows:repeat(5,minmax(0,1fr));overflow:hidden}
+#recentPanel .recent-row{min-height:0;display:grid;grid-template-columns:36px minmax(50px,auto) minmax(0,1fr);align-items:center;gap:7px;padding:0 3px;border-bottom:1px solid var(--line);font-size:10px;overflow:hidden}
+#recentPanel .recent-no{font-size:10px;color:var(--ink);font-weight:750}
+#recentPanel .recent-sec{font-size:12px;line-height:1.15;white-space:nowrap;font-weight:850;letter-spacing:-.03em}
+#recentPanel .recent-detail{font-size:10px;line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#recentPanel .recent-empty{display:grid;place-items:center;font-size:10px;color:var(--muted);height:100%}
+#measurePage .total-line{flex:0 0 auto;display:none}
+.tabs{position:relative;left:auto;bottom:auto;transform:none;flex:0 0 auto;width:100%;max-width:900px;margin:0 auto;padding:3px 10px calc(3px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--panel);box-shadow:none}
+.tabs button{min-height:42px;padding:4px;gap:1px;font-size:11px;border-radius:9px}
+.tabs button[aria-selected=true]{background:var(--ink);color:var(--panel);box-shadow:none}
+.tabs button svg{height:18px;width:18px}
 #historyPage{height:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-.tabs{position:relative;left:auto;bottom:auto;transform:none;flex:0 0 auto;width:100%;max-width:1072px;margin:0 auto;padding:3px 10px calc(3px + env(safe-area-inset-bottom,0px));box-shadow:0 -3px 12px #1321360a}
-.tabs button{min-height:42px;padding:4px;gap:1px;font-size:11px}
-.tabs button svg{width:17px;height:17px}
-dialog{max-height:calc(var(--app-height,100dvh) - 20px);overflow-y:auto;overscroll-behavior:contain}
-dialog input,dialog select,dialog textarea,#historyPage input{font-size:16px}
-#moreEventsDialog .quick-events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:none}
-#moreEventsDialog .event-tap{min-height:48px;font-size:14px}
-#toast{bottom:calc(58px + env(safe-area-inset-bottom,0px));font-size:12px;padding:7px 12px}
-body.keyboard-open>header,body.keyboard-open>.tabs{display:none}
-body.keyboard-open #measurePage .page-head,body.keyboard-open #measurePage .trial-summary{display:none}
-body.keyboard-open #measurePage .timer-state:last-child{display:none}
-body.keyboard-open #measurePage .measure-grid{margin-top:0}
-body.keyboard-open #measurePage .measure-left{gap:3px}
-body.keyboard-open #measurePage .timer-button{min-height:55px}
-body.keyboard-open #measurePage .timer-value{font-size:clamp(30px,9vw,44px)}
-body.keyboard-open #measurePage .timer-caption{display:none}
-body.keyboard-open #measurePage .controls button{min-height:34px;padding:3px}
-body.keyboard-open #measurePage .action-box{padding:3px 6px}
-body.keyboard-open #measurePage .action-title{min-height:20px;margin-bottom:2px}
-body.keyboard-open #measurePage .action-title button{min-height:24px}
-body.keyboard-open #measurePage #quickMemoInput{height:36px;min-height:36px}
-body.keyboard-open #measurePage .event-tap{min-height:32px;padding:3px;font-size:11px}
-body.keyboard-open #measurePage .quick-events{gap:3px}
-body.keyboard-open #measurePage .timer-state{font-size:10px}
-@media(min-width:800px){#measurePage{max-width:750px;margin-inline:auto}}
-@media(max-height:560px) and (max-width:799px){
- body:not(.keyboard-open)>header{padding-top:2px}
- #measurePage .trial-meta,#measurePage .timer-caption{display:none}
- #measurePage .controls button{min-height:34px}
- #measurePage .timer-button{min-height:55px}
- #measurePage .event-tap{min-height:33px}
-}
-
-/* 12種を一画面に表示。ラップ結果は毎回同じ場所で確認できる。 */
-#measurePage .measure-left{gap:4px}
-#measurePage .timer-button{
-  flex:0 1 auto;height:clamp(78px,13svh,107px)!important;min-height:68px;
-  max-height:107px;border-radius:12px;gap:1px;box-shadow:0 2px 0 #b64413
-}
-#measurePage .timer-value{font-size:clamp(30px,8vw,45px)}
-#measurePage .timer-action{font-size:clamp(15px,4vw,18px)}
-#measurePage .timer-caption{font-size:10px}
-#measurePage .lap-strip{
-  flex:0 0 43px;display:grid;grid-template-columns:1fr auto;
-  grid-template-rows:1fr 1fr;column-gap:8px;align-items:center;
-  padding:3px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel)
-}
-#lastLapLabel{font-size:11px;color:var(--muted)}
-#lastLapTime{grid-column:2;grid-row:1 / 3;font-size:clamp(23px,6vw,32px);font-weight:850}
-#prevLapTime{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#measurePage .controls{grid-template-columns:0.9fr 0.8fr 1.5fr}
-#measurePage .controls button{min-height:40px;padding:5px 2px;font-size:12px}
-#finishButton{background:var(--good);border-color:var(--good);color:#fff}
-#finishButton:disabled{background:var(--soft);border-color:var(--line);color:var(--muted)}
-#measurePage .quick-events{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  grid-template-rows:repeat(4,minmax(0,1fr));
-  height:clamp(132px,23svh,174px);max-height:none;overflow:hidden;gap:4px;
-}
-#measurePage .event-tap{
-  display:flex;justify-content:center;align-items:center;text-align:center;
-  min-height:0!important;height:100%;max-width:100%;padding:3px 4px;
-  font-size:clamp(10px,2.7vw,12px);font-weight:750;line-height:1.12;
-  overflow-wrap:anywhere;overflow:hidden;border-radius:8px
-}
-#measurePage .action-box{padding:5px 7px}
-#measurePage .action-title{min-height:22px;margin-bottom:3px}
-#measurePage #quickMemoInput{height:40px;min-height:40px;font-size:16px}
-#measurePage .action-pad{gap:4px}
-#measurePage .timer-state:last-child{font-size:10px}
-#measurePage .trial-summary{padding:4px 8px}
-#measurePage .page-head{margin-bottom:3px}
-@media(max-height:740px){
-  #measurePage .timer-button{height:80px!important;min-height:68px}
-  #measurePage .quick-events{height:132px}
-  #measurePage .lap-strip{flex-basis:39px}
-  #measurePage .controls button{min-height:35px}
-  #measurePage .action-box{padding:4px 6px}
-}
-
-/* キーボード入力位置はタイマーより上に固定。本文の上下再配置なし。 */
-#measurePage .action-pad{display:contents!important}
-#measurePage section[aria-label="計測中のメモ"]{order:1;flex:0 0 auto}
-#measurePage .timer-button{order:2}
-#measurePage .lap-strip{order:3}
-#measurePage .controls{order:4}
-#measurePage section[aria-label="ワンタッチイベント記録"]{order:5;flex:0 0 auto}
-#measurePage .measure-left>.timer-state:last-child{order:6}
-#measurePage .quick-events[data-rows="1"]{height:39px;grid-template-rows:repeat(1,minmax(0,1fr))}
-#measurePage .quick-events[data-rows="2"]{height:83px;grid-template-rows:repeat(2,minmax(0,1fr))}
-#measurePage .quick-events[data-rows="3"]{height:128px;grid-template-rows:repeat(3,minmax(0,1fr))}
-#measurePage .quick-events[data-rows="4"]{height:172px;grid-template-rows:repeat(4,minmax(0,1fr))}
-@media(max-height:740px){
- #measurePage .quick-events[data-rows="1"]{height:32px}
- #measurePage .quick-events[data-rows="2"]{height:66px}
- #measurePage .quick-events[data-rows="3"]{height:99px}
- #measurePage .quick-events[data-rows="4"]{height:132px}
-}
-
-/* Compact industrial dashboard, persistent 6-value summary strip. */
-:root{--bg:#edf2f7;--panel:#fff;--ink:#162941;--soft:#eff4f9;--line:#d6e1eb;--accent:#ff8b43;--shadow:0 7px 24px #152f4617}
-body{background:radial-gradient(ellipse at top,#f6f9fc 0%,var(--bg) 65%)}
-body>header{background:linear-gradient(115deg,#182c46,#263e5a);border-bottom:0;box-shadow:0 3px 16px #0b203429}
-body>header .brand h1{color:#fff;letter-spacing:.02em}
-body>header #dataButton{background:#ffffff1a;border:1px solid #ffffff34;color:#fff;font-size:12px}
-.brand-icon{background:linear-gradient(145deg,#ffaf64,#ff7832);box-shadow:0 3px 8px #ff783232;border-radius:11px}
-#measurePage .trial-summary{background:linear-gradient(110deg,var(--panel),var(--soft));border-color:var(--line);box-shadow:0 2px 9px #132c4610}
-#measurePage .timer-button{background:linear-gradient(150deg,#ffc079,#ff8a38);border:1px solid #f28b38;color:#23201c;box-shadow:0 3px 0 #c76122,0 4px 13px #f58e3440}
-#measurePage .timer-button:active:not(:disabled){box-shadow:0 1px 0 #c76122;transform:translateY(2px)}
-#measurePage .action-box{box-shadow:0 2px 8px #1629410a}
-#measurePage .event-tap{background:linear-gradient(160deg,#f8fbff,#eaf1f8);border:1px solid #cfdeec}
-#measurePage .event-tap:active:not(:disabled){background:var(--accent)}
-#measurePage .controls #finishButton{background:#147257;border-color:#147257;color:#fff}
-#measurePage .lap-strip{border-left:3px solid #ff8b43;box-shadow:0 2px 8px #152a3e10}
-#measurePage #quickMemoInput{font-size:16px!important;scroll-margin:0!important;transform:translateZ(0);-webkit-appearance:none}
-#measurePage .measure-grid,#measurePage .measure-left,#measurePage .action-pad{scroll-behavior:auto!important}
-#measurePage .controls button{border-radius:10px}
-#recordsDialog[open]{display:flex;flex-direction:column;height:min(660px,calc(var(--app-height,100dvh) - 20px));width:min(760px,calc(100% - 14px));overflow:hidden}
+#historyPage .history-list{gap:4px}
+#historyPage .history-item{min-height:42px;padding:6px 9px;border:1px solid var(--line);border-radius:10px}
+#historyPage .history-item strong{font-size:12px;line-height:1.2}
+#historyPage .history-item small{font-size:10px;line-height:1.2}
+#historyPage .history-avg{font-size:14px}
+#historyPage input,dialog input,dialog select,dialog textarea{font-size:16px!important}
+dialog{max-height:calc(var(--app-height,100dvh) - 14px);overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--line);border-radius:15px}
+dialog::backdrop{background:#1117}
+#recordsDialog[open]{display:flex;flex-direction:column;height:min(650px,calc(var(--app-height,100dvh) - 18px));width:min(760px,calc(100% - 12px));overflow:hidden}
 #recordsDialog .modal-head{flex:0 0 auto;padding:8px 10px}
 #recordsDialog .modal-head h2{font-size:14px}
-#recordsDialog .modal-head button{min-height:32px;padding:2px 8px;font-size:12px}
-#recordsDialog .modal-head .close{width:34px}
-#recordsDialog .records-layout{flex:1 1 auto;min-height:0;overflow:hidden;padding:7px;display:flex;flex-direction:column;gap:6px}
-#summaryStrip{flex:0 0 auto}
-#summaryStrip .section-title{margin:0 0 3px}
-#summaryStrip .section-title h3{font-size:11px;font-weight:800;color:var(--muted)}
-#summaryStrip .section-title .badge{padding:1px 6px;font-size:10px}
-#summaryStrip .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:transparent;border:0;border-radius:0;gap:3px}
-#summaryStrip .stat{display:flex;align-items:center;justify-content:space-between;gap:3px;min-height:27px;padding:3px 6px;border:1px solid var(--line);border-radius:7px;background:var(--soft);box-shadow:none;overflow:hidden}
-#summaryStrip .stat:first-child{border-color:#ffbb8f;background:#fff7f1;box-shadow:none}
-#summaryStrip .stat span{display:inline;font-size:9px;line-height:1.1;white-space:nowrap}
-#summaryStrip .stat b{display:inline;font-size:clamp(11px,3vw,15px);line-height:1.05;white-space:nowrap}
-#summaryStrip .stat small{font-size:9px}
-#recordListTabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:0 0 auto}
-#recordListTabs button{min-height:33px;padding:5px;font-size:12px;border-radius:9px;background:var(--soft);border-color:transparent}
-#recordListTabs button[aria-pressed="true"]{background:#1c314d;color:#fff;box-shadow:0 2px 7px #17294129}
-#recordListTabs span{font-size:10px;opacity:.78;margin-left:4px}
-#recordsDialog .shots-panel,#recordsDialog .event-log-panel{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:6px;border-radius:10px}
-#recordsDialog .shots-panel .section-title,#recordsDialog .event-log-panel .section-title{margin-bottom:5px}
-#recordsDialog .shots-panel h3,#recordsDialog .event-log-panel h3{font-size:12px}
-#recordsDialog .shot{padding:6px 8px;border-radius:9px}
-#recordsDialog .shots{gap:5px}
-#recordsDialog .shot-top{gap:5px}
-#recordsDialog .shot-no{font-size:11px;min-width:30px}
-#recordsDialog .shot-time{font-size:18px}
-#recordsDialog .exclude{font-size:11px;min-height:32px;padding:3px 6px;gap:4px}
-#recordsDialog .exclude input{height:18px;width:18px;min-height:18px}
-#recordsDialog .shot input[type=text]{min-height:33px;height:33px;padding:6px 8px;margin-top:3px;font-size:16px}
-#recordsDialog .quick-notes{margin-top:4px}
-#recordsDialog .quick-notes button{min-height:30px;padding:3px 8px;font-size:11px}
-#recordsDialog .event-row{padding:5px 7px;border-radius:8px}
-#recordsDialog .event-list{gap:5px}
-#recordsDialog .event-row button{min-height:29px}
-#recordsDialog .empty{padding:15px 8px;font-size:12px}
-#detailDialog .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
-#detailDialog .stat{padding:5px 7px}
-#detailDialog .stat span{font-size:10px}
-#detailDialog .stat b{font-size:clamp(13px,3vw,19px)}
-dialog input,dialog textarea,dialog select{font-size:16px!important}
-@media(prefers-color-scheme:dark){
- :root:not([data-theme=light]){--bg:#101a27;--panel:#1a2839;--ink:#f2f7fd;--soft:#25364b;--line:#3e5169}
- #summaryStrip .stat:first-child{background:#3e302b}
- #recordListTabs button[aria-pressed="true"]{background:#496783}
- #measurePage .event-tap{background:#293b52;border-color:#49617c}
+#recordsDialog .modal-head button{min-height:31px;padding:3px 9px}
+#recordsDialog .records-layout{display:flex;flex:1 1 auto;flex-direction:column;min-height:0;gap:6px;padding:8px;overflow:hidden}
+#summaryStrip .section-title{margin:0 0 4px}
+#summaryStrip .section-title h3{font-size:11px}
+#summaryStrip .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;border:0;border-radius:0;background:none}
+#summaryStrip .stat{min-height:32px;padding:3px 7px;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:none;display:flex;justify-content:space-between;align-items:center;gap:4px}
+#summaryStrip .stat span{font-size:10px;white-space:nowrap}
+#summaryStrip .stat b{font-size:13px;white-space:nowrap;letter-spacing:-.02em}
+#recordListTabs{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
+#recordListTabs button{min-height:33px;padding:5px;border-radius:9px;background:var(--soft);border:1px solid var(--line);font-size:11px}
+#recordListTabs button[aria-pressed=true]{background:var(--ink);color:var(--panel)}
+#recordsDialog .shots-panel,#recordsDialog .event-log-panel{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:7px;border-radius:8px}
+#recordsDialog .shot{padding:6px 7px;border-radius:7px}
+#recordsDialog .shots{gap:4px}
+#recordsDialog .shot-time{font-size:17px}
+#recordsDialog .shot input[type=text]{min-height:33px;height:33px;font-size:16px;padding:5px 8px}
+#recordsDialog .event-row{padding:5px 7px}
+#toast{bottom:calc(56px + env(safe-area-inset-bottom,0px));padding:7px 11px;font-size:11px}
+@media(max-height:760px) and (max-width:799px){
+ #measurePage .measure-left{gap:3px}
+ #measurePage .clock-face{min-height:55px}
+ #measurePage .timer-value{font-size:clamp(32px,9vw,43px)}
+ #measurePage .controls{min-height:83px;padding:0}
+ #measurePage .controls .timer-button{width:91px;height:91px;min-height:91px;max-height:91px;flex-basis:91px}
+ #measurePage .controls .disc-action{width:66px;height:66px;min-height:66px}
+ #measurePage .control-foot button{min-height:27px;height:27px}
+ #measurePage .action-title{min-height:21px}
+ #measurePage .quick-events{gap:4px}
+ #measurePage .event-tap{min-height:38px;padding:2px 4px}
+ #recentPanel{min-height:91px}
+ #recentPanel .recent-heading{flex-basis:21px}
 }
-:root[data-theme=dark] #summaryStrip .stat:first-child{background:#3e302b}
-:root[data-theme=dark] #recordListTabs button[aria-pressed="true"]{background:#496783}
-:root[data-theme=dark] #measurePage .event-tap{background:#293b52;border-color:#49617c}
-
-/* Minimal monochrome measurement workspace */
-:root{color-scheme:light;--bg:#f4f4f4;--panel:#fff;--ink:#161616;--muted:#666;--line:#d6d6d6;--soft:#f0f0f0;--accent:#161616;--accent-ink:#fff;--good:#161616;--danger:#333;--shadow:none}
-:root[data-theme=dark]{color-scheme:dark;--bg:#090909;--panel:#171717;--ink:#f4f4f4;--muted:#b7b7b7;--line:#454545;--soft:#292929;--accent:#f4f4f4;--accent-ink:#111;--good:#f4f4f4;--danger:#eee;--shadow:none}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#090909;--panel:#171717;--ink:#f4f4f4;--muted:#b7b7b7;--line:#454545;--soft:#292929;--accent:#f4f4f4;--accent-ink:#111;--good:#f4f4f4;--danger:#eee;--shadow:none}}
-body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif}
-body>header{background:var(--panel);border-bottom:1px solid var(--line);box-shadow:none}
-body>header .brand h1{color:var(--ink);font-size:15px;letter-spacing:.05em}
-body>header #dataButton{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:7px}
-.brand-icon{background:var(--ink);color:var(--panel);border-radius:7px;box-shadow:none}
-#measurePage .trial-summary{background:var(--panel);border:1px solid var(--line);box-shadow:none;padding:3px 7px;border-radius:7px}
-#measurePage .timer-button{background:var(--ink);color:var(--panel);border:1px solid var(--ink);box-shadow:none;border-radius:9px;height:clamp(61px,10svh,80px)!important;min-height:60px;max-height:80px}
-#measurePage .timer-button:active:not(:disabled){background:var(--muted);color:var(--panel);transform:none;box-shadow:none}
-#measurePage .timer-value{font-size:clamp(28px,7.5vw,39px)}
-#measurePage .timer-action{font-size:clamp(14px,3.8vw,17px);letter-spacing:.045em}
-#measurePage .action-box{background:var(--panel);box-shadow:none;border-radius:8px;padding:3px 6px}
-#measurePage .event-tap{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:5px;box-shadow:none;font-size:clamp(9px,2.4vw,11px);padding:2px 3px}
-#measurePage .event-tap:active:not(:disabled){background:var(--ink);color:var(--panel);transform:none}
-#measurePage .memo-switch button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
-#measurePage .controls #finishButton{background:var(--ink);color:var(--panel);border-color:var(--ink)}
-#measurePage .controls #finishButton:disabled{background:var(--soft);color:var(--muted);border-color:var(--line)}
-#measurePage .lap-strip{background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--ink);border-radius:7px;flex-basis:34px;padding:2px 8px;box-shadow:none}
-#measurePage #lastLapTime{font-size:clamp(19px,5vw,25px)}
-#measurePage .controls button{min-height:33px;font-size:11px;border-radius:6px}
-#measurePage .page-head{margin-bottom:2px}
-#measurePage .page-head button{border-radius:5px}
-#measurePage .measure-left{gap:3px}
-#measurePage .measure-grid{margin-top:3px}
-#measurePage .action-title{margin-bottom:2px;min-height:19px}
-#measurePage .action-title strong{font-size:11px}
-#measurePage .action-title button{min-height:23px;font-size:10px}
-#measurePage #quickMemoInput{height:35px;min-height:35px;padding:5px 8px;font-size:16px!important;border-radius:5px;scroll-margin:0!important}
-#measurePage .quick-events[data-rows="1"]{height:29px}
-#measurePage .quick-events[data-rows="2"]{height:60px}
-#measurePage .quick-events[data-rows="3"]{height:91px}
-#measurePage .quick-events[data-rows="4"]{height:123px}
-#measurePage .quick-events{gap:3px}
-#measurePage #lastEvent{display:flex!important;align-items:center;justify-content:space-between;gap:5px;height:22px;min-height:22px;max-height:22px;margin:2px 0 0;padding:0 4px;font-size:10px;overflow:hidden;color:var(--muted)}
-#measurePage #lastEvent.has-event{background:var(--soft);color:var(--ink);border-radius:5px}
-#measurePage #lastEvent span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#measurePage #lastEvent button{min-height:19px;height:19px;padding:0 5px;font-size:10px;border-radius:4px;background:var(--panel)}
-#measurePage .total-line{font-size:10px;min-height:12px}
-#recentPanel{flex:1 1 auto;order:6;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:3px 6px}
-#measurePage .measure-left>.total-line{order:7}
-.recent-heading{flex:0 0 auto;display:flex;align-items:center;gap:6px;min-height:21px;padding-bottom:2px;border-bottom:1px solid var(--line)}
-.recent-heading strong{font-size:11px;letter-spacing:.03em}
-.recent-heading span{flex:1;font-size:10px;color:var(--muted)}
-.recent-heading button{min-height:20px;font-size:10px;padding:1px 5px;background:transparent;border:0;color:var(--ink)}
-.recent-rows{flex:1 1 auto;min-height:0;display:grid;grid-template-rows:repeat(5,minmax(0,1fr));overflow:hidden}
-.recent-row{display:grid;grid-template-columns:32px 55px minmax(0,1fr);gap:5px;align-items:center;min-height:0;border-bottom:1px solid var(--soft);padding:1px 2px;font-size:10px}
-.recent-row:last-child{border:0}
-.recent-no{font:700 10px ui-monospace,SFMono-Regular,monospace;color:var(--muted)}
-.recent-sec{font-size:13px;font-weight:800}
-.recent-detail{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.recent-excluded{opacity:.55;text-decoration:line-through}
-.recent-empty{display:flex;justify-content:center;align-items:center;height:100%;color:var(--muted);font-size:10px}
-#summaryStrip .stats{grid-template-columns:repeat(6,minmax(0,1fr));gap:2px}
-#summaryStrip .stat{display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:27px;max-height:29px;padding:2px 1px;background:var(--panel);border:1px solid var(--line);border-radius:4px;box-shadow:none}
-#summaryStrip .stat:first-child{background:var(--soft);border:1px solid var(--ink)}
-#summaryStrip .stat span{font-size:9px;line-height:1;max-width:100%;overflow:hidden;text-overflow:ellipsis}
-#summaryStrip .stat b{font-size:clamp(10px,2.7vw,12px);line-height:1;letter-spacing:-.04em;max-width:100%;overflow:hidden;text-overflow:ellipsis}
-#summaryStrip .stat small{font-size:8px}
-#summaryStrip .section-title{margin-bottom:2px}
-#summaryStrip .section-title h3{font-size:10px}
-#recordsDialog .records-layout{gap:3px}
-#recordListTabs button{min-height:28px;border-radius:4px;border:1px solid var(--line);background:var(--panel);font-size:11px;padding:3px}
-#recordListTabs button[aria-pressed=true]{background:var(--ink);color:var(--panel);box-shadow:none}
-#recordsDialog .shot{padding:4px 6px;border-radius:5px}
-#recordsDialog .shots{gap:3px}
-#recordsDialog .shot-time{font-size:16px}
-#recordsDialog .shots-panel,#recordsDialog .event-log-panel{padding:4px;border-radius:6px}
-#historyPage .history-list{gap:4px;margin-top:7px}
-#historyPage .history-item{padding:4px 7px;min-height:42px;border-radius:6px}
-#historyPage .history-item strong{font-size:12px;line-height:1.15}
-#historyPage .history-item small{font-size:10px;line-height:1.1;margin-top:1px}
-#historyPage .history-avg{font-size:15px}
-#historyPage .history-avg small{font-size:9px}
-#historyPage .filters summary{min-height:28px;padding:3px 0;font-size:11px}
-#historyPage input{min-height:34px;border-radius:6px;padding:5px}
-.tabs{box-shadow:none;border-top:1px solid var(--line)}
-.tabs button{border-radius:5px}
-.tabs button[aria-selected=true]{box-shadow:none;border:1px solid var(--line);background:var(--soft);color:var(--ink)}
-#toast{background:var(--ink);color:var(--panel);box-shadow:none}
-@media(max-height:700px){#measurePage .quick-events[data-rows="4"]{height:104px}#measurePage .quick-events[data-rows="3"]{height:78px}#measurePage .quick-events[data-rows="2"]{height:52px}#measurePage .timer-button{height:59px!important;min-height:55px}#recentPanel{padding:2px 5px}}
-
-#measurePage .event-tap{position:relative;gap:2px;flex-direction:column;transition:background-color .11s,border-color .11s}
-#measurePage .event-tap.event-recorded{background:var(--ink)!important;color:var(--panel)!important;border-color:var(--ink)!important}
-#measurePage .event-tap .event-name{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;line-height:1.12}
-#measurePage .event-tap .event-mark{font-size:9px;font-weight:800;line-height:1;color:inherit;opacity:.85}
-#measurePage .recent-rows{grid-template-rows:repeat(5,minmax(0,1fr))}
-
-/* One compact information band per trial in History. */
-#historyPage .history-list{gap:3px;margin-top:5px}
-#historyPage .history-item{min-height:33px;padding:3px 7px;gap:6px;border-radius:5px}
-#historyPage .history-item>div:first-child{flex:1;overflow:hidden}
-#historyPage .history-item strong{font-size:11px;line-height:1.15;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;display:block}
-#historyPage .history-item small{display:block;font-size:9px;line-height:1.15;margin-top:1px;white-space:nowrap}
-#historyPage .history-avg{font-size:14px;line-height:1;flex:0 0 auto}
-#historyPage .history-avg small{font-size:8px;line-height:1}
-
-/* Legibility hotfix: fixed heights must never squeeze three text lines. */
-#measurePage .timer-button{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) minmax(98px,auto);
-  grid-template-rows:minmax(0,1fr);
-  align-items:center;justify-content:stretch;
-  gap:5px;
-  padding:8px 13px!important;
-  min-height:85px!important;
-  height:85px!important;
-  max-height:85px!important;
-  overflow:hidden!important;
-  text-align:left;
+@media(max-height:650px) and (max-width:799px){
+ body>header{padding-bottom:2px}
+ #measurePage .trial-summary{padding:4px 8px}
+ #measurePage .clock-face{min-height:46px}
+ #measurePage .timer-value{font-size:31px}
+ #measurePage .controls{min-height:72px}
+ #measurePage .controls .timer-button{width:79px;height:79px;min-height:79px;max-height:79px;flex-basis:79px;border-width:5px}
+ #measurePage .controls .disc-action{width:58px;height:58px;min-height:58px;font-size:10px}
+ #measurePage .controls .disc-icon{font-size:16px}
+ #measurePage .disc-play{font-size:20px}
+ #measurePage .timer-action{font-size:11px}
+ #measurePage .action-pad{gap:3px}
+ #measurePage .action-title{min-height:18px}
+ #measurePage .quick-events{gap:3px}
+ #measurePage .event-tap{min-height:34px}
+ #measurePage #lastEvent{min-height:18px;height:18px}
+ #recentPanel{min-height:72px}
 }
-#measurePage .timer-readout{display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0;overflow:hidden;align-items:flex-start}
-#measurePage .timer-caption{display:block!important;font-size:11px;line-height:1.1;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
-#measurePage .timer-value{display:flex;align-items:baseline;gap:4px;min-width:0;max-width:100%;font-size:clamp(24px,6.9vw,35px);line-height:1.1;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.065em;overflow:hidden}
-#measurePage .timer-value #elapsed{display:block;min-width:0;overflow:hidden;text-overflow:clip}
-#measurePage .timer-value #elapsed[data-digits="7"],#measurePage .timer-value #elapsed[data-digits="8"],#measurePage .timer-value #elapsed[data-digits="9"]{font-size:.82em;letter-spacing:-.09em}
-#measurePage .timer-value #elapsed[data-digits="10"],#measurePage .timer-value #elapsed[data-digits="11"],#measurePage .timer-value #elapsed[data-digits="12"]{font-size:.65em;letter-spacing:-.10em}
-#measurePage .timer-value .unit{display:inline;font-size:11px;font-weight:650;margin:0;letter-spacing:0;flex:0 0 auto;color:inherit}
-#measurePage .timer-command{display:flex;align-items:center;justify-content:center;min-width:0;max-width:140px;padding-left:9px;border-left:1px solid #ffffff55;min-height:45px}
-#measurePage .timer-action{font-size:clamp(13px,3.6vw,16px)!important;line-height:1.25!important;white-space:normal;text-align:center;overflow-wrap:anywhere;display:block;max-width:100%;letter-spacing:0}
-#measurePage .timer-sub{display:none!important}
-#measurePage .lap-strip{
- display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,auto);grid-template-rows:1fr 1fr;
- align-items:center;min-height:40px!important;flex:0 0 40px!important;height:40px!important;max-height:40px!important;
- gap:0 7px;overflow:hidden;padding:3px 8px!important
+@media(min-width:800px){
+ #measurePage{max-width:660px;margin:auto}
+ #measurePage .controls{justify-content:center;gap:32px}
+ #measurePage .controls .timer-button{width:112px;height:112px;min-height:112px;max-height:112px;flex-basis:112px}
+ #measurePage .controls .disc-action{width:81px;height:81px;min-height:81px}
 }
-#measurePage #lastLapLabel{min-width:0;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2;font-size:11px}
-#measurePage #prevLapTime{grid-column:1;grid-row:2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.15;font-size:10px}
-#measurePage .last-lap-reading{grid-column:2;grid-row:1/3;display:flex;align-items:baseline;justify-content:flex-end;gap:4px;min-width:0;max-width:100%;white-space:nowrap;overflow:hidden}
-#measurePage #lastLapTime{font-size:clamp(21px,6vw,26px)!important;line-height:1.05;white-space:nowrap;letter-spacing:-.055em}
-#measurePage #lastLapTime[data-digits="7"],#measurePage #lastLapTime[data-digits="8"],#measurePage #lastLapTime[data-digits="9"]{font-size:20px!important}
-#measurePage #lastLapTime[data-digits="10"],#measurePage #lastLapTime[data-digits="11"]{font-size:16px!important}
-#measurePage .last-lap-reading small{font-size:10px;color:var(--muted);flex:0 0 auto}
-#recentPanel{min-height:120px!important;overflow:hidden}
-#recentPanel .recent-heading{height:22px!important;min-height:22px!important;flex:0 0 22px!important;gap:5px}
-#recentPanel .recent-rows{display:grid;grid-template-rows:repeat(5,minmax(22px,1fr));min-height:0;overflow:hidden}
-#recentPanel .recent-row{display:grid;grid-template-columns:30px minmax(55px,max-content) minmax(0,1fr);gap:5px;min-width:0;min-height:0;overflow:hidden}
-#recentPanel .recent-row .recent-no{min-width:0;white-space:nowrap}
-#recentPanel .recent-row .recent-sec{font-size:12px!important;white-space:nowrap;min-width:0;max-width:105px;letter-spacing:-.045em;line-height:1.15}
-#recentPanel .recent-row .recent-sec[data-digits="8"],#recentPanel .recent-row .recent-sec[data-digits="9"]{font-size:11px!important;letter-spacing:-.065em}
-#recentPanel .recent-row .recent-sec[data-digits="10"],#recentPanel .recent-row .recent-sec[data-digits="11"]{font-size:10px!important}
-#recentPanel .recent-detail{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;white-space:normal;min-width:0;max-height:2.5em;line-height:1.17;font-size:10px!important;text-decoration:none!important;overflow-wrap:anywhere}
-#measurePage .measure-left{min-height:0;overflow:hidden;gap:3px}
-#measurePage .measure-grid{min-height:0}
-#measurePage .action-pad{min-height:0}
-#measurePage #lastEvent{line-height:1.12}
-#measurePage .timer-value,#measurePage .lap-strip,#recentPanel *{box-sizing:border-box}
-@media(max-height:690px){
- #measurePage .timer-button{height:78px!important;min-height:78px!important;max-height:78px!important}
- #recentPanel{min-height:110px!important}
-}
-
-/* Five row guarantee on compact iPhone webviews. */
-#recentPanel .recent-rows{grid-template-rows:repeat(5,minmax(0,1fr))}
-@media(max-height:800px){
- #recentPanel{min-height:106px!important}
- #recentPanel .recent-heading{height:19px!important;min-height:19px!important;flex-basis:19px!important}
- #recentPanel .recent-row{min-height:0!important;padding-block:0}
- #recentPanel .recent-detail{display:block;-webkit-line-clamp:1;line-clamp:1;white-space:nowrap;max-height:1.2em;line-height:1.2}
- #measurePage .timer-button{height:76px!important;min-height:76px!important;max-height:76px!important}
- #measurePage .timer-value{font-size:clamp(23px,6.5vw,33px)}
-}
-@media(max-height:670px){
- #measurePage .timer-button{height:69px!important;min-height:69px!important;max-height:69px!important}
- #recentPanel{min-height:97px!important}
- #measurePage .event-tap{min-height:0!important}
- #measurePage .action-box{padding:2px 5px}
- #measurePage .quick-events[data-rows="4"]{height:96px}
- #measurePage .quick-events[data-rows="3"]{height:73px}
-}
-
-/* Industrial minimal UI — consistently sized controls, full-length event labels. */
-:root{--bg:#f4f4f3;--panel:#fff;--ink:#181818;--muted:#6d6d6b;--soft:#f7f7f6;--line:#dddddb;--accent:#181818;--accent-ink:#fff;--good:#181818;--shadow:0 3px 15px #0000000a}
-:root[data-theme=dark]{--bg:#0c0c0d;--panel:#1c1c1d;--ink:#f4f4f4;--muted:#b5b5b5;--soft:#272729;--line:#444;--accent:#f4f4f4;--accent-ink:#191919;--shadow:none}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0c0c0d;--panel:#1c1c1d;--ink:#f4f4f4;--muted:#b5b5b5;--soft:#272729;--line:#444;--accent:#f4f4f4;--accent-ink:#191919;--shadow:none}}
-body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Kaku Gothic ProN",sans-serif;-webkit-font-smoothing:antialiased}
-body>header{background:var(--panel);border-bottom:1px solid var(--line);box-shadow:none}
-body>header .brand h1{color:var(--ink);font-weight:800;letter-spacing:.07em}
-body>header .brand-icon{display:block;width:36px;height:36px;border-radius:10px;object-fit:cover;box-shadow:0 2px 8px #0002}
-body>header #dataButton{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:9px}
-#measurePage .trial-summary{border:1px solid var(--line);background:var(--panel);border-radius:10px;box-shadow:var(--shadow)}
-#measurePage .timer-button{background:var(--ink);color:var(--panel);border:1px solid var(--ink);border-radius:12px;box-shadow:0 2px 8px #0002}
-#measurePage .timer-button:active:not(:disabled){background:var(--muted);color:var(--panel);transform:none;box-shadow:none}
-#measurePage .lap-strip{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--ink);border-radius:9px;box-shadow:none}
-#measurePage .action-box,#recentPanel{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:none}
-#measurePage .controls{display:grid!important;grid-template-columns:minmax(0,.75fr) minmax(0,.72fr) minmax(0,1.05fr) minmax(0,1.25fr)!important;gap:5px!important}
-#measurePage .controls button{min-width:0!important;min-height:43px!important;height:43px!important;padding:4px 1px!important;font-size:clamp(10px,2.6vw,12px)!important;white-space:nowrap;letter-spacing:-.025em;border-radius:9px;border:1px solid var(--line)}
-#measurePage #stopButton{background:var(--ink);color:var(--panel);border-color:var(--ink)}
-#measurePage #undoButton{background:var(--panel);color:var(--ink)}
-#measurePage #resetButton{background:var(--panel);color:var(--ink);border:1.5px solid var(--ink);font-weight:850;opacity:1}
-#measurePage #resetButton:disabled{background:var(--soft);color:var(--muted);border-color:var(--line);opacity:.45}
-#measurePage #finishButton{background:var(--ink);color:var(--panel);border-color:var(--ink)}
-#measurePage #finishButton:disabled{background:var(--soft);color:var(--muted);border-color:var(--line)}
-#measurePage .quick-events[data-rows]{
- display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
- grid-template-rows:repeat(var(--event-grid-rows),minmax(var(--event-row-height),auto))!important;
- gap:5px!important;height:auto!important;max-height:none!important;overflow:visible!important;align-content:start!important
-}
-#measurePage .event-tap{
- display:flex!important;flex-direction:column;align-items:center;justify-content:center;
- height:auto!important;min-height:var(--event-row-height)!important;max-height:none!important;
- padding:5px 3px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
- border:1px solid var(--line)!important;border-radius:8px!important;background:var(--soft)!important;color:var(--ink)!important;
- font-size:clamp(11px,2.85vw,12px)!important;line-height:1.2!important;letter-spacing:0;box-shadow:none!important
-}
-#measurePage .event-tap .event-name{
- display:block!important;max-width:100%;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
- overflow-wrap:anywhere;word-break:break-word;line-height:1.24!important;text-align:center
-}
-#measurePage .event-tap .event-mark{display:block;font-size:10px;line-height:1.1;padding-top:2px}
-#measurePage .event-tap.event-recorded{background:var(--ink)!important;color:var(--panel)!important;border-color:var(--ink)!important}
-#measurePage .event-tap:active:not(:disabled){filter:brightness(.85);transform:none}
-#measurePage .action-title{min-height:22px}
-#measurePage #quickMemoInput{height:40px;min-height:40px;padding:7px 10px;font-size:16px!important;border-radius:8px}
-#measurePage .measure-left{gap:4px;overflow:hidden}
-#recentPanel{min-height:90px!important;flex:1 1 auto;padding:4px 7px}
-#recentPanel .recent-heading{min-height:20px;height:20px;flex:0 0 20px}
-#recentPanel .recent-rows{grid-template-rows:repeat(5,minmax(0,1fr))!important}
-#recentPanel .recent-detail{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#uncertainNotice{display:none!important}
-#historyPage .history-item,#recordsDialog .shot{border:1px solid var(--line);border-radius:7px;box-shadow:none}
-#summaryStrip .stat{border-radius:6px}
-@media(max-height:740px){#measurePage .controls button{min-height:39px!important;height:39px!important}#recentPanel{min-height:82px!important}}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
 </style>
 </head>
 <body>
@@ -535,28 +202,36 @@ body>header #dataButton{background:var(--panel);color:var(--ink);border:1px soli
 <main>
 <div id="storageWarning" class="notice" role="alert" hidden></div>
 <section id="measurePage" class="page" role="tabpanel" aria-labelledby="tabMeasure">
-<div class="section-title page-head"><h2>計測</h2><div class="row" style="flex-wrap:nowrap;gap:6px"><button id="openRecords" class="chip">記録・集計</button><button id="newTrial" class="primary chip">＋ 新しいトライ</button></div></div>
+<div class="section-title page-head"><h2>計測</h2><div class="row"><button id="openRecords" class="chip">記録・集計</button><button id="newTrial" class="primary chip">＋ 新しいトライ</button></div></div>
 <div class="card trial-summary"><div class="row between"><div style="min-width:0;flex:1"><div id="trialTitle" class="trial-title">トライを登録して計測開始</div><div id="trialMeta" class="trial-meta">日付とトライ名だけで始められます</div></div><button id="editCurrent" class="chip" hidden>情報編集</button></div></div>
 <div class="measure-grid"><div class="measure-left">
 <div class="timer-state"><span id="runState">待機中</span><span id="wakeState">スリープ防止：待機中</span></div>
 <div id="uncertainNotice" class="notice" hidden></div>
-<button id="lapButton" class="timer-button" type="button"><span class="timer-readout"><span id="lapCaption" class="timer-caption">今回のショット</span><span class="timer-value num"><span id="elapsed">00.00</span><span class="unit">秒</span></span></span><span class="timer-command"><span id="lapAction" class="timer-action">トライを登録</span><span id="lapHint" class="timer-sub">1タップ目で開始、以後は1タップで1ショット</span></span></button>
-<div id="lastLapStrip" class="lap-strip" aria-live="off"><span id="lastLapLabel">直前のラップ</span><span class="last-lap-reading"><b id="lastLapTime" class="num">—</b><small>秒</small></span><span id="prevLapTime">未記録</span></div>
-<div class="controls"><button id="stopButton" disabled>■ 停止</button><button id="undoButton" disabled>↶ 戻す</button><button id="resetButton" class="reset-btn" disabled>↺ リセット</button><button id="finishButton" class="finish-button" disabled>✓ 保存・終了</button></div>
+<div class="clock-face" aria-label="現在のショット時間">
+  <div id="lapCaption" class="timer-caption">今回のショット</div>
+  <div class="timer-value num"><span id="elapsed">00.00</span><span class="unit">秒</span></div>
+  <div id="lastLapStrip" class="clock-previous"><span id="lastLapLabel">前回</span><span class="last-lap-reading"><b id="lastLapTime" class="num">—</b><small>秒</small></span><span id="prevLapTime">未記録</span></div>
+</div>
+<div class="controls">
+  <button id="stopButton" class="disc-action disc-stop" disabled><span class="disc-icon" aria-hidden="true">■</span><span>停止</span></button>
+  <button id="lapButton" class="timer-button" type="button"><span class="disc-play" aria-hidden="true">▶</span><span id="lapAction" class="timer-action">スタート</span><span id="lapHint" class="timer-sub">ラップ記録</span></button>
+  <button id="resetButton" class="disc-action disc-reset" disabled><span class="disc-icon" aria-hidden="true">↺</span><span>リセット</span></button>
+</div>
+<div class="control-foot"><button id="undoButton" disabled>↶ 直前のラップを戻す</button><button id="finishButton" class="finish-button" disabled>✓ 保存して終了</button></div>
 
 <div class="action-pad">
 <section class="action-box" aria-label="計測中のメモ">
-<div class="action-title"><strong>すぐメモ</strong><div class="memo-switch" role="group" aria-label="メモの記録先"><button id="memoCurrent" aria-pressed="true">今回</button><button id="memoLast" aria-pressed="false" disabled>直前</button></div></div>
-<input id="quickMemoInput" maxlength="240" type="text" autocomplete="off" enterkeyhint="done" placeholder="気づいたことをその場で入力" aria-label="ショットメモ">
+<div class="action-title"><strong>気づきメモ</strong><div class="memo-switch" role="group" aria-label="メモの記録先"><button id="memoCurrent" aria-pressed="true">今回</button><button id="memoLast" aria-pressed="false" disabled>直前</button></div></div>
+<div class="memo-entry"><span class="memo-pencil" aria-hidden="true">✎</span><input id="quickMemoInput" maxlength="240" type="text" autocomplete="off" enterkeyhint="done" placeholder="今回のショットの気づきを入力…" aria-label="ショットメモ"></div>
 <div class="memo-caption"><span id="memoTarget">現在のショットに紐づけます</span><span>自動保存</span></div>
 </section>
 <section class="action-box" aria-label="ワンタッチイベント記録">
-<div class="action-title"><strong>ワンタッチ記録</strong><button id="configEvents" class="chip">項目設定</button></div>
+<div class="action-title"><strong>ワンタッチ記録 <small>最大12項目</small></strong><button id="configEvents" class="chip">編集 ↗</button></div>
 <div id="quickEvents" class="quick-events"></div>
 <div id="lastEvent" class="recent-event" role="status" aria-live="polite"></div>
 </section>
 </div>
-<section id="recentPanel" aria-label="直近5ショット"><div class="recent-heading"><strong>直近5ショット</strong><span id="recentCount">0件</span><button id="recentOpenAll">全件 →</button></div><div id="recentRows" class="recent-rows"></div></section><div class="timer-state total-line"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止時間除外</span></div>
+<section id="recentPanel" aria-label="直近5ショット"><div class="recent-heading"><strong>直近5ショット</strong><span id="recentCount">0件</span><button id="recentOpenAll">すべて見る ›</button></div><div id="recentRows" class="recent-rows"></div></section><div class="timer-state total-line"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止時間除外</span></div>
 </div></div>
 </section>
 <section id="historyPage" class="page" role="tabpanel" aria-labelledby="tabHistory" hidden>
@@ -824,9 +499,9 @@ function openEventSettings(){
 }
 function renderMeasure(){
   const t=active();if(t&&lastPressedEventType&&!t.events.some(e=>e.typeId===lastPressedEventType))lastPressedEventType=t.events.at(-1)?.typeId||null;$('trialTitle').textContent=t?t.name:'トライを登録して計測開始';$('trialMeta').textContent=t?t.date:'日付とトライ名だけで始められます';
-  $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.finishedAt?'▶ 次の計測を開始':t.running?'ラップを記録':(t.elapsedMs||t.shots.length)?'計測を再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
-  $('lapHint').textContent=t?.running?'タップした瞬間に記録し、次のショットへ':'1タップ目で開始、以後は1タップで1ショット';$('runState').textContent=t?.finishedAt?'✓ 保存・終了済み':t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
-  $('stopButton').disabled=!t?.running||blocked||!!t?.finishedAt;$('undoButton').disabled=!t?.shots.length||blocked||!!t?.finishedAt;$('resetButton').disabled=!t||blocked||!!t?.finishedAt;$('finishButton').disabled=!t||blocked;$('finishButton').textContent=t?.finishedAt?'▶ 次の計測':'✓ 保存して終了';$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=true;
+  $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.finishedAt?'次の計測':t.running?'ラップ':(t.elapsedMs||t.shots.length)?'再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
+  $('lapHint').textContent=t?.running?'ショット確定':t?.finishedAt?'#'+(t.shots.length+1)+' 開始':'計測開始';$('runState').textContent=t?.finishedAt?'✓ 保存・終了済み':t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
+  $('stopButton').disabled=!t?.running||blocked||!!t?.finishedAt;$('undoButton').disabled=!t?.shots.length||blocked||!!t?.finishedAt;$('resetButton').disabled=!t||blocked||!!t?.finishedAt;$('finishButton').disabled=!t||blocked;$('finishButton').textContent=t?.finishedAt?'▶ 次の計測':'✓ 保存して終了';$('lapButton').classList.toggle('is-running',!!t?.running);$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=true;
   $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderLastLaps(t);renderActionPad();renderRecentTimeline();drawTime();drawWake();
 }
 function renderHistory(){
@@ -992,30 +667,18 @@ setInterval(()=>{if(active()?.running){clock.checkGap();save();}},5000);
 function frame(){if(view==='measure'&&!document.hidden)drawTime();requestAnimationFrame(frame);}
 /* Fix the measurement cockpit to iOS VisualViewport, including keyboard resizing. */
 /* Never resize or scroll the measuring surface during soft-keyboard animation. */
-const viewportBootHeight=Math.round(window.visualViewport?.height||window.innerHeight);
-document.documentElement.style.setProperty('--app-height',viewportBootHeight+'px');
+const fixedViewportHeight=Math.round(window.innerHeight);
+document.documentElement.style.setProperty('--app-height',fixedViewportHeight+'px');
 document.documentElement.style.setProperty('--viewport-top','0px');
-let memoTarget=null,viewportCorrection=0;
-function visualY(){return $('quickMemoInput').getBoundingClientRect().top-(window.visualViewport?.offsetTop||0);}
 function syncViewport(){
- if(document.activeElement===$('quickMemoInput')&&memoTarget!==null){
-  const delta=memoTarget-visualY();
-  if(Math.abs(delta)>.5){
-   viewportCorrection=Math.max(-320,Math.min(320,viewportCorrection+delta));
-   document.documentElement.style.setProperty('--viewport-top',viewportCorrection+'px');
-  }
-  return;
- }
- if(window.visualViewport&&window.visualViewport.height<viewportBootHeight-110)return;
- viewportCorrection=0;memoTarget=null;document.documentElement.style.setProperty('--viewport-top','0px');
- if(view==='measure'&&window.scrollY)window.scrollTo(0,0);
+  // Keep the measurement layout stationary; do not respond to Safari's keyboard
+  // visualViewport scrolling or resizing during note entry.
+  if(view==='measure'&&document.activeElement!==$('quickMemoInput')&&window.scrollY)window.scrollTo(0,0);
 }
-$('quickMemoInput').addEventListener('focus',()=>{memoTarget=visualY();requestAnimationFrame(syncViewport);});
-$('quickMemoInput').addEventListener('blur',()=>{memoTarget=null;requestAnimationFrame(syncViewport);});
-window.visualViewport?.addEventListener('scroll',syncViewport);
-window.visualViewport?.addEventListener('resize',syncViewport);
-window.addEventListener('scroll',syncViewport,{passive:true});
-window.addEventListener('orientationchange',()=>{if(document.activeElement===$('quickMemoInput'))document.activeElement.blur();requestAnimationFrame(()=>{document.documentElement.style.setProperty('--app-height',Math.round(window.visualViewport?.height||window.innerHeight)+'px');syncViewport();});});
+window.addEventListener('orientationchange',()=>{
+  if(document.activeElement===$('quickMemoInput'))document.activeElement.blur();
+  requestAnimationFrame(()=>document.documentElement.style.setProperty('--app-height',Math.round(window.innerHeight)+'px'));
+});
 $('quickMemoInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur();}});
 document.addEventListener('touchmove',e=>{if(view==='measure'&&!e.target.closest('dialog,input,textarea,select'))e.preventDefault();},{passive:false});
 renderAll();if(needsRewrite||active()?.running)save();if(active()?.running)requestWake();requestAnimationFrame(frame);
