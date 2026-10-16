@@ -162,6 +162,53 @@ body.keyboard-open #measurePage .timer-state{font-size:10px}
  #measurePage .timer-button{min-height:55px}
  #measurePage .event-tap{min-height:33px}
 }
+
+/* 12種を一画面に表示。ラップ結果は毎回同じ場所で確認できる。 */
+#measurePage .measure-left{gap:4px}
+#measurePage .timer-button{
+  flex:0 1 auto;height:clamp(78px,13svh,107px)!important;min-height:68px;
+  max-height:107px;border-radius:12px;gap:1px;box-shadow:0 2px 0 #b64413
+}
+#measurePage .timer-value{font-size:clamp(30px,8vw,45px)}
+#measurePage .timer-action{font-size:clamp(15px,4vw,18px)}
+#measurePage .timer-caption{font-size:10px}
+#measurePage .lap-strip{
+  flex:0 0 43px;display:grid;grid-template-columns:1fr auto;
+  grid-template-rows:1fr 1fr;column-gap:8px;align-items:center;
+  padding:3px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel)
+}
+#lastLapLabel{font-size:11px;color:var(--muted)}
+#lastLapTime{grid-column:2;grid-row:1 / 3;font-size:clamp(23px,6vw,32px);font-weight:850}
+#prevLapTime{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#measurePage .controls{grid-template-columns:0.9fr 0.8fr 1.5fr}
+#measurePage .controls button{min-height:40px;padding:5px 2px;font-size:12px}
+#finishButton{background:var(--good);border-color:var(--good);color:#fff}
+#finishButton:disabled{background:var(--soft);border-color:var(--line);color:var(--muted)}
+#measurePage .quick-events{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-rows:repeat(4,minmax(0,1fr));
+  height:clamp(132px,23svh,174px);max-height:none;overflow:hidden;gap:4px;
+}
+#measurePage .event-tap{
+  display:flex;justify-content:center;align-items:center;text-align:center;
+  min-height:0!important;height:100%;max-width:100%;padding:3px 4px;
+  font-size:clamp(10px,2.7vw,12px);font-weight:750;line-height:1.12;
+  overflow-wrap:anywhere;overflow:hidden;border-radius:8px
+}
+#measurePage .action-box{padding:5px 7px}
+#measurePage .action-title{min-height:22px;margin-bottom:3px}
+#measurePage #quickMemoInput{height:40px;min-height:40px;font-size:16px}
+#measurePage .action-pad{gap:4px}
+#measurePage .timer-state:last-child{font-size:10px}
+#measurePage .trial-summary{padding:4px 8px}
+#measurePage .page-head{margin-bottom:3px}
+@media(max-height:740px){
+  #measurePage .timer-button{height:80px!important;min-height:68px}
+  #measurePage .quick-events{height:132px}
+  #measurePage .lap-strip{flex-basis:39px}
+  #measurePage .controls button{min-height:35px}
+  #measurePage .action-box{padding:4px 6px}
+}
 </style>
 </head>
 <body>
@@ -175,7 +222,8 @@ body.keyboard-open #measurePage .timer-state{font-size:10px}
 <div class="timer-state"><span id="runState">待機中</span><span id="wakeState">スリープ防止：待機中</span></div>
 <div id="uncertainNotice" class="notice" hidden>再読込・端末休止・時計変更を検知しました。次のショットは「要確認」として集計から除外します。</div>
 <button id="lapButton" class="timer-button"><span id="lapCaption" class="timer-caption">今回のショット</span><span class="timer-value num"><span id="elapsed">00.00</span><span class="unit">秒</span></span><span id="lapAction" class="timer-action">トライを登録</span><span id="lapHint" class="timer-sub">1タップ目で開始、以後は1タップで1ショット</span></button>
-<div class="controls"><button id="stopButton" disabled>■ 停止</button><button id="undoButton" disabled>↶ 1つ戻す</button><button id="resetButton" class="danger" disabled>リセット</button></div>
+<div id="lastLapStrip" class="lap-strip" aria-live="off"><span id="lastLapLabel">直前のラップ</span><b id="lastLapTime" class="num">—</b><span id="prevLapTime">未記録</span></div>
+<div class="controls"><button id="stopButton" disabled>■ 停止</button><button id="undoButton" disabled>↶ 戻す</button><button id="finishButton" class="finish-button" disabled>✓ 保存して終了</button></div>
 
 <div class="action-pad">
 <section class="action-box" aria-label="計測中のメモ">
@@ -205,9 +253,9 @@ body.keyboard-open #measurePage .timer-state{font-size:10px}
 <button id="tabMeasure" role="tab" aria-controls="measurePage" aria-selected="true" data-tab="measure"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14" r="8"/><path d="M9 2h6M12 2v4m0 4v5l3 2"/></svg>計測</button>
 <button id="tabHistory" role="tab" aria-controls="historyPage" aria-selected="false" data-tab="history" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2 7M3 4v7h7M12 7v6l4 2"/></svg>履歴</button>
 </nav>
-<dialog id="recordsDialog" aria-labelledby="recordsTitle"><div class="modal-head"><h2 id="recordsTitle">ショット・イベント・集計</h2><button class="close" data-close="recordsDialog" aria-label="閉じる">×</button></div><div class="modal-body stack"><section><div class="section-title"><h3>集計</h3><span id="excludedCount" class="badge">0 件を除外</span></div><div id="liveStats" class="stats"></div><p class="stat-note">単位：秒 ／ σ：母標準偏差 ／ 記録済み・除外なしのショットが対象</p></section>
+<dialog id="recordsDialog" aria-labelledby="recordsTitle"><div class="modal-head"><h2 id="recordsTitle">ショット・イベント・集計</h2><button id="resetButton" class="danger chip" disabled>リセット</button><button class="close" data-close="recordsDialog" aria-label="閉じる">×</button></div><div class="modal-body stack"><section><div class="section-title"><h3>集計</h3><span id="excludedCount" class="badge">0 件を除外</span></div><div id="liveStats" class="stats"></div><p class="stat-note">単位：秒 ／ σ：母標準偏差 ／ 記録済み・除外なしのショットが対象</p></section>
 <section class="card event-log-panel"><div class="section-title"><h3>トラブル・停止の記録</h3><span id="eventCount" class="badge">0 件</span></div><div id="liveEvents" class="event-list"></div></section><section class="card shots-panel"><div class="section-title"><h3>ショット一覧</h3><span id="shotCount" class="badge">0 ショット</span></div><div id="liveShots" class="shots"></div></section></div></dialog>
-<dialog id="moreEventsDialog" aria-labelledby="moreEventsTitle"><div class="modal-head"><h2 id="moreEventsTitle">ワンタッチ項目を選択</h2><button class="close" data-close="moreEventsDialog" aria-label="閉じる">×</button></div><div class="modal-body"><div id="moreEventChoices" class="quick-events"></div></div></dialog>
+
 <dialog id="trialDialog" aria-labelledby="trialDialogTitle">
 <div class="modal-head"><h2 id="trialDialogTitle">新しいトライ</h2><button class="close" data-close="trialDialog" aria-label="閉じる">×</button></div>
 <form id="trialForm" class="modal-body"><div class="form-grid">
@@ -254,7 +302,7 @@ const TryTimerCore = (() => {
     pause(){if(!this.t.running)return;this.checkGap();this.t.elapsedMs=this.now();this.t.running=false;}
     lap(){if(!this.t.running)return null;this.checkGap();const s={id:uid(),ms:Math.max(0,this.now()-total(this.t)),memo:[this.t.pendingMemo,this.t.uncertain?'要確認：再読込・端末休止等':''].filter(Boolean).join(' / ').slice(0,240),excluded:!!this.t.uncertain,review:!!this.t.uncertain};this.t.shots.push(s);this.t.pendingMemo='';this.t.uncertain=false;return s;}
     undo(){const s=this.t.shots.pop();if(s?.review)this.t.uncertain=true;if(s){const memo=s.memo.replace(/(?: \/ )?要確認：再読込・端末休止等$/,'');this.t.pendingMemo=[memo,this.t.pendingMemo].filter(Boolean).join(' / ').slice(0,240);}return s;}
-    reset(){this.t.running=false;this.t.elapsedMs=0;this.t.shots=[];this.t.events=[];this.t.pendingMemo='';this.t.uncertain=false;this.anchor=this.mono();}
+    reset(){this.t.running=false;this.t.elapsedMs=0;this.t.shots=[];this.t.events=[];this.t.pendingMemo='';this.t.uncertain=false;this.t.finishedAt=null;this.anchor=this.mono();}
     snapshot(){return {...this.t,elapsedMs:this.now(),savedAt:this.wall()};}
   }
   function validate(v) {
@@ -284,7 +332,9 @@ const TryTimerCore = (() => {
       });unique(events);
       const pendingMemo=v.version>=3?str(t.pendingMemo,240):'';
       const date=str(t.date,10,true);if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date))||new Date(date).toISOString().slice(0,10)!==date)fail();
-      const r={id:str(t.id,120,true),name:v.version===1?'トライ '+(index+1):str(t.name,120,true),date,shots,events,pendingMemo,elapsedMs:num(t.elapsedMs),running:bool(t.running),uncertain:bool(t.uncertain),savedAt:num(t.savedAt),createdAt:num(t.createdAt),updatedAt:num(t.updatedAt)};
+      const finishedAt=t.finishedAt===undefined||t.finishedAt===null?null:num(t.finishedAt);
+      if(finishedAt!==null&&t.running)fail();
+      const r={id:str(t.id,120,true),finishedAt,name:v.version===1?'トライ '+(index+1):str(t.name,120,true),date,shots,events,pendingMemo,elapsedMs:num(t.elapsedMs),running:bool(t.running),uncertain:bool(t.uncertain),savedAt:num(t.savedAt),createdAt:num(t.createdAt),updatedAt:num(t.updatedAt)};
       if(r.elapsedMs+.01<total(r))fail();return r;
     });unique(trials);
     const activeId=v.activeId===null?null:str(v.activeId,120,true);
@@ -367,18 +417,24 @@ function eventHTML(t,scope){
   if(start)out+='<button class="show-more" data-more-events="'+esc(t.id)+'" data-scope="'+scope+'">古いイベントを表示（残り'+start+'件）</button>';
   return out;
 }
+function renderLastLaps(t){
+  const n=t?.shots.length||0;
+  const latest=t?.shots[n-1],before=t?.shots[n-2];
+  $('lastLapLabel').textContent=latest?'直前 #'+n+(t.finishedAt?'（終了済）':''):'直前のラップ';
+  $('lastLapTime').textContent=latest?sec(latest.ms)+' 秒':'—';
+  $('prevLapTime').textContent=before?'前回 #'+(n-1)+' '+sec(before.ms)+' 秒':latest?'ショット #'+n+' 記録':'未記録';
+}
 function renderActionPad(){
   const t=active(),last=t?.shots.at(-1);
   if(memoMode==='last'&&!last)memoMode='current';
   $('memoCurrent').setAttribute('aria-pressed',String(memoMode==='current'));
   $('memoLast').setAttribute('aria-pressed',String(memoMode==='last'));
-  $('memoLast').disabled=!last||blocked;$('memoCurrent').disabled=!t||blocked;
-  $('quickMemoInput').disabled=!t||blocked;
+  $('memoLast').disabled=!last||blocked||!!t?.finishedAt;$('memoCurrent').disabled=!t||blocked||!!t.finishedAt;
+  $('quickMemoInput').disabled=!t||blocked||!!t.finishedAt;
   $('quickMemoInput').placeholder=!t?'トライを登録するとメモできます':memoMode==='last'?'直前ショットの内容を編集':'今回のショットの気づきを入力';
   $('memoTarget').textContent=memoMode==='last'?'確定済み #'+t.shots.length+' のメモ':'今回 #'+((t?.shots.length||0)+1)+' のショットに紐づけ';
   if(document.activeElement!==$('quickMemoInput'))$('quickMemoInput').value=t?(memoMode==='last'?last?.memo||'':t.pendingMemo||''):'';
-  const kinds=db.eventTypes,visible=kinds.length>4?kinds.slice(0,3):kinds;
-  $('quickEvents').innerHTML=kinds.length?visible.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" '+(!t||blocked?'disabled':'')+'>'+esc(x.name)+'</button>').join('')+(kinds.length>4?'<button class="event-tap" data-show-more-event '+(!t||blocked?'disabled':'')+'>その他 '+(kinds.length-3)+'件</button>':''):'<span class="muted" style="font-size:13px">「項目設定」からボタンを追加できます。</span>';
+  $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" title="'+esc(x.name)+'" '+(!t||blocked||t.finishedAt?'disabled':'')+'>'+esc(x.name)+'</button>').join(''):'<span class="muted" style="font-size:12px">項目設定からボタンを登録</span>';
   $('configEvents').disabled=blocked;
   const e=t?.events.at(-1);
   $('lastEvent').hidden=!e;
@@ -398,10 +454,10 @@ function openEventSettings(){
 }
 function renderMeasure(){
   const t=active();$('trialTitle').textContent=t?t.name:'トライを登録して計測開始';$('trialMeta').textContent=t?t.date:'日付とトライ名だけで始められます';
-  $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.running?'ラップを記録':(t.elapsedMs||t.shots.length)?'計測を再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
-  $('lapHint').textContent=t?.running?'タップした瞬間に記録し、次のショットへ':'1タップ目で開始、以後は1タップで1ショット';$('runState').textContent=t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
-  $('stopButton').disabled=!t?.running||blocked;$('undoButton').disabled=!t?.shots.length||blocked;$('resetButton').disabled=!t||blocked;$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=!t?.uncertain;
-  $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderActionPad();drawTime();drawWake();
+  $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.finishedAt?'終了済み':t.running?'ラップを記録':(t.elapsedMs||t.shots.length)?'計測を再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
+  $('lapHint').textContent=t?.running?'タップした瞬間に記録し、次のショットへ':'1タップ目で開始、以後は1タップで1ショット';$('runState').textContent=t?.finishedAt?'✓ 保存・終了済み':t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
+  $('stopButton').disabled=!t?.running||blocked||!!t?.finishedAt;$('undoButton').disabled=!t?.shots.length||blocked||!!t?.finishedAt;$('resetButton').disabled=!t||blocked||!!t?.finishedAt;$('finishButton').disabled=!t||blocked||!!t.finishedAt;$('lapButton').disabled=blocked||!!t?.finishedAt;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=!t?.uncertain;
+  $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderLastLaps(t);renderActionPad();drawTime();drawWake();
 }
 function renderHistory(){
   const q=norm($('search').value),from=$('filterFrom').value,to=$('filterTo').value;
@@ -455,11 +511,11 @@ $('trialForm').addEventListener('submit',e=>{
   const name=kind==='legacy'&&existing?$('fLegacyName').value.trim():trialFormat(kind,run);
   const fields={name,date:$('fDate').value};
   if((kind==='legacy'&&!existing)||(kind!=='legacy'&&(!TRIAL_KINDS.includes(kind)||!Number.isInteger(run)||run<1||run>99))||!fields.name||fields.name.length>120||!/^\d{4}-\d{2}-\d{2}$/.test(fields.date)||!Number.isFinite(Date.parse(fields.date))||new Date(fields.date).toISOString().slice(0,10)!==fields.date){toast('トライ名と正しい日付を入力してください。');return;}
-  if(existing)Object.assign(existing,fields,{updatedAt:Date.now()});else{if(active()?.running){toast('計測を停止してください。');return;}if(db.trials.length>=3000){toast('トライは3,000件までです。バックアップ後に古い履歴を整理してください。');return;}const t={id:uid(),...fields,shots:[],events:[],pendingMemo:'',elapsedMs:0,running:false,uncertain:false,savedAt:Date.now(),createdAt:Date.now(),updatedAt:Date.now()};db.trials.push(t);db.activeId=t.id;clock=new Clock(t);}
+  if(existing)Object.assign(existing,fields,{updatedAt:Date.now()});else{if(active()?.running){toast('計測を停止してください。');return;}if(db.trials.length>=3000){toast('トライは3,000件までです。バックアップ後に古い履歴を整理してください。');return;}const t={id:uid(),...fields,shots:[],events:[],finishedAt:null,pendingMemo:'',elapsedMs:0,running:false,uncertain:false,savedAt:Date.now(),createdAt:Date.now(),updatedAt:Date.now()};db.trials.push(t);db.activeId=t.id;clock=new Clock(t);}
   save();$('trialDialog').close();if(!existing){$('detailDialog').close();detailId=null;showTab('measure');}renderAll();if(detailId)renderDetail();toast(existing?'トライ情報を更新しました。':'トライを登録しました。スタートで計測できます。');
 });
 $('lapButton').addEventListener('click',()=>{
-  if(!editable())return;const t=active();if(!t){openTrial();return;}
+  if(!editable())return;const t=active();if(!t){openTrial();return;}if(t.finishedAt){toast('終了済みです。「新しいトライ」から開始してください。');return;}
   if(t.running){if(t.shots.length>=10000){toast('1トライの上限は10,000ショットです。新しいトライを作成してください。');return;}if(db.trials.reduce((n,x)=>n+x.shots.length,0)>=100000){toast('全体の上限は100,000ショットです。バックアップ後に履歴を整理してください。');return;}clock.lap();memoMode='current';}else clock.start();
   try{navigator.vibrate?.(12);}catch(e){}touch(t);renderMeasure();requestWake();
 });
@@ -484,6 +540,16 @@ $('eventItemForm').addEventListener('submit',e=>{
   editingEventId=null;$('eventItemForm').reset();save();renderEventSettings();renderActionPad();toast('ワンタッチ項目を保存しました。');
 });
 $('cancelEventEdit').onclick=()=>{editingEventId=null;$('eventItemForm').reset();renderEventSettings();};
+$('finishButton').addEventListener('click',()=>{
+  if(!editable())return;
+  const t=active();if(!t||t.finishedAt)return;
+  if(!confirm('このトライを保存して終了しますか？\n記録済みショットとイベントを確定します。\n未確定ショットの経過時間は集計に含まれません。'))return;
+  clock?.pause();
+  t.finishedAt=Date.now();t.updatedAt=t.finishedAt;
+  const saved=save();releaseWake();renderMeasure();renderHistory();
+  if(saved)toast('トライを保存して終了しました。履歴から確認できます。');
+  else toast('保存できません。データ画面で保存状態を確認してください。');
+});
 $('stopButton').addEventListener('click',()=>{if(!editable()||!clock)return;clock.pause();touch(active());releaseWake();renderMeasure();toast('停止しました。未確定のショットは再開後に続きます。');});
 $('undoButton').addEventListener('click',()=>{if(!editable()||!active()?.shots.length)return;clock.undo();touch(active());renderMeasure();toast('直前の区切りを取り消しました。時間は現在のショットに戻ります。');});
 $('resetButton').addEventListener('click',()=>{if(!editable()||!clock)return;if(!confirm('このトライの全ショットと計測時間をリセットします。登録情報は残ります。よろしいですか？'))return;clock.reset();touch(active());releaseWake();renderMeasure();toast('計測をリセットしました。');});
@@ -507,7 +573,6 @@ $('clearFilters').onclick=()=>{['search','filterFrom','filterTo'].forEach(id=>$(
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(d.close){$(d.close).close();return;}if(d.tab){showTab(d.tab);return;}
-  if(d.showMoreEvent){if(!editable()||!active())return;$('moreEventChoices').innerHTML=db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'">'+esc(x.name)+'</button>').join('');$('moreEventsDialog').showModal();return;}
   if(d.recordEvent){if(!editable())return;const t=active(),type=db.eventTypes.find(x=>x.id===d.recordEvent);if(!t||!type)return;if(t.events.length>=2000){toast('イベント記録の上限は2,000件です。');return;}t.events.push({id:uid(),typeId:type.id,label:type.name,ms:clock.now(),at:Date.now(),shot:t.shots.length+1});touch(t);try{navigator.vibrate?.(18);}catch(e){}renderActionPad();if($('moreEventsDialog').open)$('moreEventsDialog').close();toast(type.name+' を記録しました。計測は継続中です。');return;}
   if(d.undoEvent){if(!editable())return;const t=active();if(!t||t.events.at(-1)?.id!==d.undoEvent)return;t.events.pop();touch(t);renderActionPad();toast('直前のイベント記録を取り消しました。');return;}
   if(d.editEvent){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.editEvent);if(!x)return;editingEventId=x.id;$('eventItemName').value=x.name;renderEventSettings();$('eventItemName').focus();return;}
@@ -541,15 +606,17 @@ window.addEventListener('pagehide',save);window.addEventListener('pageshow',()=>
 setInterval(()=>{if(active()?.running){clock.checkGap();save();$('uncertainNotice').hidden=!active().uncertain;}},5000);
 function frame(){if(view==='measure'&&!document.hidden)drawTime();requestAnimationFrame(frame);}
 /* Fix the measurement cockpit to iOS VisualViewport, including keyboard resizing. */
-let baseViewportHeight=window.visualViewport?.height||window.innerHeight;
+let stableViewportHeight=Math.round(window.visualViewport?.height||window.innerHeight);
 function syncViewport(){
-  const vv=window.visualViewport;
-  const h=vv?.height||window.innerHeight,top=vv?.offsetTop||0;
-  if(document.activeElement!==$('quickMemoInput')&&h>baseViewportHeight)baseViewportHeight=h;
-  document.documentElement.style.setProperty('--app-height',Math.round(h)+'px');
-  document.documentElement.style.setProperty('--viewport-top',Math.round(top)+'px');
-  const keyboard=document.activeElement===$('quickMemoInput')&&(baseViewportHeight-h)>110&&view==='measure';
-  document.body.classList.toggle('keyboard-open',keyboard);
+  const focusing=document.activeElement===$('quickMemoInput');
+  // 入力時は高さ・上端・要素表示を変えない。Safariのキーボードによる
+  // visualViewport の縮小をレイアウトに反映すると入力欄が飛び上がる。
+  if(!focusing&&!(window.visualViewport&&window.visualViewport.height<stableViewportHeight-110)){
+    stableViewportHeight=Math.round(window.visualViewport?.height||window.innerHeight);
+  }
+  document.documentElement.style.setProperty('--app-height',stableViewportHeight+'px');
+  document.documentElement.style.setProperty('--viewport-top','0px');
+  document.body.classList.remove('keyboard-open');
   if(view==='measure'&&window.scrollY)window.scrollTo(0,0);
 }
 syncViewport();
