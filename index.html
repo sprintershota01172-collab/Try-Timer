@@ -397,6 +397,61 @@ body>header #dataButton{background:var(--panel);color:var(--ink);border:1px soli
 #historyPage .history-item small{display:block;font-size:9px;line-height:1.15;margin-top:1px;white-space:nowrap}
 #historyPage .history-avg{font-size:14px;line-height:1;flex:0 0 auto}
 #historyPage .history-avg small{font-size:8px;line-height:1}
+
+/* Legibility hotfix: fixed heights must never squeeze three text lines. */
+#measurePage .timer-button{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(98px,auto);
+  grid-template-rows:minmax(0,1fr);
+  align-items:center;justify-content:stretch;
+  gap:5px;
+  padding:8px 13px!important;
+  min-height:85px!important;
+  height:85px!important;
+  max-height:85px!important;
+  overflow:hidden!important;
+  text-align:left;
+}
+#measurePage .timer-readout{display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0;overflow:hidden;align-items:flex-start}
+#measurePage .timer-caption{display:block!important;font-size:11px;line-height:1.1;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
+#measurePage .timer-value{display:flex;align-items:baseline;gap:4px;min-width:0;max-width:100%;font-size:clamp(24px,6.9vw,35px);line-height:1.1;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.065em;overflow:hidden}
+#measurePage .timer-value #elapsed{display:block;min-width:0;overflow:hidden;text-overflow:clip}
+#measurePage .timer-value #elapsed[data-digits="7"],#measurePage .timer-value #elapsed[data-digits="8"],#measurePage .timer-value #elapsed[data-digits="9"]{font-size:.82em;letter-spacing:-.09em}
+#measurePage .timer-value #elapsed[data-digits="10"],#measurePage .timer-value #elapsed[data-digits="11"],#measurePage .timer-value #elapsed[data-digits="12"]{font-size:.65em;letter-spacing:-.10em}
+#measurePage .timer-value .unit{display:inline;font-size:11px;font-weight:650;margin:0;letter-spacing:0;flex:0 0 auto;color:inherit}
+#measurePage .timer-command{display:flex;align-items:center;justify-content:center;min-width:0;max-width:140px;padding-left:9px;border-left:1px solid #ffffff55;min-height:45px}
+#measurePage .timer-action{font-size:clamp(13px,3.6vw,16px)!important;line-height:1.25!important;white-space:normal;text-align:center;overflow-wrap:anywhere;display:block;max-width:100%;letter-spacing:0}
+#measurePage .timer-sub{display:none!important}
+#measurePage .lap-strip{
+ display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,auto);grid-template-rows:1fr 1fr;
+ align-items:center;min-height:40px!important;flex:0 0 40px!important;height:40px!important;max-height:40px!important;
+ gap:0 7px;overflow:hidden;padding:3px 8px!important
+}
+#measurePage #lastLapLabel{min-width:0;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2;font-size:11px}
+#measurePage #prevLapTime{grid-column:1;grid-row:2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.15;font-size:10px}
+#measurePage .last-lap-reading{grid-column:2;grid-row:1/3;display:flex;align-items:baseline;justify-content:flex-end;gap:4px;min-width:0;max-width:100%;white-space:nowrap;overflow:hidden}
+#measurePage #lastLapTime{font-size:clamp(21px,6vw,26px)!important;line-height:1.05;white-space:nowrap;letter-spacing:-.055em}
+#measurePage #lastLapTime[data-digits="7"],#measurePage #lastLapTime[data-digits="8"],#measurePage #lastLapTime[data-digits="9"]{font-size:20px!important}
+#measurePage #lastLapTime[data-digits="10"],#measurePage #lastLapTime[data-digits="11"]{font-size:16px!important}
+#measurePage .last-lap-reading small{font-size:10px;color:var(--muted);flex:0 0 auto}
+#recentPanel{min-height:120px!important;overflow:hidden}
+#recentPanel .recent-heading{height:22px!important;min-height:22px!important;flex:0 0 22px!important;gap:5px}
+#recentPanel .recent-rows{display:grid;grid-template-rows:repeat(5,minmax(22px,1fr));min-height:0;overflow:hidden}
+#recentPanel .recent-row{display:grid;grid-template-columns:30px minmax(55px,max-content) minmax(0,1fr);gap:5px;min-width:0;min-height:0;overflow:hidden}
+#recentPanel .recent-row .recent-no{min-width:0;white-space:nowrap}
+#recentPanel .recent-row .recent-sec{font-size:12px!important;white-space:nowrap;min-width:0;max-width:105px;letter-spacing:-.045em;line-height:1.15}
+#recentPanel .recent-row .recent-sec[data-digits="8"],#recentPanel .recent-row .recent-sec[data-digits="9"]{font-size:11px!important;letter-spacing:-.065em}
+#recentPanel .recent-row .recent-sec[data-digits="10"],#recentPanel .recent-row .recent-sec[data-digits="11"]{font-size:10px!important}
+#recentPanel .recent-detail{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;white-space:normal;min-width:0;max-height:2.5em;line-height:1.17;font-size:10px!important;text-decoration:none!important;overflow-wrap:anywhere}
+#measurePage .measure-left{min-height:0;overflow:hidden;gap:3px}
+#measurePage .measure-grid{min-height:0}
+#measurePage .action-pad{min-height:0}
+#measurePage #lastEvent{line-height:1.12}
+#measurePage .timer-value,#measurePage .lap-strip,#recentPanel *{box-sizing:border-box}
+@media(max-height:690px){
+ #measurePage .timer-button{height:78px!important;min-height:78px!important;max-height:78px!important}
+ #recentPanel{min-height:110px!important}
+}
 </style>
 </head>
 <body>
@@ -409,8 +464,8 @@ body>header #dataButton{background:var(--panel);color:var(--ink);border:1px soli
 <div class="measure-grid"><div class="measure-left">
 <div class="timer-state"><span id="runState">待機中</span><span id="wakeState">スリープ防止：待機中</span></div>
 <div id="uncertainNotice" class="notice" hidden>再読込・端末休止・時計変更を検知しました。次のショットは「要確認」として集計から除外します。</div>
-<button id="lapButton" class="timer-button"><span id="lapCaption" class="timer-caption">今回のショット</span><span class="timer-value num"><span id="elapsed">00.00</span><span class="unit">秒</span></span><span id="lapAction" class="timer-action">トライを登録</span><span id="lapHint" class="timer-sub">1タップ目で開始、以後は1タップで1ショット</span></button>
-<div id="lastLapStrip" class="lap-strip" aria-live="off"><span id="lastLapLabel">直前のラップ</span><b id="lastLapTime" class="num">—</b><span id="prevLapTime">未記録</span></div>
+<button id="lapButton" class="timer-button" type="button"><span class="timer-readout"><span id="lapCaption" class="timer-caption">今回のショット</span><span class="timer-value num"><span id="elapsed">00.00</span><span class="unit">秒</span></span></span><span class="timer-command"><span id="lapAction" class="timer-action">トライを登録</span><span id="lapHint" class="timer-sub">1タップ目で開始、以後は1タップで1ショット</span></span></button>
+<div id="lastLapStrip" class="lap-strip" aria-live="off"><span id="lastLapLabel">直前のラップ</span><span class="last-lap-reading"><b id="lastLapTime" class="num">—</b><small>秒</small></span><span id="prevLapTime">未記録</span></div>
 <div class="controls"><button id="stopButton" disabled>■ 停止</button><button id="undoButton" disabled>↶ 戻す</button><button id="finishButton" class="finish-button" disabled>✓ 保存して終了</button></div>
 
 <div class="action-pad">
@@ -594,7 +649,13 @@ function shotHTML(t,scope){
   for(let i=t.shots.length-1;i>=start;i--){const s=t.shots[i];html+='<article class="shot '+(s.excluded?'excluded':'')+'" data-shot-card="'+esc(s.id)+'"><div class="shot-top"><span class="shot-no num">#'+String(i+1).padStart(2,'0')+'</span><span class="shot-time num">'+sec(s.ms)+' <small>秒</small></span><label class="exclude"><input type="checkbox" data-exclude="'+esc(s.id)+'" data-trial="'+esc(t.id)+'" '+(s.excluded?'checked':'')+'>集計から除外</label></div>'+(s.review?'<small>要確認：再読込・端末休止等を含む計測</small>':'')+'<input type="text" maxlength="240" list="memoHints" data-shot-memo="'+esc(s.id)+'" data-trial="'+esc(t.id)+'" value="'+esc(s.memo)+'" placeholder="メモを追加" aria-label="ショット'+(i+1)+'のメモ">'+(scope==='live'&&i===t.shots.length-1?'<div class="quick-notes">'+['材料交換','手直し','チョコ停'].map(m=>'<button data-quick="'+m+'" data-shot="'+esc(s.id)+'" data-trial="'+esc(t.id)+'">'+m+'</button>').join('')+'</div>':'')+'</article>';}
   if(start)html+='<button class="show-more" data-more="'+esc(t.id)+'" data-scope="'+scope+'">前の30件を表示（残り'+start+'件）</button>';return html;
 }
-function drawTime(){const t=active(),ms=clock?.now()||0;$('elapsed').textContent=sec(Math.max(0,ms-(t?total(t):0))).padStart(5,'0');$('totalElapsed').textContent=sec(ms);}
+function drawTime(){
+  const t=active(),ms=clock?.now()||0;
+  const val=sec(Math.max(0,ms-(t?total(t):0)));
+  $('elapsed').textContent=val.padStart(5,'0');
+  $('elapsed').dataset.digits=String(val.length);
+  $('totalElapsed').textContent=sec(ms);
+}
 
 function formatEventTime(at){return new Date(at).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
 function eventHTML(t,scope){
@@ -610,21 +671,34 @@ function eventHTML(t,scope){
 function renderLastLaps(t){
   const n=t?.shots.length||0;
   const latest=t?.shots[n-1],before=t?.shots[n-2];
-  $('lastLapLabel').textContent=latest?'直前 #'+n+(t.finishedAt?'（終了済）':''):'直前のラップ';
-  $('lastLapTime').textContent=latest?sec(latest.ms)+' 秒':'—';
-  $('prevLapTime').textContent=before?'前回 #'+(n-1)+' '+sec(before.ms)+' 秒':latest?'ショット #'+n+' 記録':'未記録';
+  $('lastLapLabel').textContent=latest?'直前 #'+n+(latest.review?'［要確認］':t.finishedAt?'［終了］':''):'直前のラップ';
+  const value=latest?sec(latest.ms):'—';
+  $('lastLapTime').textContent=value;
+  $('lastLapTime').dataset.digits=String(value.length);
+  $('prevLapTime').textContent=before?'前回 #'+(n-1)+'　'+sec(before.ms)+' 秒':latest?'ショット #'+n+' 記録':'未記録';
+}
+function recentNote(x,marks){
+  const memo=(x.memo||'').replace(/(?: \/ )?要確認：再読込・端末休止等/g,'').trim();
+  const notes=[...(x.review?['要確認']:x.excluded?['除外']:[]),memo,...marks].filter(Boolean);
+  return notes.join('・');
 }
 function renderRecentTimeline(){
- const t=active(),shots=t?.shots||[],events=t?.events||[];
- $('recentCount').textContent=shots.length+'件';
- if(!shots.length){$('recentRows').innerHTML='<div class="recent-empty">ラップ・メモ・停止の記録がここに表示されます</div>';return;}
- let html='';
- for(let i=shots.length-1;i>=Math.max(0,shots.length-5);i--){
-  const x=shots[i],marks=events.filter(e=>e.shot===i+1).map(e=>'●'+e.label);
-  const notes=[x.memo,...marks].filter(Boolean).join(' / ');
-  html+='<div class="recent-row"><span class="recent-no">#'+String(i+1).padStart(2,'0')+'</span><b class="recent-sec num">'+sec(x.ms)+'</b><span class="recent-detail'+(x.excluded?' recent-excluded':'')+'" title="'+esc(notes)+'">'+(notes?esc(notes):'—')+'</span></div>';
- }
- $('recentRows').innerHTML=html;
+  const t=active(),shots=t?.shots||[],events=t?.events||[];
+  $('recentCount').textContent=shots.length+'件';
+  if(!shots.length){$('recentRows').innerHTML='<div class="recent-empty">ラップ・メモ・停止の記録がここに表示されます</div>';return;}
+  const eventByShot=new Map();
+  for(const e of events){
+    const arr=eventByShot.get(e.shot)||[];
+    arr.push(e.label);eventByShot.set(e.shot,arr);
+  }
+  let html='';
+  for(let i=shots.length-1;i>=Math.max(0,shots.length-5);i--){
+    const x=shots[i],marks=eventByShot.get(i+1)||[];
+    const note=recentNote(x,marks);
+    const val=sec(x.ms);
+    html+='<div class="recent-row"><span class="recent-no">#'+String(i+1).padStart(2,'0')+'</span><b class="recent-sec num" data-digits="'+val.length+'">'+val+'</b><span class="recent-detail" title="'+esc(note)+'">'+(note?esc(note):'—')+'</span></div>';
+  }
+  $('recentRows').innerHTML=html;
 }
 function renderActionPad(){
   const t=active(),last=t?.shots.at(-1);
