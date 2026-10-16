@@ -559,7 +559,7 @@ window.addEventListener('resize',syncViewport);
 $('quickMemoInput').addEventListener('focus',()=>requestAnimationFrame(syncViewport));
 $('quickMemoInput').addEventListener('blur',()=>requestAnimationFrame(syncViewport));
 $('quickMemoInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur();}});
-document.addEventListener('touchmove',e=>{if(view==='measure'&&!e.target.closest('dialog'))e.preventDefault();},{passive:false});
+document.addEventListener('touchmove',e=>{if(view==='measure'&&!e.target.closest('dialog,input,textarea,select'))e.preventDefault();},{passive:false});
 renderAll();if(needsRewrite||active()?.running)save();if(active()?.running)requestWake();requestAnimationFrame(frame);
 })();
 </script>
