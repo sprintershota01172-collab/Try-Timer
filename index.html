@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#123a61">
 <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
 <link rel="manifest" href="./manifest.webmanifest">
@@ -421,6 +421,168 @@ body[data-view="measure"]>.tabs{display:none}
  #measurePage .quick-events[data-rows]{max-height:96px}
  #measurePage .event-tap{padding:2px 3px}
 }
+
+/* Navy Business design · navy #173a5e, cobalt #2469aa, light #f2f6fb */
+:root:not([data-theme="dark"]){
+  color-scheme:light;
+  --bg:#f1f5fa;--panel:#ffffff;--ink:#173657;--muted:#536c86;
+  --line:#d9e4ef;--soft:#eaf1f8;--accent:#1d66a5;--accent-ink:#ffffff;
+  --good:#137e65;--danger:#c63248;--shadow:0 4px 20px #10345c12;
+  --accent-detail:#1b619e;--accent-surface:#eaf3fc;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#0a1929;--panel:#152c44;--ink:#f2f7fd;--muted:#b9d0e5;
+  --line:#34516c;--soft:#213c57;--accent:#257cc2;--accent-ink:#ffffff;
+  --good:#63d8ab;--danger:#ff929e;--shadow:0 6px 24px #0004;
+  --accent-detail:#9ed5ff;--accent-surface:#1a3a56;
+}
+body{background:var(--bg);color:var(--ink)}
+body>header{
+  background:linear-gradient(112deg,#102d50 0%,#1a446e 62%,#205687 100%);
+  border-bottom:1px solid #0a3158;color:#fff;
+  box-shadow:0 2px 12px #071f3b16
+}
+body>header .brand h1{color:#fff;font-weight:850;letter-spacing:.015em}
+body>header .brand-icon{border-radius:11px;box-shadow:0 1px 7px #00172e40}
+body>header #dataButton{
+  color:#fff;background:#ffffff1e;border-color:#ffffff55;
+  font-weight:750;border-radius:10px
+}
+body>header #dataButton:active{background:#ffffff35}
+main{background:var(--bg)}
+#measurePage .page-head h2{color:var(--ink);letter-spacing:.025em}
+#measurePage .page-head h2 small{
+  background:#dceafa;color:#245d91;border:1px solid #c8def4;
+  font-size:9px;letter-spacing:.03em;padding:3px 6px
+}
+#measurePage .page-head .chip{border-color:var(--line);background:var(--panel);color:var(--ink)}
+#measurePage .page-head #newTrial{
+  background:#1b4773;border-color:#1b4773;color:#fff;
+  box-shadow:0 2px 6px #16457321
+}
+#measurePage .trial-summary{
+  border:1px solid var(--line);border-left:4px solid #2a77b7;
+  border-radius:13px;box-shadow:0 3px 13px #173c6914
+}
+#measurePage .trial-dot{background:#2985c0;box-shadow:0 0 0 3px #2585c019}
+#measurePage .trial-eyebrow{color:var(--muted)}
+#measurePage .trial-summary .trial-title{color:var(--ink)}
+#measurePage .trial-summary .chip{color:var(--ink);background:var(--soft);border-color:var(--line)}
+#measurePage #runState{color:#1b629a}
+#measurePage .clock-face{
+  background:linear-gradient(180deg,var(--panel),var(--accent-surface));
+  border:1px solid var(--line);border-radius:12px;
+  padding:3px 0;box-shadow:inset 0 1px 0 #ffffff50
+}
+#measurePage .timer-caption{color:var(--muted)}
+#measurePage .timer-value,#measurePage .timer-value .unit{color:var(--ink)}
+#measurePage .timer-value #elapsed{font-weight:850;letter-spacing:-.045em}
+#measurePage #lastLapTime{color:#1f67a3}
+#measurePage .live-result-bar{
+  background:var(--accent-surface,#eaf3fc);border-color:var(--line);
+  box-shadow:inset 3px 0 #2a79b7;color:var(--ink)
+}
+#measurePage .live-result-bar b{color:var(--ink)}
+#measurePage .controls #stopButton{
+  color:#fff;background:#1c456b;border:1.5px solid #1c456b;
+  box-shadow:0 3px 10px #123a621e
+}
+#measurePage #resetButton{
+  color:#2b5b83;background:var(--panel);border:1.5px solid #adc5db;
+  box-shadow:0 3px 9px #173f6710
+}
+#measurePage .controls .timer-button{
+  color:#fff;background:linear-gradient(135deg,#21578a,#123f6e);
+  border:5px solid #afcce5;box-shadow:0 2px 0 1px #edf4fb,0 5px 16px #0b39604a
+}
+#measurePage .controls .timer-button.is-running{
+  background:linear-gradient(135deg,#2379bb,#175d9b);border-color:#a7d7f5
+}
+#measurePage .controls .timer-button:active:not(:disabled){
+  color:#fff;background:#0e3e6a;box-shadow:0 1px 4px #0827464a
+}
+#measurePage #lapAction{color:inherit;letter-spacing:0}
+#measurePage #finishButton{
+  background:#1c4e7d;border-color:#1c4e7d;color:#fff
+}
+#measurePage #finishButton:disabled{background:var(--soft);color:var(--muted);border-color:var(--line)}
+#measurePage #undoButton{background:var(--panel);color:var(--ink);border-color:var(--line)}
+#measurePage .action-title strong{color:var(--ink);font-weight:800}
+#measurePage .action-title strong small{color:var(--muted)}
+#measurePage .action-title button{color:var(--ink);background:var(--panel);border-color:var(--line)}
+#measurePage .memo-switch button[aria-pressed=true]{
+  color:#fff;background:#225480;border-color:#225480
+}
+#measurePage .memo-entry{
+  color:var(--ink);background:var(--panel);border:1px solid #c6d9e9;
+  box-shadow:0 1px 4px #0f39600a
+}
+#measurePage .memo-entry:focus-within{
+  border-color:#2983c2;box-shadow:0 0 0 3px #2983c21f
+}
+#measurePage .memo-pencil{color:#2b6da7}
+#measurePage #quickMemoInput{color:var(--ink)}
+#measurePage #quickMemoInput::placeholder{color:#8096aa;opacity:1}
+#measurePage .event-tap{
+  background:#edf4fb;border-color:#c9ddec;color:#175080;
+  box-shadow:0 1px 4px #11395913;font-weight:780
+}
+#measurePage .event-tap:nth-child(4n+1){background:#fff0f1;border-color:#efc7cc;color:#a42134}
+#measurePage .event-tap:nth-child(4n+2){background:#fff4e6;border-color:#f1d7b6;color:#9c560e}
+#measurePage .event-tap:nth-child(4n+3){background:#eaf3ff;border-color:#c1daf7;color:#145eab}
+#measurePage .event-tap:nth-child(4n+4){background:#e7f5f3;border-color:#b8ddd8;color:#09675c}
+#measurePage .event-tap.event-recorded{
+  color:#fff;background:#1a547f;border-color:#1a547f;
+  box-shadow:inset 0 0 0 2px #ffffff27
+}
+#measurePage .event-tap:active:not(:disabled){
+  background:#1b537e;color:#fff;border-color:#1b537e
+}
+#measurePage #lastEvent.has-event{
+  background:var(--accent-surface);color:var(--accent-detail)
+}
+#measurePage #recentPanel{
+  border:1px solid var(--line);border-radius:11px;
+  background:var(--panel);box-shadow:0 2px 9px #0d315411
+}
+#recentPanel .recent-heading{border-bottom:1px solid var(--line)}
+#recentPanel .recent-heading strong{color:var(--ink)}
+#recentPanel .recent-heading button{color:#1a649e}
+#recentPanel .recent-row{border-bottom-color:var(--line)}
+#recentPanel .recent-sec{color:var(--ink)}
+#measurePage .total-line{color:var(--muted)}
+.tabs{background:var(--panel);border-top:1px solid var(--line)}
+.tabs button[aria-selected=true]{background:#1b4773;color:#fff}
+#recordListTabs button[aria-pressed=true]{background:#1b4773;color:#fff}
+#summaryStrip .stat:first-child{box-shadow:inset 0 3px #2a79b7}
+#historyPage .history-item{background:var(--panel);border-color:var(--line)}
+#historyPage .history-avg{color:var(--ink)}
+dialog{border-color:var(--line);background:var(--panel);color:var(--ink)}
+dialog .modal-head{background:var(--panel);border-color:var(--line)}
+dialog .primary{background:#1c527f;border-color:#1c527f;color:#fff}
+#toast{background:#153c62;color:#fff}
+:root[data-theme="dark"] #measurePage .page-head h2 small{background:#1b3e60;color:#b7dafe;border-color:#3b6182}
+:root[data-theme="dark"] #measurePage .event-tap:nth-child(4n+1){background:#512934;border-color:#82505a;color:#ffd9dc}
+:root[data-theme="dark"] #measurePage .event-tap:nth-child(4n+2){background:#513c25;border-color:#84603b;color:#ffe5b8}
+:root[data-theme="dark"] #measurePage .event-tap:nth-child(4n+3){background:#213d61;border-color:#3a668c;color:#cee9ff}
+:root[data-theme="dark"] #measurePage .event-tap:nth-child(4n+4){background:#1d504c;border-color:#34716b;color:#c4fff4}
+:root[data-theme="dark"] #measurePage #lastLapTime{color:#a9dcff}
+:root[data-theme="dark"] #measurePage #resetButton{background:#1d3d5a;color:#dcecff;border-color:#426783}
+@media(max-width:799px){
+  body>header{padding-top:calc(7px + env(safe-area-inset-top,0px));padding-bottom:7px}
+  #measurePage .clock-face{border-radius:11px}
+  #measurePage .controls .timer-button{border-width:5px}
+  #measurePage .quick-events[data-rows]{gap:5px}
+}
+@media(max-height:700px) and (max-width:799px){
+  body>header{padding-top:calc(3px + env(safe-area-inset-top,0px));padding-bottom:4px}
+  #measurePage .clock-face{padding:1px 0}
+  #measurePage .quick-events[data-rows]{gap:4px}
+}
+@media(prefers-reduced-motion:reduce){
+ #measurePage .controls .timer-button,#measurePage .event-tap{transition:none}
+}
+
 </style>
 </head>
 <body data-view="measure">
@@ -428,7 +590,7 @@ body[data-view="measure"]>.tabs{display:none}
 <main>
 <div id="storageWarning" class="notice" role="alert" hidden></div>
 <section id="measurePage" class="page" role="tabpanel" aria-labelledby="tabMeasure">
-<div class="section-title page-head"><h2>TRY <small>UI 2.1</small></h2><div class="row"><button id="historyShortcut" class="chip">履歴</button><button id="openRecords" class="chip">集計</button><button id="newTrial" class="primary chip">＋ 新規</button></div></div>
+<div class="section-title page-head"><h2>計測 <small>TRY TIMER</small></h2><div class="row"><button id="historyShortcut" class="chip">履歴</button><button id="openRecords" class="chip">集計</button><button id="newTrial" class="primary chip">＋ 新規</button></div></div>
 <div class="card trial-summary"><div class="row between"><div class="trial-identity"><div class="trial-eyebrow"><span class="trial-dot"></span> CURRENT SESSION <span id="trialShotBadge">#0</span></div><div id="trialTitle" class="trial-title">トライを登録して計測開始</div><div id="trialMeta" class="trial-meta">日付とトライ名だけで始められます</div></div><button id="editCurrent" class="chip" hidden>編集</button></div></div>
 <div class="measure-grid"><div class="measure-left">
 <div class="timer-state"><span id="runState">待機中</span><span id="wakeState">スリープ防止：待機中</span></div>
@@ -617,7 +779,7 @@ function save(){
 }
 function blockOtherTab(){if(blocked)return;clock?.pause();releaseWake();blocked=true;renderMeasure();warn('別の画面でデータが更新されました。上書きを防いでいます。必要ならJSONを書き出してから再読み込みしてください。');}
 function touch(t){t.updatedAt=Date.now();save();}
-function applyTheme(){document.documentElement.dataset.theme=db.theme;$('theme').value=db.theme;document.querySelector('meta[name="theme-color"]').content=db.theme==='dark'?'#090909':'#f4f4f4';}
+function applyTheme(){document.documentElement.dataset.theme=db.theme;$('theme').value=db.theme;document.querySelector('meta[name="theme-color"]').content='#123a61';}
 function statsHTML(t){const s=stats(t?.shots||[]);return [['平均',sec(s.mean)],['MAX',sec(s.max)],['MIN',sec(s.min)],['有効',s.n+'<small> / '+(t?.shots.length||0)+'</small>'],['σ',sec(s.sd)],['範囲',sec(s.range)]].map(([k,v])=>'<div class="stat"><span>'+k+'</span><b class="num">'+v+'</b></div>').join('');}
 function renderStats(){const t=active();$('liveStats').innerHTML=statsHTML(t);$('excludedCount').textContent=(t?.shots.filter(s=>s.excluded).length||0)+' 件除外';$('shotCount').textContent=(t?.shots.length||0)+' ショット';$('tabShotCount').textContent=t?.shots.length||0;if(detailId){const d=db.trials.find(x=>x.id===detailId);if(d&&$('detailStats')){$('detailStats').innerHTML=statsHTML(d);renderCompare(d);}}}
 function shotHTML(t,scope){
