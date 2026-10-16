@@ -195,6 +195,136 @@ dialog::backdrop{background:#1117}
  #measurePage .controls .disc-action{width:81px;height:81px;min-height:81px}
 }
 @media(prefers-reduced-motion:reduce){button{transition:none}}
+
+/* Layout polish v7: clear internal spacing, aligned typography, restrained accents. */
+:root:not([data-theme="dark"]){
+  --bg:#f5f7f8;--ink:#1b2b36;--muted:#64737e;
+  --line:#dce4e9;--soft:#f5f8f9;--shadow:0 3px 16px #152c390b;
+  --accent-detail:#2b6173;--accent-surface:#e9f2f5;
+}
+:root[data-theme="dark"]{--accent-detail:#9acbd4;--accent-surface:#273f47}
+body{letter-spacing:0;-webkit-font-smoothing:antialiased}
+body>header{padding-top:calc(6px + env(safe-area-inset-top,0px));padding-bottom:8px}
+body>header .brand h1{font-size:16px;line-height:1.3;letter-spacing:.015em;font-weight:810}
+body>header #dataButton{min-height:36px;padding:7px 12px;line-height:1.2}
+main{padding-top:7px;padding-bottom:4px}
+#measurePage .page-head{
+  align-items:center;min-height:35px;margin-bottom:8px;gap:8px;padding-inline:2px
+}
+#measurePage .page-head h2{font-size:14px;line-height:1.3;font-weight:800;letter-spacing:.01em}
+#measurePage .page-head .row{gap:6px}
+#measurePage .page-head button{min-height:34px;padding:6px 10px;line-height:1.2}
+#measurePage .page-head #newTrial{background:#263e4d;border-color:#263e4d;color:#fff}
+#measurePage .trial-summary{
+  padding:11px 14px;min-height:59px;border-radius:13px;
+  border-color:var(--line);box-shadow:var(--shadow)
+}
+#measurePage .trial-summary .row{
+  align-items:center;flex-wrap:nowrap;gap:12px;min-height:36px
+}
+#measurePage .trial-summary .row>div:first-child{
+  display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0
+}
+#measurePage .trial-summary .trial-title{
+  font-size:15px;line-height:1.28;font-weight:800;
+  letter-spacing:.005em;white-space:nowrap;text-overflow:ellipsis;overflow:hidden
+}
+#measurePage .trial-summary .trial-meta{
+  font-size:11px;line-height:1.3;margin:0;color:var(--muted);white-space:nowrap
+}
+#measurePage .trial-summary .chip{
+  min-height:35px;padding:7px 10px;font-size:11px;line-height:1.2;
+  border-radius:9px;background:var(--soft)
+}
+#measurePage .measure-left{gap:5px}
+#measurePage .timer-state{
+  min-height:14px;align-items:center;font-size:10px;line-height:1.3;padding-inline:4px
+}
+#measurePage #runState{font-weight:800;color:var(--accent-detail)}
+#measurePage .clock-face{gap:2px}
+#measurePage .timer-caption{font-size:12px;line-height:1.3;font-weight:700}
+#measurePage .clock-previous{gap:6px;line-height:1.35}
+#measurePage .controls button{gap:5px;text-align:center}
+#measurePage .controls #stopButton{background:#263e4d;color:#fff;border-color:#263e4d}
+#measurePage .controls .timer-button{
+  border-color:#b8c9d2;box-shadow:0 2px 0 1px #eaf1f4,0 4px 16px #0002
+}
+#measurePage .control-foot button{min-height:32px;height:32px;padding:6px 9px;line-height:1.2}
+#measurePage .action-pad{gap:7px}
+#measurePage .action-title{
+  min-height:26px;margin-bottom:5px;padding-inline:10px;
+  align-items:center;gap:8px
+}
+#measurePage .action-title strong{
+  font-size:12px;line-height:1.3;font-weight:800;letter-spacing:0
+}
+#measurePage .action-title strong small{font-size:10px;font-weight:550;margin-left:3px}
+#measurePage .action-title button{
+  min-height:27px;padding:5px 9px;border-radius:9px;
+  font-size:11px;line-height:1.2
+}
+#measurePage .memo-switch button{
+  min-height:27px;padding:5px 11px;border-radius:9px;
+  font-size:11px;line-height:1.15
+}
+#measurePage .memo-switch button[aria-pressed=true]{
+  background:#263e4d;border-color:#263e4d;color:#fff
+}
+#measurePage .memo-entry{
+  height:41px;gap:9px;padding-inline:13px;border-radius:11px
+}
+#measurePage #quickMemoInput{min-height:34px;height:34px;line-height:1.35}
+#measurePage .quick-events{gap:5px}
+#measurePage .event-tap{
+  padding:5px 6px;line-height:1.24;font-weight:730;
+  border-radius:10px;box-shadow:0 1px 3px #122f4010
+}
+#measurePage .event-tap .event-name{line-height:1.28}
+#measurePage .event-tap.event-recorded{
+  background:#2b5364;color:#fff;border-color:#2b5364
+}
+#measurePage #lastEvent.has-event{
+  padding:2px 8px;border-radius:7px;
+  background:var(--accent-surface);color:var(--accent-detail)
+}
+#recentPanel .recent-heading{
+  flex-basis:26px;gap:9px;padding:0 8px 3px
+}
+#recentPanel .recent-heading strong{font-size:12px;line-height:1.2;font-weight:800}
+#recentPanel .recent-heading span{font-size:10px;line-height:1.3}
+#recentPanel .recent-heading button{font-size:10px;line-height:1.2}
+#recentPanel .recent-row{
+  grid-template-columns:38px minmax(50px,auto) minmax(0,1fr);
+  gap:8px;padding:0 8px;align-items:center
+}
+#recentPanel .recent-no{font-size:10px;line-height:1.2;color:var(--muted);font-weight:800}
+#recentPanel .recent-sec{font-size:12px;line-height:1.2;letter-spacing:-.02em}
+#recentPanel .recent-detail{font-size:10px;line-height:1.25;color:var(--muted)}
+.tabs button[aria-selected=true]{background:#263e4d;color:#fff}
+#historyPage .history-item{padding:7px 10px}
+#historyPage .history-item strong{line-height:1.25}
+#historyPage .history-item small{line-height:1.2}
+#summaryStrip .stat{min-height:34px;padding:5px 8px;gap:6px}
+#recordListTabs button[aria-pressed=true]{background:#263e4d;color:#fff}
+@media(max-height:760px) and (max-width:799px){
+ body>header{padding-top:calc(4px + env(safe-area-inset-top,0px));padding-bottom:5px}
+ #measurePage .page-head{min-height:32px;margin-bottom:5px}
+ #measurePage .trial-summary{padding:9px 12px;min-height:51px}
+ #measurePage .trial-summary .row{gap:9px;min-height:31px}
+ #measurePage .action-pad{gap:5px}
+ #measurePage .action-title{min-height:23px;margin-bottom:3px;padding-inline:6px}
+ #measurePage .action-title button{min-height:24px;padding:4px 7px}
+ #measurePage .memo-entry{height:39px}
+ #measurePage .event-tap{padding:4px 5px}
+ #recentPanel .recent-heading{flex-basis:22px;padding-bottom:2px}
+}
+@media(max-height:650px) and (max-width:799px){
+ #measurePage .trial-summary{padding:8px 11px}
+ #measurePage .action-pad{gap:3px}
+ #measurePage .action-title{min-height:20px;margin-bottom:2px}
+ #measurePage .memo-entry{height:37px}
+ #recentPanel .recent-heading{flex-basis:20px}
+}
 </style>
 </head>
 <body>
