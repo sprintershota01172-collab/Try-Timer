@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#f1f4f7">
 <meta name="description" content="トライ名と日付だけでサイクルタイムを計測・記録。通信不要のトライタイマー。">
 <title>トライタイマー</title>
@@ -88,6 +88,80 @@ dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:
  .event-tap{min-height:42px}
  .quick-events{max-height:92px}
 }
+
+/* Fixed measurement cockpit. Only history and dialogs scroll. */
+html{height:100%;overflow:hidden;overscroll-behavior:none}
+body{position:fixed;top:var(--viewport-top,0px);left:0;right:0;height:var(--app-height,100dvh);width:100%;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none}
+body>header{flex:0 0 auto;padding:calc(3px + env(safe-area-inset-top,0px)) 12px 4px}
+.brand-icon{width:34px;height:35px}.brand h1{font-size:16px}.eyebrow,#saveStatus{display:none}
+body>header #dataButton{min-height:36px;padding:5px 12px}
+main{flex:1 1 auto;min-height:0;width:100%;overflow:hidden;padding:5px 10px}
+#measurePage{height:100%;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none}
+#measurePage .page-head{flex:0 0 auto;margin:0 0 4px}
+#measurePage .page-head h2{font-size:15px}
+#measurePage .page-head button{min-height:34px;padding:5px 8px;font-size:12px;white-space:nowrap}
+#measurePage .trial-summary{flex:0 0 auto;padding:5px 10px;border-radius:10px}
+#measurePage .trial-summary .row{flex-wrap:nowrap;gap:5px}
+#measurePage .trial-title{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#measurePage .trial-meta{font-size:11px;margin:0}
+#measurePage .trial-summary .chip{min-height:30px;padding:3px 7px;font-size:11px;flex-shrink:0}
+#measurePage .measure-grid{flex:1 1 auto;min-height:0;margin-top:5px;display:flex;flex-direction:column;overflow:hidden}
+#measurePage .measure-left{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+#measurePage .timer-state{flex:0 0 auto;font-size:11px;min-height:14px;line-height:1.2}
+#measurePage #wakeState{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#measurePage .timer-button{flex:1 1 auto;width:100%;min-height:68px;height:auto!important;max-height:none;gap:1px;border-radius:15px;box-shadow:0 3px 0 #b64413}
+#measurePage .timer-value{font-size:clamp(32px,8.8vw,61px);line-height:1}
+#measurePage .timer-value .unit{font-size:14px}
+#measurePage .timer-action{font-size:clamp(17px,4.7vw,23px)}
+#measurePage .timer-caption{font-size:11px}
+#measurePage .timer-sub{display:none}
+#measurePage .controls{flex:0 0 auto;gap:5px;margin:0}
+#measurePage .controls button{min-height:39px;padding:6px 3px;font-size:12px;border-radius:9px}
+#measurePage .action-pad{flex:0 0 auto;gap:5px;min-height:0}
+#measurePage .action-box{padding:6px 8px;border-radius:11px}
+#measurePage .action-title{margin-bottom:4px;min-height:26px}
+#measurePage .action-title strong{font-size:12px}
+#measurePage .action-title button{min-height:27px;padding:3px 8px;font-size:11px}
+#measurePage .memo-switch{gap:4px}
+#measurePage #quickMemoInput{height:40px;min-height:40px;font-size:16px;padding:7px 10px;line-height:22px}
+#measurePage .memo-caption{display:none}
+#measurePage .quick-events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;height:auto;max-height:none;overflow:visible}
+#measurePage .event-tap{min-height:39px;font-size:12px;padding:6px 4px;border-radius:8px;touch-action:manipulation}
+#measurePage #lastEvent{display:none!important}
+#measurePage #uncertainNotice{flex:0 0 auto;font-size:11px;padding:5px 8px;margin:0}
+#historyPage{height:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.tabs{position:relative;left:auto;bottom:auto;transform:none;flex:0 0 auto;width:100%;max-width:1072px;margin:0 auto;padding:3px 10px calc(3px + env(safe-area-inset-bottom,0px));box-shadow:0 -3px 12px #1321360a}
+.tabs button{min-height:42px;padding:4px;gap:1px;font-size:11px}
+.tabs button svg{width:17px;height:17px}
+dialog{max-height:calc(var(--app-height,100dvh) - 20px);overflow-y:auto;overscroll-behavior:contain}
+dialog input,dialog select,dialog textarea,#historyPage input{font-size:16px}
+#moreEventsDialog .quick-events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:none}
+#moreEventsDialog .event-tap{min-height:48px;font-size:14px}
+#toast{bottom:calc(58px + env(safe-area-inset-bottom,0px));font-size:12px;padding:7px 12px}
+body.keyboard-open>header,body.keyboard-open>.tabs{display:none}
+body.keyboard-open #measurePage .page-head,body.keyboard-open #measurePage .trial-summary{display:none}
+body.keyboard-open #measurePage .timer-state:last-child{display:none}
+body.keyboard-open #measurePage .measure-grid{margin-top:0}
+body.keyboard-open #measurePage .measure-left{gap:3px}
+body.keyboard-open #measurePage .timer-button{min-height:55px}
+body.keyboard-open #measurePage .timer-value{font-size:clamp(30px,9vw,44px)}
+body.keyboard-open #measurePage .timer-caption{display:none}
+body.keyboard-open #measurePage .controls button{min-height:34px;padding:3px}
+body.keyboard-open #measurePage .action-box{padding:3px 6px}
+body.keyboard-open #measurePage .action-title{min-height:20px;margin-bottom:2px}
+body.keyboard-open #measurePage .action-title button{min-height:24px}
+body.keyboard-open #measurePage #quickMemoInput{height:36px;min-height:36px}
+body.keyboard-open #measurePage .event-tap{min-height:32px;padding:3px;font-size:11px}
+body.keyboard-open #measurePage .quick-events{gap:3px}
+body.keyboard-open #measurePage .timer-state{font-size:10px}
+@media(min-width:800px){#measurePage{max-width:750px;margin-inline:auto}}
+@media(max-height:560px) and (max-width:799px){
+ body:not(.keyboard-open)>header{padding-top:2px}
+ #measurePage .trial-meta,#measurePage .timer-caption{display:none}
+ #measurePage .controls button{min-height:34px}
+ #measurePage .timer-button{min-height:55px}
+ #measurePage .event-tap{min-height:33px}
+}
 </style>
 </head>
 <body>
@@ -95,7 +169,7 @@ dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:
 <main>
 <div id="storageWarning" class="notice" role="alert" hidden></div>
 <section id="measurePage" class="page" role="tabpanel" aria-labelledby="tabMeasure">
-<div class="section-title page-head"><h2>計測</h2><button id="newTrial" class="primary">＋ 新しいトライ</button></div>
+<div class="section-title page-head"><h2>計測</h2><div class="row" style="flex-wrap:nowrap;gap:6px"><button id="openRecords" class="chip">記録・集計</button><button id="newTrial" class="primary chip">＋ 新しいトライ</button></div></div>
 <div class="card trial-summary"><div class="row between"><div style="min-width:0;flex:1"><div id="trialTitle" class="trial-title">トライを登録して計測開始</div><div id="trialMeta" class="trial-meta">日付とトライ名だけで始められます</div></div><button id="editCurrent" class="chip" hidden>情報編集</button></div></div>
 <div class="measure-grid"><div class="measure-left">
 <div class="timer-state"><span id="runState">待機中</span><span id="wakeState">スリープ防止：待機中</span></div>
@@ -116,8 +190,7 @@ dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:
 </section>
 </div>
 <div class="timer-state"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止中の時間は含みません</span></div>
-<section><div class="section-title"><h3>集計</h3><span id="excludedCount" class="badge">0 件を除外</span></div><div id="liveStats" class="stats"></div><p class="stat-note">単位：秒 ／ σ：母標準偏差 ／ 記録済み・除外なしのショットが対象</p></section>
-<section class="card event-log-panel"><div class="section-title"><h3>トラブル・停止の記録</h3><span id="eventCount" class="badge">0 件</span></div><div id="liveEvents" class="event-list"></div></section></div><section class="card shots-panel"><div class="section-title"><h3>ショット一覧</h3><span id="shotCount" class="badge">0 ショット</span></div><div id="liveShots" class="shots"></div></section></div>
+</div></div>
 </section>
 <section id="historyPage" class="page" role="tabpanel" aria-labelledby="tabHistory" hidden>
 <div class="section-title page-head"><h2>履歴</h2><span id="historyCount" class="badge">0 トライ</span></div>
@@ -132,10 +205,15 @@ dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:
 <button id="tabMeasure" role="tab" aria-controls="measurePage" aria-selected="true" data-tab="measure"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14" r="8"/><path d="M9 2h6M12 2v4m0 4v5l3 2"/></svg>計測</button>
 <button id="tabHistory" role="tab" aria-controls="historyPage" aria-selected="false" data-tab="history" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2 7M3 4v7h7M12 7v6l4 2"/></svg>履歴</button>
 </nav>
+<dialog id="recordsDialog" aria-labelledby="recordsTitle"><div class="modal-head"><h2 id="recordsTitle">ショット・イベント・集計</h2><button class="close" data-close="recordsDialog" aria-label="閉じる">×</button></div><div class="modal-body stack"><section><div class="section-title"><h3>集計</h3><span id="excludedCount" class="badge">0 件を除外</span></div><div id="liveStats" class="stats"></div><p class="stat-note">単位：秒 ／ σ：母標準偏差 ／ 記録済み・除外なしのショットが対象</p></section>
+<section class="card event-log-panel"><div class="section-title"><h3>トラブル・停止の記録</h3><span id="eventCount" class="badge">0 件</span></div><div id="liveEvents" class="event-list"></div></section><section class="card shots-panel"><div class="section-title"><h3>ショット一覧</h3><span id="shotCount" class="badge">0 ショット</span></div><div id="liveShots" class="shots"></div></section></div></dialog>
+<dialog id="moreEventsDialog" aria-labelledby="moreEventsTitle"><div class="modal-head"><h2 id="moreEventsTitle">ワンタッチ項目を選択</h2><button class="close" data-close="moreEventsDialog" aria-label="閉じる">×</button></div><div class="modal-body"><div id="moreEventChoices" class="quick-events"></div></div></dialog>
 <dialog id="trialDialog" aria-labelledby="trialDialogTitle">
 <div class="modal-head"><h2 id="trialDialogTitle">新しいトライ</h2><button class="close" data-close="trialDialog" aria-label="閉じる">×</button></div>
 <form id="trialForm" class="modal-body"><div class="form-grid">
-<label class="full">トライ名<input id="fName" required maxlength="120" placeholder="例：条件変更の確認" autocomplete="off"></label>
+<label class="full">トライの種類<select id="fKind" required>
+<option value="プレトライ">プレトライ</option><option value="工程検証トライ">工程検証トライ</option><option value="工程確認会">工程確認会</option><option value="量産トライ">量産トライ</option><option value="ハイボリュームトライ">ハイボリュームトライ</option><option value="legacy" hidden>従来の名称を保持</option>
+</select></label><label class="full">回数<select id="fRun" required aria-label="トライの回数"></select></label><label id="legacyNameWrap" class="full" hidden>従来のトライ名<input id="fLegacyName" maxlength="120" autocomplete="off"></label>
 <label class="full">日付<input id="fDate" type="date" required min="0001-01-01" max="9999-12-31"></label>
 </div><div class="form-actions"><button type="button" data-close="trialDialog">キャンセル</button><button class="primary" type="submit">保存する</button></div></form></dialog>
 <dialog id="detailDialog" aria-labelledby="detailTitle"><div class="modal-head"><h2 id="detailTitle">トライ詳細</h2><button class="close" data-close="detailDialog" aria-label="閉じる">×</button></div><div id="detailBody" class="modal-body stack"></div></dialog>
