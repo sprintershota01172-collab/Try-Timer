@@ -298,6 +298,90 @@ dialog input,dialog textarea,dialog select{font-size:16px!important}
 :root[data-theme=dark] #summaryStrip .stat:first-child{background:#3e302b}
 :root[data-theme=dark] #recordListTabs button[aria-pressed="true"]{background:#496783}
 :root[data-theme=dark] #measurePage .event-tap{background:#293b52;border-color:#49617c}
+
+/* Minimal monochrome measurement workspace */
+:root{color-scheme:light;--bg:#f4f4f4;--panel:#fff;--ink:#161616;--muted:#666;--line:#d6d6d6;--soft:#f0f0f0;--accent:#161616;--accent-ink:#fff;--good:#161616;--danger:#333;--shadow:none}
+:root[data-theme=dark]{color-scheme:dark;--bg:#090909;--panel:#171717;--ink:#f4f4f4;--muted:#b7b7b7;--line:#454545;--soft:#292929;--accent:#f4f4f4;--accent-ink:#111;--good:#f4f4f4;--danger:#eee;--shadow:none}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#090909;--panel:#171717;--ink:#f4f4f4;--muted:#b7b7b7;--line:#454545;--soft:#292929;--accent:#f4f4f4;--accent-ink:#111;--good:#f4f4f4;--danger:#eee;--shadow:none}}
+body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif}
+body>header{background:var(--panel);border-bottom:1px solid var(--line);box-shadow:none}
+body>header .brand h1{color:var(--ink);font-size:15px;letter-spacing:.05em}
+body>header #dataButton{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:7px}
+.brand-icon{background:var(--ink);color:var(--panel);border-radius:7px;box-shadow:none}
+#measurePage .trial-summary{background:var(--panel);border:1px solid var(--line);box-shadow:none;padding:3px 7px;border-radius:7px}
+#measurePage .timer-button{background:var(--ink);color:var(--panel);border:1px solid var(--ink);box-shadow:none;border-radius:9px;height:clamp(61px,10svh,80px)!important;min-height:60px;max-height:80px}
+#measurePage .timer-button:active:not(:disabled){background:var(--muted);color:var(--panel);transform:none;box-shadow:none}
+#measurePage .timer-value{font-size:clamp(28px,7.5vw,39px)}
+#measurePage .timer-action{font-size:clamp(14px,3.8vw,17px);letter-spacing:.045em}
+#measurePage .action-box{background:var(--panel);box-shadow:none;border-radius:8px;padding:3px 6px}
+#measurePage .event-tap{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:5px;box-shadow:none;font-size:clamp(9px,2.4vw,11px);padding:2px 3px}
+#measurePage .event-tap:active:not(:disabled){background:var(--ink);color:var(--panel);transform:none}
+#measurePage .memo-switch button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#measurePage .controls #finishButton{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#measurePage .controls #finishButton:disabled{background:var(--soft);color:var(--muted);border-color:var(--line)}
+#measurePage .lap-strip{background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--ink);border-radius:7px;flex-basis:34px;padding:2px 8px;box-shadow:none}
+#measurePage #lastLapTime{font-size:clamp(19px,5vw,25px)}
+#measurePage .controls button{min-height:33px;font-size:11px;border-radius:6px}
+#measurePage .page-head{margin-bottom:2px}
+#measurePage .page-head button{border-radius:5px}
+#measurePage .measure-left{gap:3px}
+#measurePage .measure-grid{margin-top:3px}
+#measurePage .action-title{margin-bottom:2px;min-height:19px}
+#measurePage .action-title strong{font-size:11px}
+#measurePage .action-title button{min-height:23px;font-size:10px}
+#measurePage #quickMemoInput{height:35px;min-height:35px;padding:5px 8px;font-size:16px!important;border-radius:5px;scroll-margin:0!important}
+#measurePage .quick-events[data-rows="1"]{height:29px}
+#measurePage .quick-events[data-rows="2"]{height:60px}
+#measurePage .quick-events[data-rows="3"]{height:91px}
+#measurePage .quick-events[data-rows="4"]{height:123px}
+#measurePage .quick-events{gap:3px}
+#measurePage #lastEvent{display:flex!important;align-items:center;justify-content:space-between;gap:5px;height:22px;min-height:22px;max-height:22px;margin:2px 0 0;padding:0 4px;font-size:10px;overflow:hidden;color:var(--muted)}
+#measurePage #lastEvent.has-event{background:var(--soft);color:var(--ink);border-radius:5px}
+#measurePage #lastEvent span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#measurePage #lastEvent button{min-height:19px;height:19px;padding:0 5px;font-size:10px;border-radius:4px;background:var(--panel)}
+#measurePage .total-line{font-size:10px;min-height:12px}
+#recentPanel{flex:1 1 auto;order:6;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:3px 6px}
+#measurePage .measure-left>.total-line{order:7}
+.recent-heading{flex:0 0 auto;display:flex;align-items:center;gap:6px;min-height:21px;padding-bottom:2px;border-bottom:1px solid var(--line)}
+.recent-heading strong{font-size:11px;letter-spacing:.03em}
+.recent-heading span{flex:1;font-size:10px;color:var(--muted)}
+.recent-heading button{min-height:20px;font-size:10px;padding:1px 5px;background:transparent;border:0;color:var(--ink)}
+.recent-rows{flex:1 1 auto;min-height:0;display:grid;grid-template-rows:repeat(5,minmax(0,1fr));overflow:hidden}
+.recent-row{display:grid;grid-template-columns:32px 55px minmax(0,1fr);gap:5px;align-items:center;min-height:0;border-bottom:1px solid var(--soft);padding:1px 2px;font-size:10px}
+.recent-row:last-child{border:0}
+.recent-no{font:700 10px ui-monospace,SFMono-Regular,monospace;color:var(--muted)}
+.recent-sec{font-size:13px;font-weight:800}
+.recent-detail{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.recent-excluded{opacity:.55;text-decoration:line-through}
+.recent-empty{display:flex;justify-content:center;align-items:center;height:100%;color:var(--muted);font-size:10px}
+#summaryStrip .stats{grid-template-columns:repeat(6,minmax(0,1fr));gap:2px}
+#summaryStrip .stat{display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:27px;max-height:29px;padding:2px 1px;background:var(--panel);border:1px solid var(--line);border-radius:4px;box-shadow:none}
+#summaryStrip .stat:first-child{background:var(--soft);border:1px solid var(--ink)}
+#summaryStrip .stat span{font-size:9px;line-height:1;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+#summaryStrip .stat b{font-size:clamp(10px,2.7vw,12px);line-height:1;letter-spacing:-.04em;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+#summaryStrip .stat small{font-size:8px}
+#summaryStrip .section-title{margin-bottom:2px}
+#summaryStrip .section-title h3{font-size:10px}
+#recordsDialog .records-layout{gap:3px}
+#recordListTabs button{min-height:28px;border-radius:4px;border:1px solid var(--line);background:var(--panel);font-size:11px;padding:3px}
+#recordListTabs button[aria-pressed=true]{background:var(--ink);color:var(--panel);box-shadow:none}
+#recordsDialog .shot{padding:4px 6px;border-radius:5px}
+#recordsDialog .shots{gap:3px}
+#recordsDialog .shot-time{font-size:16px}
+#recordsDialog .shots-panel,#recordsDialog .event-log-panel{padding:4px;border-radius:6px}
+#historyPage .history-list{gap:4px;margin-top:7px}
+#historyPage .history-item{padding:4px 7px;min-height:42px;border-radius:6px}
+#historyPage .history-item strong{font-size:12px;line-height:1.15}
+#historyPage .history-item small{font-size:10px;line-height:1.1;margin-top:1px}
+#historyPage .history-avg{font-size:15px}
+#historyPage .history-avg small{font-size:9px}
+#historyPage .filters summary{min-height:28px;padding:3px 0;font-size:11px}
+#historyPage input{min-height:34px;border-radius:6px;padding:5px}
+.tabs{box-shadow:none;border-top:1px solid var(--line)}
+.tabs button{border-radius:5px}
+.tabs button[aria-selected=true]{box-shadow:none;border:1px solid var(--line);background:var(--soft);color:var(--ink)}
+#toast{background:var(--ink);color:var(--panel);box-shadow:none}
+@media(max-height:700px){#measurePage .quick-events[data-rows="4"]{height:104px}#measurePage .quick-events[data-rows="3"]{height:78px}#measurePage .quick-events[data-rows="2"]{height:52px}#measurePage .timer-button{height:59px!important;min-height:55px}#recentPanel{padding:2px 5px}}
 </style>
 </head>
 <body>
@@ -323,10 +407,10 @@ dialog input,dialog textarea,dialog select{font-size:16px!important}
 <section class="action-box" aria-label="ワンタッチイベント記録">
 <div class="action-title"><strong>ワンタッチ記録</strong><button id="configEvents" class="chip">項目設定</button></div>
 <div id="quickEvents" class="quick-events"></div>
-<div id="lastEvent" class="recent-event" hidden></div>
+<div id="lastEvent" class="recent-event" role="status" aria-live="polite"></div>
 </section>
 </div>
-<div class="timer-state"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止中の時間は含みません</span></div>
+<section id="recentPanel" aria-label="直近5ショット"><div class="recent-heading"><strong>直近5ショット</strong><span id="recentCount">0件</span><button id="recentOpenAll">全件 →</button></div><div id="recentRows" class="recent-rows"></div></section><div class="timer-state total-line"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止時間除外</span></div>
 </div></div>
 </section>
 <section id="historyPage" class="page" role="tabpanel" aria-labelledby="tabHistory" hidden>
@@ -515,6 +599,18 @@ function renderLastLaps(t){
   $('lastLapTime').textContent=latest?sec(latest.ms)+' 秒':'—';
   $('prevLapTime').textContent=before?'前回 #'+(n-1)+' '+sec(before.ms)+' 秒':latest?'ショット #'+n+' 記録':'未記録';
 }
+function renderRecentTimeline(){
+ const t=active(),shots=t?.shots||[],events=t?.events||[];
+ $('recentCount').textContent=shots.length+'件';
+ if(!shots.length){$('recentRows').innerHTML='<div class="recent-empty">ラップ・メモ・停止の記録がここに表示されます</div>';return;}
+ let html='';
+ for(let i=shots.length-1;i>=Math.max(0,shots.length-5);i--){
+  const x=shots[i],marks=events.filter(e=>e.shot===i+1).map(e=>'●'+e.label);
+  const notes=[x.memo,...marks].filter(Boolean).join(' / ');
+  html+='<div class="recent-row"><span class="recent-no">#'+String(i+1).padStart(2,'0')+'</span><b class="recent-sec num">'+sec(x.ms)+'</b><span class="recent-detail'+(x.excluded?' recent-excluded':'')+'" title="'+esc(notes)+'">'+(notes?esc(notes):'—')+'</span></div>';
+ }
+ $('recentRows').innerHTML=html;
+}
 function renderActionPad(){
   const t=active(),last=t?.shots.at(-1);
   if(memoMode==='last'&&!last)memoMode='current';
@@ -529,8 +625,8 @@ function renderActionPad(){
   $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" title="'+esc(x.name)+'" '+(!t||blocked||t.finishedAt?'disabled':'')+'>'+esc(x.name)+'</button>').join(''):'<span class="muted" style="font-size:12px">項目設定からボタンを登録</span>';
   $('configEvents').disabled=blocked;
   const e=t?.events.at(-1);
-  $('lastEvent').hidden=!e;
-  $('lastEvent').innerHTML=e?'<span>記録済：'+esc(e.label)+' '+esc(formatEventTime(e.at))+'</span><button data-undo-event="'+esc(e.id)+'">直前を取消</button>':'';
+  $('lastEvent').innerHTML=e?'<span><strong>✓ '+esc(e.label)+'</strong>　'+esc(formatEventTime(e.at))+'　#'+e.shot+'</span><button data-undo-event="'+esc(e.id)+'">取消</button>':'<span>ワンタッチの記録結果をここに表示</span>';
+  $('lastEvent').classList.toggle('has-event',!!e);
   $('eventCount').textContent=(t?.events.length||0)+' 件';$('tabEventCount').textContent=t?.events.length||0;
   $('liveEvents').innerHTML=eventHTML(t,'live');
 }
@@ -558,7 +654,7 @@ function renderMeasure(){
   $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.finishedAt?'▶ 次の計測を開始':t.running?'ラップを記録':(t.elapsedMs||t.shots.length)?'計測を再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
   $('lapHint').textContent=t?.running?'タップした瞬間に記録し、次のショットへ':'1タップ目で開始、以後は1タップで1ショット';$('runState').textContent=t?.finishedAt?'✓ 保存・終了済み':t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
   $('stopButton').disabled=!t?.running||blocked||!!t?.finishedAt;$('undoButton').disabled=!t?.shots.length||blocked||!!t?.finishedAt;$('resetButton').disabled=!t||blocked||!!t?.finishedAt;$('finishButton').disabled=!t||blocked;$('finishButton').textContent=t?.finishedAt?'▶ 次の計測':'✓ 保存して終了';$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=!t?.uncertain;
-  $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderLastLaps(t);renderActionPad();drawTime();drawWake();
+  $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderLastLaps(t);renderActionPad();renderRecentTimeline();drawTime();drawWake();
 }
 function renderHistory(){
   const q=norm($('search').value),from=$('filterFrom').value,to=$('filterTo').value;
@@ -643,7 +739,7 @@ $('quickMemoInput').addEventListener('input',e=>{
   if(memoMode==='last'){const s=t.shots.at(-1);if(!s)return;s.memo=e.target.value.slice(0,240);}
   else t.pendingMemo=e.target.value.slice(0,240);
   touch(t);
-  if(memoMode==='last')$('liveShots').innerHTML=shotHTML(t,'live');
+  if(memoMode==='last')$('liveShots').innerHTML=shotHTML(t,'live');renderRecentTimeline();
 });
 $('configEvents').onclick=openEventSettings;
 $('openEventSettings').onclick=openEventSettings;
@@ -669,7 +765,7 @@ $('finishButton').addEventListener('click',()=>{
 $('stopButton').addEventListener('click',()=>{if(!editable()||!clock)return;clock.pause();touch(active());releaseWake();renderMeasure();toast('停止しました。未確定のショットは再開後に続きます。');});
 $('undoButton').addEventListener('click',()=>{if(!editable()||!active()?.shots.length)return;clock.undo();touch(active());renderMeasure();toast('直前の区切りを取り消しました。時間は現在のショットに戻ります。');});
 $('resetButton').addEventListener('click',()=>{if(!editable()||!clock)return;if(!confirm('このトライの全ショットと計測時間をリセットします。登録情報は残ります。よろしいですか？'))return;clock.reset();touch(active());releaseWake();renderMeasure();toast('計測をリセットしました。');});
-$('openRecords').onclick=()=>{setRecordsTab('shots');renderStats();$('recordsDialog').showModal();};
+$('openRecords').onclick=()=>{setRecordsTab('shots');renderStats();$('recordsDialog').showModal();};$('recentOpenAll').onclick=()=>$('openRecords').click();
 $('newTrial').onclick=()=>openTrial();$('editCurrent').onclick=()=>openTrial(active());$('dataButton').onclick=()=>$('dataDialog').showModal();
 $('theme').onchange=()=>{if(!editable())return;db.theme=$('theme').value;applyTheme();save();};$('exportAll').onclick=()=>exportCSV(db.trials);$('exportJson').onclick=exportJSON;
 $('importJson').onclick=()=>{if(active()?.running){toast('JSONを読み込む前に計測を停止してください。');return;}$('jsonFile').click();};
@@ -689,11 +785,11 @@ $('clearFilters').onclick=()=>{['search','filterFrom','filterTo'].forEach(id=>$(
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(d.close){$(d.close).close();return;}if(d.tab){showTab(d.tab);return;}
-  if(d.recordEvent){if(!editable())return;const t=active(),type=db.eventTypes.find(x=>x.id===d.recordEvent);if(!t||!type)return;if(t.events.length>=2000){toast('イベント記録の上限は2,000件です。');return;}t.events.push({id:uid(),typeId:type.id,label:type.name,ms:clock.now(),at:Date.now(),shot:t.shots.length+1});touch(t);try{navigator.vibrate?.(18);}catch(e){}renderActionPad();if($('moreEventsDialog').open)$('moreEventsDialog').close();toast(type.name+' を記録しました。計測は継続中です。');return;}
-  if(d.undoEvent){if(!editable())return;const t=active();if(!t||t.events.at(-1)?.id!==d.undoEvent)return;t.events.pop();touch(t);renderActionPad();toast('直前のイベント記録を取り消しました。');return;}
+  if(d.recordEvent){if(!editable())return;const t=active(),type=db.eventTypes.find(x=>x.id===d.recordEvent);if(!t||!type)return;if(t.events.length>=2000){toast('イベント記録の上限は2,000件です。');return;}t.events.push({id:uid(),typeId:type.id,label:type.name,ms:clock.now(),at:Date.now(),shot:t.shots.length+1});touch(t);try{navigator.vibrate?.(18);}catch(e){}renderActionPad();renderRecentTimeline();toast('✓ '+type.name+' を記録しました');return;}
+  if(d.undoEvent){if(!editable())return;const t=active();if(!t||t.events.at(-1)?.id!==d.undoEvent)return;t.events.pop();touch(t);renderActionPad();renderRecentTimeline();toast('直前のイベント記録を取り消しました。');return;}
   if(d.editEvent){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.editEvent);if(!x)return;editingEventId=x.id;$('eventItemName').value=x.name;renderEventSettings();$('eventItemName').focus();return;}
   if(d.deleteType){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.deleteType);if(!x)return;if(!confirm('ワンタッチ項目「'+x.name+'」を削除しますか？既存の記録は残ります。'))return;db.eventTypes=db.eventTypes.filter(y=>y.id!==x.id);if(editingEventId===x.id){editingEventId=null;$('eventItemForm').reset();}save();renderEventSettings();renderActionPad();toast('項目を削除しました。');return;}
-  if(d.deleteEvent){if(!editable())return;const t=db.trials.find(x=>x.id===d.trial),ev=t?.events.find(x=>x.id===d.deleteEvent);if(!ev)return;if(!confirm('イベント「'+ev.label+'」の記録を削除しますか？'))return;t.events=t.events.filter(x=>x.id!==d.deleteEvent);touch(t);renderActionPad();if(detailId===t.id)renderDetail();return;}
+  if(d.deleteEvent){if(!editable())return;const t=db.trials.find(x=>x.id===d.trial),ev=t?.events.find(x=>x.id===d.deleteEvent);if(!ev)return;if(!confirm('イベント「'+ev.label+'」の記録を削除しますか？'))return;t.events=t.events.filter(x=>x.id!==d.deleteEvent);touch(t);renderActionPad();renderRecentTimeline();if(detailId===t.id)renderDetail();return;}
   if(d.moreEvents){const t=db.trials.find(x=>x.id===d.moreEvents);if(!t)return;shown.set('events-'+d.scope+t.id,(shown.get('events-'+d.scope+t.id)||20)+20);$(d.scope==='live'?'liveEvents':'detailEvents').innerHTML=eventHTML(t,d.scope);return;}
   if(d.detail){detailId=d.detail;renderDetail();$('detailDialog').showModal();return;}
   if(d.more){const t=db.trials.find(x=>x.id===d.more);shown.set(d.scope+t.id,(shown.get(d.scope+t.id)||30)+30);$(d.scope==='live'?'liveShots':'detailShots').innerHTML=shotHTML(t,d.scope);return;}
@@ -703,16 +799,16 @@ document.addEventListener('click',e=>{
   if(d.copyTrial)openTrial(db.trials.find(t=>t.id===d.copyTrial),true);
   if(d.resume){if(active()?.running&&active().id!==d.resume){toast('現在の計測を停止してから切り替えてください。');return;}if(db.activeId!==d.resume){db.activeId=d.resume;clock=new Clock(active());save();}$('detailDialog').close();showTab('measure');}
   if(d.deleteTrial){const t=db.trials.find(x=>x.id===d.deleteTrial);if(t.running){toast('計測を停止してから削除してください。');return;}if(confirm('このトライと全ショットを削除しますか？元には戻せません。')){db.trials=db.trials.filter(x=>x.id!==t.id);if(db.activeId===t.id){db.activeId=null;clock=null;}detailId=null;save();$('detailDialog').close();renderAll();toast('トライを削除しました。');}}
-  if(d.quick){const t=db.trials.find(x=>x.id===d.trial),s=t?.shots.find(x=>x.id===d.shot);if(!s)return;s.memo=(s.memo?s.memo+' / ':'')+d.quick;s.memo=s.memo.slice(0,240);touch(t);b.closest('.shot').querySelector('input[type=text]').value=s.memo;}
+  if(d.quick){const t=db.trials.find(x=>x.id===d.trial),s=t?.shots.find(x=>x.id===d.shot);if(!s)return;s.memo=(s.memo?s.memo+' / ':'')+d.quick;s.memo=s.memo.slice(0,240);touch(t);renderRecentTimeline();b.closest('.shot').querySelector('input[type=text]').value=s.memo;}
 });
 document.addEventListener('input',e=>{
   const d=e.target.dataset;if(!d.shotMemo)return;if(!editable())return;
   const t=db.trials.find(x=>x.id===d.trial),s=t?.shots.find(x=>x.id===d.shotMemo);if(!s)return;
-  s.memo=e.target.value;touch(t);if(memoMode==='last'&&t.id===db.activeId&&t.shots.at(-1)?.id===s.id){$('quickMemoInput').value=s.memo;}
+  s.memo=e.target.value;touch(t);renderRecentTimeline();if(memoMode==='last'&&t.id===db.activeId&&t.shots.at(-1)?.id===s.id){$('quickMemoInput').value=s.memo;}
 });
 document.addEventListener('change',e=>{
   const d=e.target.dataset;if(!d.exclude)return;const t=db.trials.find(x=>x.id===d.trial),s=t?.shots.find(x=>x.id===d.exclude);if(!s)return;
-  if(!editable()){e.target.checked=s.excluded;return;}s.excluded=e.target.checked;e.target.closest('.shot').classList.toggle('excluded',s.excluded);touch(t);renderStats();if(view==='history')renderHistory();
+  if(!editable()){e.target.checked=s.excluded;return;}s.excluded=e.target.checked;e.target.closest('.shot').classList.toggle('excluded',s.excluded);touch(t);renderStats();renderRecentTimeline();if(view==='history')renderHistory();
 });
 document.querySelector('.tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=[...document.querySelectorAll('[data-tab]')],i=tabs.indexOf(document.activeElement);const n=tabs.length,j=e.key==='Home'?0:e.key==='End'?n-1:(i+(e.key==='ArrowRight'?1:n-1))%n;tabs[j].click();tabs[j].focus();});
 $('detailDialog').addEventListener('close',()=>{detailId=null;renderMeasure();renderHistory();});
@@ -726,16 +822,27 @@ function frame(){if(view==='measure'&&!document.hidden)drawTime();requestAnimati
 const viewportBootHeight=Math.round(window.visualViewport?.height||window.innerHeight);
 document.documentElement.style.setProperty('--app-height',viewportBootHeight+'px');
 document.documentElement.style.setProperty('--viewport-top','0px');
+let memoTarget=null,viewportCorrection=0;
+function visualY(){return $('quickMemoInput').getBoundingClientRect().top-(window.visualViewport?.offsetTop||0);}
 function syncViewport(){
-  if(document.activeElement===$('quickMemoInput'))return;
-  if(window.visualViewport&&window.visualViewport.height<viewportBootHeight-120)return;
-  if(view==='measure'&&window.scrollY)window.scrollTo(0,0);
+ if(document.activeElement===$('quickMemoInput')&&memoTarget!==null){
+  const delta=memoTarget-visualY();
+  if(Math.abs(delta)>.5){
+   viewportCorrection=Math.max(-320,Math.min(320,viewportCorrection+delta));
+   document.documentElement.style.setProperty('--viewport-top',viewportCorrection+'px');
+  }
+  return;
+ }
+ if(window.visualViewport&&window.visualViewport.height<viewportBootHeight-110)return;
+ viewportCorrection=0;memoTarget=null;document.documentElement.style.setProperty('--viewport-top','0px');
+ if(view==='measure'&&window.scrollY)window.scrollTo(0,0);
 }
-window.addEventListener('orientationchange',()=>{
-  if(document.activeElement===$('quickMemoInput'))document.activeElement.blur();
-  requestAnimationFrame(()=>document.documentElement.style.setProperty('--app-height',Math.round(window.visualViewport?.height||window.innerHeight)+'px'));
-});
-// Native iOS focus preserves keyboard support; fixed container prevents the prior jumping UI.
+$('quickMemoInput').addEventListener('focus',()=>{memoTarget=visualY();requestAnimationFrame(syncViewport);});
+$('quickMemoInput').addEventListener('blur',()=>{memoTarget=null;requestAnimationFrame(syncViewport);});
+window.visualViewport?.addEventListener('scroll',syncViewport);
+window.visualViewport?.addEventListener('resize',syncViewport);
+window.addEventListener('scroll',syncViewport,{passive:true});
+window.addEventListener('orientationchange',()=>{if(document.activeElement===$('quickMemoInput'))document.activeElement.blur();requestAnimationFrame(()=>{document.documentElement.style.setProperty('--app-height',Math.round(window.visualViewport?.height||window.innerHeight)+'px');syncViewport();});});
 $('quickMemoInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur();}});
 document.addEventListener('touchmove',e=>{if(view==='measure'&&!e.target.closest('dialog,input,textarea,select'))e.preventDefault();},{passive:false});
 renderAll();if(needsRewrite||active()?.running)save();if(active()?.running)requestWake();requestAnimationFrame(frame);
