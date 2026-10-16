@@ -325,15 +325,111 @@ main{padding-top:7px;padding-bottom:4px}
  #measurePage .memo-entry{height:37px}
  #recentPanel .recent-heading{flex-basis:20px}
 }
+
+/* UI 2.1 — results always visible; 4-column event pad with independent overflow. */
+body[data-view="measure"]>.tabs{display:none}
+#measurePage .page-head{min-height:29px;margin-bottom:4px}
+#measurePage .page-head h2{
+  display:flex;align-items:center;gap:7px;margin:0;white-space:nowrap;
+  font-size:15px;letter-spacing:.09em;font-weight:850
+}
+#measurePage .page-head h2 small{
+  font-size:9px;letter-spacing:0;font-weight:680;color:#357c85;
+  background:#e7f1f2;border:1px solid #d8e7e9;border-radius:6px;padding:3px 5px
+}
+#measurePage .page-head .row{display:flex;gap:5px;flex-wrap:nowrap}
+#measurePage .page-head button{min-height:31px;font-size:11px;padding:5px 10px}
+#measurePage .trial-summary{padding:8px 12px;min-height:60px;border-left:3px solid #2b6173}
+#measurePage .trial-identity{display:flex;flex:1;min-width:0;flex-direction:column;justify-content:center;gap:2px}
+#measurePage .trial-eyebrow{
+  display:flex;align-items:center;gap:5px;min-height:12px;
+  font-size:8px;line-height:1.2;letter-spacing:.10em;color:var(--muted);font-weight:800
+}
+#measurePage .trial-dot{display:inline-block;width:5px;height:5px;background:#2b6173;border-radius:50%;flex:0 0 auto}
+#measurePage #trialShotBadge{letter-spacing:0;margin-left:3px;font-size:9px}
+#measurePage .trial-summary .trial-title{font-size:15px;line-height:1.2}
+#measurePage .trial-summary .trial-meta{font-size:10px;line-height:1.2}
+#measurePage .trial-summary .chip{min-height:31px;padding:5px 9px}
+#measurePage .measure-left{gap:3px}
+#measurePage .timer-state{min-height:13px}
+#measurePage .clock-face{min-height:51px;padding:1px 0;gap:1px}
+#measurePage .timer-caption{font-size:11px}
+#measurePage .timer-value{font-size:clamp(31px,8.9vw,46px);line-height:1}
+#measurePage .clock-previous{font-size:10px;line-height:1.2}
+#measurePage .live-result-bar{
+  order:0;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;
+  flex:0 0 30px;gap:4px;padding:3px 8px;border-radius:9px;
+  border:1px solid #d5e3e8;background:var(--accent-surface,#e9f2f5);color:var(--ink)
+}
+#measurePage .live-result-bar span{font-size:10px;line-height:1.3;white-space:nowrap;text-align:center}
+#measurePage .live-result-bar b{font-size:12px;font-weight:850;font-variant-numeric:tabular-nums}
+#measurePage .result-name{text-align:left!important}
+#measurePage .result-average{text-align:right!important}
+#measurePage .controls{min-height:83px;padding:0 4px;gap:7px}
+#measurePage .controls .timer-button{width:89px;height:89px;min-height:89px;max-height:89px;flex:0 0 89px;border-width:5px}
+#measurePage .controls .disc-action{width:66px;height:66px;min-height:66px}
+#measurePage .control-foot{gap:5px;min-height:25px}
+#measurePage .control-foot button{height:27px;min-height:27px;font-size:10px;padding:4px 7px}
+#measurePage .action-pad{display:contents!important}
+#measurePage .action-box[aria-label="計測中のメモ"]{order:1;flex:0 0 auto}
+#measurePage #recentPanel{
+  order:2;display:flex!important;flex:1 1 auto;min-height:99px!important;
+  border:1px solid var(--line);border-radius:9px;padding:2px 7px;background:var(--panel)
+}
+#measurePage #recentPanel .recent-heading{flex:0 0 22px}
+#measurePage #recentPanel .recent-row{padding-inline:4px}
+#measurePage .action-box[aria-label="ワンタッチイベント記録"]{
+  order:3;flex:0 0 auto;min-height:0
+}
+#measurePage .total-line{order:4}
+#measurePage .action-title{min-height:21px;margin-bottom:3px;padding-inline:3px}
+#measurePage .action-title strong{font-size:11px}
+#measurePage .action-title button{min-height:23px;font-size:10px;padding:3px 7px}
+#measurePage .memo-entry{height:37px}
+#measurePage #quickMemoInput{height:32px;min-height:32px}
+#measurePage .quick-events[data-rows]{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  grid-template-rows:repeat(var(--event-grid-rows),minmax(var(--event-row-height),auto));
+  gap:4px;align-content:start;overflow-y:auto;overflow-x:hidden;
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  max-height:clamp(80px,17svh,132px);height:auto!important;min-height:0
+}
+#measurePage .event-tap{
+  min-height:var(--event-row-height);height:auto;min-width:0;
+  padding:4px 3px;font-size:clamp(9px,2.4vw,11px);
+  line-height:1.16;border-radius:8px
+}
+#measurePage .event-tap .event-name{line-height:1.2;overflow-wrap:anywhere}
+#measurePage .event-tap .event-mark{font-size:9px}
+#measurePage #lastEvent{height:18px;min-height:18px;margin-top:2px;font-size:10px}
+#measurePage .measure-left>.clock-face{order:0}
+#measurePage .measure-left>.timer-state:first-child{order:0}
+#measurePage .measure-left>.controls{order:0}
+#measurePage .measure-left>.control-foot{order:0}
+#measurePage .measure-left>.live-result-bar{order:0}
+@media(max-height:700px) and (max-width:799px){
+ #measurePage .page-head{margin-bottom:2px;min-height:27px}
+ #measurePage .trial-summary{padding:5px 10px;min-height:53px}
+ #measurePage .clock-face{min-height:43px}
+ #measurePage .timer-value{font-size:31px}
+ #measurePage .controls{min-height:75px}
+ #measurePage .controls .timer-button{width:78px;height:78px;min-height:78px;max-height:78px;flex-basis:78px}
+ #measurePage .controls .disc-action{width:56px;height:56px;min-height:56px}
+ #measurePage .live-result-bar{flex-basis:26px}
+ #measurePage #recentPanel{min-height:86px!important}
+ #measurePage .action-title{min-height:18px;margin-bottom:2px}
+ #measurePage .quick-events[data-rows]{max-height:96px}
+ #measurePage .event-tap{padding:2px 3px}
+}
 </style>
 </head>
-<body>
+<body data-view="measure">
 <header><div class="header-inner"><div class="brand"><img class="brand-icon" src="./assets/icon.svg" alt="" width="36" height="36"><div><div class="eyebrow">CYCLE TIME RECORDER</div><h1>トライタイマー</h1><div id="saveStatus" role="status">端末内に自動保存</div></div></div><button id="dataButton">データ</button></div></header>
 <main>
 <div id="storageWarning" class="notice" role="alert" hidden></div>
 <section id="measurePage" class="page" role="tabpanel" aria-labelledby="tabMeasure">
-<div class="section-title page-head"><h2>計測</h2><div class="row"><button id="openRecords" class="chip">記録・集計</button><button id="newTrial" class="primary chip">＋ 新しいトライ</button></div></div>
-<div class="card trial-summary"><div class="row between"><div style="min-width:0;flex:1"><div id="trialTitle" class="trial-title">トライを登録して計測開始</div><div id="trialMeta" class="trial-meta">日付とトライ名だけで始められます</div></div><button id="editCurrent" class="chip" hidden>情報編集</button></div></div>
+<div class="section-title page-head"><h2>TRY <small>UI 2.1</small></h2><div class="row"><button id="historyShortcut" class="chip">履歴</button><button id="openRecords" class="chip">集計</button><button id="newTrial" class="primary chip">＋ 新規</button></div></div>
+<div class="card trial-summary"><div class="row between"><div class="trial-identity"><div class="trial-eyebrow"><span class="trial-dot"></span> CURRENT SESSION <span id="trialShotBadge">#0</span></div><div id="trialTitle" class="trial-title">トライを登録して計測開始</div><div id="trialMeta" class="trial-meta">日付とトライ名だけで始められます</div></div><button id="editCurrent" class="chip" hidden>編集</button></div></div>
 <div class="measure-grid"><div class="measure-left">
 <div class="timer-state"><span id="runState">待機中</span><span id="wakeState">スリープ防止：待機中</span></div>
 <div id="uncertainNotice" class="notice" hidden></div>
@@ -342,6 +438,7 @@ main{padding-top:7px;padding-bottom:4px}
   <div class="timer-value num"><span id="elapsed">00.00</span><span class="unit">秒</span></div>
   <div id="lastLapStrip" class="clock-previous"><span id="lastLapLabel">前回</span><span class="last-lap-reading"><b id="lastLapTime" class="num">—</b><small>秒</small></span><span id="prevLapTime">未記録</span></div>
 </div>
+<div id="liveResultBar" class="live-result-bar" role="status" aria-label="直近のトライ結果"><span class="result-name">確定ショット <b id="liveResultCount">0</b> 件</span><span class="result-number">最新 <b id="liveResultLatest">—</b> 秒</span><span class="result-average">平均 <b id="liveResultMean">—</b> 秒</span></div>
 <div class="controls">
   <button id="stopButton" class="disc-action disc-stop" disabled><span class="disc-icon" aria-hidden="true">■</span><span>停止</span></button>
   <button id="lapButton" class="timer-button" type="button"><span class="disc-play" aria-hidden="true">▶</span><span id="lapAction" class="timer-action">スタート</span><span id="lapHint" class="timer-sub">ラップ記録</span></button>
@@ -361,7 +458,7 @@ main{padding-top:7px;padding-bottom:4px}
 <div id="lastEvent" class="recent-event" role="status" aria-live="polite"></div>
 </section>
 </div>
-<section id="recentPanel" aria-label="直近5ショット"><div class="recent-heading"><strong>直近5ショット</strong><span id="recentCount">0件</span><button id="recentOpenAll">すべて見る ›</button></div><div id="recentRows" class="recent-rows"></div></section><div class="timer-state total-line"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止時間除外</span></div>
+<section id="recentPanel" aria-label="直近5ショット"><div class="recent-heading"><strong>計測結果・直近5ショット</strong><span id="recentCount">0件</span><button id="recentOpenAll">すべて見る ›</button></div><div id="recentRows" class="recent-rows"></div></section><div class="timer-state total-line"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止時間除外</span></div>
 </div></div>
 </section>
 <section id="historyPage" class="page" role="tabpanel" aria-labelledby="tabHistory" hidden>
@@ -563,6 +660,13 @@ function recentNote(x,marks){
   const notes=[...(x.review||x.excluded?['除外']:[]),memo,...marks].filter(Boolean);
   return notes.join('・');
 }
+function renderLiveResultBar(t){
+  const shots=t?.shots||[],n=shots.length,last=shots.at(-1);
+  $('liveResultCount').textContent=String(n);
+  $('liveResultLatest').textContent=last?sec(last.ms):'—';
+  $('liveResultMean').textContent=sec(stats(shots).mean);
+  $('trialShotBadge').textContent='#'+(n+1);
+}
 function renderRecentTimeline(){
   const t=active(),shots=t?.shots||[],events=t?.events||[];
   $('recentCount').textContent=shots.length+'件';
@@ -592,9 +696,9 @@ function renderActionPad(){
   $('memoTarget').textContent=memoMode==='last'?'確定済み #'+t.shots.length+' のメモ':'今回 #'+((t?.shots.length||0)+1)+' のショットに紐づけ';
   if(document.activeElement!==$('quickMemoInput'))$('quickMemoInput').value=t?(memoMode==='last'?last?.memo||'':t.pendingMemo||''):'';
   const maxEventLength=Math.max(0,...db.eventTypes.map(x=>[...x.name].length));
-  $('quickEvents').dataset.rows=String(Math.max(1,Math.ceil(db.eventTypes.length/3)));
-  $('quickEvents').style.setProperty('--event-row-height',maxEventLength>16?'62px':maxEventLength>10?'54px':'46px');
-  $('quickEvents').style.setProperty('--event-grid-rows',String(Math.max(1,Math.ceil(db.eventTypes.length/3))));
+  $('quickEvents').dataset.rows=String(Math.max(1,Math.ceil(db.eventTypes.length/4)));
+  $('quickEvents').style.setProperty('--event-row-height',maxEventLength>16?'55px':maxEventLength>10?'47px':'39px');
+  $('quickEvents').style.setProperty('--event-grid-rows',String(Math.max(1,Math.ceil(db.eventTypes.length/4))));
   const totals=new Map();
   for(const evt of t?.events||[])totals.set(evt.typeId,(totals.get(evt.typeId)||0)+1);
   $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>{
@@ -632,7 +736,7 @@ function renderMeasure(){
   $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.finishedAt?'次の計測':t.running?'ラップ':(t.elapsedMs||t.shots.length)?'再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
   $('lapHint').textContent=t?.running?'ショット確定':t?.finishedAt?'#'+(t.shots.length+1)+' 開始':'計測開始';$('runState').textContent=t?.finishedAt?'✓ 保存・終了済み':t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
   $('stopButton').disabled=!t?.running||blocked||!!t?.finishedAt;$('undoButton').disabled=!t?.shots.length||blocked||!!t?.finishedAt;$('resetButton').disabled=!t||blocked||!!t?.finishedAt;$('finishButton').disabled=!t||blocked;$('finishButton').textContent=t?.finishedAt?'▶ 次の計測':'✓ 保存して終了';$('lapButton').classList.toggle('is-running',!!t?.running);$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=true;
-  $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderLastLaps(t);renderActionPad();renderRecentTimeline();drawTime();drawWake();
+  $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderLastLaps(t);renderLiveResultBar(t);renderActionPad();renderRecentTimeline();drawTime();drawWake();
 }
 function renderHistory(){
   const q=norm($('search').value),from=$('filterFrom').value,to=$('filterTo').value;
@@ -640,8 +744,8 @@ function renderHistory(){
   $('historyCount').textContent=list.length+' / '+db.trials.length+' トライ';
   $('historyList').innerHTML=list.length?list.map(t=>'<button class="history-item" data-detail="'+esc(t.id)+'"><div><strong>'+esc(t.name)+'</strong><small>'+esc(t.date)+'　'+t.shots.length+'件'+(t.finishedAt?' · 保存済':t.running?' · 計測中':'')+'</small></div><div class="history-avg num">'+sec(stats(t.shots).mean)+'<small>秒 →</small></div></button>').join(''):'<div class="empty full"><strong>該当する履歴がありません</strong>計測したトライは自動でここに残ります。</div>';
 }
-function showTab(name){document.activeElement?.blur?.();view=name;for(const v of ['measure','history'])$(v+'Page').hidden=v!==name;document.querySelectorAll('[data-tab]').forEach(b=>{b.setAttribute('aria-selected',String(b.dataset.tab===name));b.tabIndex=b.dataset.tab===name?0:-1;});if(name==='history')renderHistory();if(name==='measure')renderMeasure();window.scrollTo(0,0);syncViewport();}
-function renderAll(){applyTheme();renderMeasure();renderHistory();$('rescueArea').hidden=!damaged;}
+function showTab(name){document.activeElement?.blur?.();view=name;document.body.dataset.view=name;for(const v of ['measure','history'])$(v+'Page').hidden=v!==name;document.querySelectorAll('[data-tab]').forEach(b=>{b.setAttribute('aria-selected',String(b.dataset.tab===name));b.tabIndex=b.dataset.tab===name?0:-1;});if(name==='history')renderHistory();if(name==='measure')renderMeasure();window.scrollTo(0,0);syncViewport();}
+function renderAll(){document.body.dataset.view=view;applyTheme();renderMeasure();renderHistory();$('rescueArea').hidden=!damaged;}
 function openTrial(t=null,copy=false){
   if(!editable())return;
   if((!t||copy)&&active()?.running){toast('新しいトライを作る前に計測を停止してください。');return;}
@@ -743,6 +847,7 @@ $('finishButton').addEventListener('click',()=>{
 $('stopButton').addEventListener('click',()=>{if(!editable()||!clock)return;clock.pause();touch(active());releaseWake();renderMeasure();toast('停止しました。未確定のショットは再開後に続きます。');});
 $('undoButton').addEventListener('click',()=>{if(!editable()||!active()?.shots.length)return;clock.undo();touch(active());renderMeasure();toast('直前の区切りを取り消しました。時間は現在のショットに戻ります。');});
 $('resetButton').addEventListener('click',()=>{if(!editable()||!clock)return;if(!confirm('全ショット・イベント・計測時間をリセットしますか？\n元に戻すことはできません。'))return;clock.reset();touch(active());releaseWake();renderMeasure();toast('計測をリセットしました。');});
+$('historyShortcut').onclick=()=>showTab('history');
 $('openRecords').onclick=()=>{setRecordsTab('shots');renderStats();$('recordsDialog').showModal();};$('recentOpenAll').onclick=()=>$('openRecords').click();
 $('newTrial').onclick=()=>openTrial();$('editCurrent').onclick=()=>openTrial(active());$('dataButton').onclick=()=>$('dataDialog').showModal();
 $('theme').onchange=()=>{if(!editable())return;db.theme=$('theme').value;applyTheme();save();};$('exportAll').onclick=()=>exportCSV(db.trials);$('exportJson').onclick=exportJSON;
