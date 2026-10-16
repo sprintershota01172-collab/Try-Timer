@@ -635,6 +635,78 @@ dialog .primary{background:#1c527f;border-color:#1c527f;color:#fff}
  #measurePage .action-title{min-height:18px;margin-bottom:2px}
 }
 
+
+/* 計測画面 v2.3 — 気づきメモ → ワンタッチ記録 → 直近5ショット。
+   直近5件が親flexの縮小で隠れる問題を修正。 */
+#measurePage .action-box[aria-label="計測中のメモ"]{
+ order:1!important;flex:0 0 auto!important;
+}
+#measurePage .action-box[aria-label="ワンタッチイベント記録"]{
+ order:2!important;flex:0 0 auto!important;
+}
+#measurePage #recentPanel{
+ order:3!important;
+ display:flex!important;flex:0 0 132px!important;
+ height:132px!important;min-height:132px!important;max-height:132px!important;
+ overflow:hidden!important;
+ box-sizing:border-box;
+}
+#measurePage #recentPanel .recent-heading{
+ flex:0 0 23px!important;height:23px;
+ font-size:11px;min-height:23px;
+}
+#measurePage #recentPanel .recent-rows{
+ display:grid!important;flex:1 1 auto;min-height:0;
+ grid-template-rows:repeat(5,minmax(0,1fr))!important;
+ align-content:stretch;
+}
+#measurePage #recentPanel .recent-row{
+ display:grid!important;
+ min-height:0!important;line-height:1.2;
+ padding-block:1px;
+}
+#measurePage #recentPanel .recent-sec{font-size:13px;font-weight:850}
+#measurePage #recentPanel .recent-row:nth-child(n+4){display:grid!important}
+#measurePage .total-line{order:4!important}
+/* Compact nonessential secondary information first on short phones. */
+@media(max-width:799px) and (max-height:850px){
+ #measurePage .live-result-bar{display:none!important}
+ #measurePage .clock-previous{display:none!important}
+ #measurePage .clock-face{min-height:48px;gap:0}
+ #measurePage .trial-summary{min-height:43px;padding:5px 10px}
+ #measurePage .page-head{min-height:25px;margin-bottom:2px}
+ #measurePage .measure-left{gap:3px}
+ #measurePage #lastEvent{height:16px;min-height:16px}
+ #measurePage .action-title{min-height:19px;margin-bottom:2px}
+}
+@media(max-width:799px) and (max-height:720px){
+ body>header{padding-top:calc(3px + env(safe-area-inset-top,0px));padding-bottom:3px}
+ #measurePage .trial-eyebrow{display:none}
+ #measurePage .trial-summary{min-height:36px;padding:3px 9px}
+ #measurePage .clock-face{min-height:40px;padding:0}
+ #measurePage .timer-caption{font-size:10px}
+ #measurePage .timer-value{font-size:32px}
+ #measurePage .control-foot button{height:24px;min-height:24px}
+ #measurePage .controls{min-height:70px;padding:0}
+ #measurePage .controls .timer-button{width:74px;height:74px;min-height:74px;max-height:74px;flex:0 0 74px}
+ #measurePage .controls .disc-action{width:53px;height:53px;min-height:53px}
+ #measurePage .memo-entry{height:33px}
+ #measurePage .quick-events[data-rows]{grid-auto-rows:39px!important;height:125px!important;min-height:125px!important;max-height:125px!important}
+ #measurePage .event-tap,#measurePage .event-add-slot,#measurePage .event-empty-slot{
+  min-height:39px!important;height:39px!important;max-height:39px!important
+ }
+ #measurePage #recentPanel{flex-basis:123px!important;height:123px!important;min-height:123px!important;max-height:123px!important}
+ #measurePage #recentPanel .recent-heading{flex-basis:20px!important;height:20px;min-height:20px}
+}
+/* Extremely short viewports: allow only the measurement area to scroll rather than clipping data. */
+@media(max-width:799px) and (max-height:650px){
+ #measurePage .measure-left{
+  overflow-y:auto!important;overflow-x:hidden!important;
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch
+ }
+ #measurePage #recentPanel{flex-shrink:0!important}
+}
+
 </style>
 </head>
 <body data-view="measure">
@@ -661,15 +733,15 @@ dialog .primary{background:#1c527f;border-color:#1c527f;color:#fff}
 <div class="control-foot"><button id="undoButton" disabled>↶ 直前のラップを戻す</button><button id="finishButton" class="finish-button" disabled>✓ 保存して終了</button></div>
 
 <div class="action-pad">
-<section class="action-box" aria-label="ワンタッチイベント記録">
-<div class="action-title"><strong>ワンタッチ記録 <small>12件表示</small></strong><button id="configEvents" class="chip">編集 ↗</button></div>
-<div id="quickEvents" class="quick-events"></div>
-<div id="lastEvent" class="recent-event" role="status" aria-live="polite"></div>
-</section>
 <section class="action-box" aria-label="計測中のメモ">
 <div class="action-title"><strong>気づきメモ</strong><div class="memo-switch" role="group" aria-label="メモの記録先"><button id="memoCurrent" aria-pressed="true">今回</button><button id="memoLast" aria-pressed="false" disabled>直前</button></div></div>
 <div class="memo-entry"><span class="memo-pencil" aria-hidden="true">✎</span><input id="quickMemoInput" maxlength="240" type="text" autocomplete="off" enterkeyhint="done" placeholder="今回のショットの気づきを入力…" aria-label="ショットメモ"></div>
 <div class="memo-caption"><span id="memoTarget">現在のショットに紐づけます</span><span>自動保存</span></div>
+</section>
+<section class="action-box" aria-label="ワンタッチイベント記録">
+<div class="action-title"><strong>ワンタッチ記録 <small>12件表示</small></strong><button id="configEvents" class="chip">編集 ↗</button></div>
+<div id="quickEvents" class="quick-events"></div>
+<div id="lastEvent" class="recent-event" role="status" aria-live="polite"></div>
 </section>
 </div>
 <section id="recentPanel" aria-label="直近5ショット"><div class="recent-heading"><strong>計測結果・直近5ショット</strong><span id="recentCount">0件</span><button id="recentOpenAll">すべて見る ›</button></div><div id="recentRows" class="recent-rows"></div></section><div class="timer-state total-line"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止時間除外</span></div>
@@ -1136,7 +1208,7 @@ window.addEventListener('orientationchange',()=>{
   requestAnimationFrame(()=>document.documentElement.style.setProperty('--app-height',Math.round(window.innerHeight)+'px'));
 });
 $('quickMemoInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur();}});
-document.addEventListener('touchmove',e=>{if(view==='measure'&&!e.target.closest('dialog,input,textarea,select'))e.preventDefault();},{passive:false});
+document.addEventListener('touchmove',e=>{if(view==='measure'&&!e.target.closest('dialog,input,textarea,select')&&!((window.innerHeight<=650)&&e.target.closest('#measurePage .measure-left')))e.preventDefault();},{passive:false});
 renderAll();if(needsRewrite||active()?.running)save();if(active()?.running)requestWake();requestAnimationFrame(frame);
 })();
 </script>
