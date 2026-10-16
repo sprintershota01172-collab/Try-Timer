@@ -209,6 +209,25 @@ body.keyboard-open #measurePage .timer-state{font-size:10px}
   #measurePage .controls button{min-height:35px}
   #measurePage .action-box{padding:4px 6px}
 }
+
+/* キーボード入力位置はタイマーより上に固定。本文の上下再配置なし。 */
+#measurePage .action-pad{display:contents!important}
+#measurePage section[aria-label="計測中のメモ"]{order:1;flex:0 0 auto}
+#measurePage .timer-button{order:2}
+#measurePage .lap-strip{order:3}
+#measurePage .controls{order:4}
+#measurePage section[aria-label="ワンタッチイベント記録"]{order:5;flex:0 0 auto}
+#measurePage .measure-left>.timer-state:last-child{order:6}
+#measurePage .quick-events[data-rows="1"]{height:39px;grid-template-rows:repeat(1,minmax(0,1fr))}
+#measurePage .quick-events[data-rows="2"]{height:83px;grid-template-rows:repeat(2,minmax(0,1fr))}
+#measurePage .quick-events[data-rows="3"]{height:128px;grid-template-rows:repeat(3,minmax(0,1fr))}
+#measurePage .quick-events[data-rows="4"]{height:172px;grid-template-rows:repeat(4,minmax(0,1fr))}
+@media(max-height:740px){
+ #measurePage .quick-events[data-rows="1"]{height:32px}
+ #measurePage .quick-events[data-rows="2"]{height:66px}
+ #measurePage .quick-events[data-rows="3"]{height:99px}
+ #measurePage .quick-events[data-rows="4"]{height:132px}
+}
 </style>
 </head>
 <body>
@@ -434,6 +453,7 @@ function renderActionPad(){
   $('quickMemoInput').placeholder=!t?'トライを登録するとメモできます':memoMode==='last'?'直前ショットの内容を編集':'今回のショットの気づきを入力';
   $('memoTarget').textContent=memoMode==='last'?'確定済み #'+t.shots.length+' のメモ':'今回 #'+((t?.shots.length||0)+1)+' のショットに紐づけ';
   if(document.activeElement!==$('quickMemoInput'))$('quickMemoInput').value=t?(memoMode==='last'?last?.memo||'':t.pendingMemo||''):'';
+  $('quickEvents').dataset.rows=String(Math.max(1,Math.ceil(db.eventTypes.length/3)));
   $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" title="'+esc(x.name)+'" '+(!t||blocked||t.finishedAt?'disabled':'')+'>'+esc(x.name)+'</button>').join(''):'<span class="muted" style="font-size:12px">項目設定からボタンを登録</span>';
   $('configEvents').disabled=blocked;
   const e=t?.events.at(-1);
@@ -463,7 +483,7 @@ function renderHistory(){
   const q=norm($('search').value),from=$('filterFrom').value,to=$('filterTo').value;
   const list=db.trials.filter(t=>(!q||norm(t.name+' '+t.date).includes(q))&&(!from||t.date>=from)&&(!to||t.date<=to)).sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt);
   $('historyCount').textContent=list.length+' / '+db.trials.length+' トライ';
-  $('historyList').innerHTML=list.length?list.map(t=>'<button class="history-item" data-detail="'+esc(t.id)+'"><div><small>'+esc(t.date)+(t.running?' · 計測中':'')+'</small><strong>'+esc(t.name)+'</strong><small>'+t.shots.length+' ショット</small></div><div class="history-avg num">'+sec(stats(t.shots).mean)+'<small>平均 / 秒 →</small></div></button>').join(''):'<div class="empty full"><strong>該当する履歴がありません</strong>計測したトライは自動でここに残ります。</div>';
+  $('historyList').innerHTML=list.length?list.map(t=>'<button class="history-item" data-detail="'+esc(t.id)+'"><div><small>'+esc(t.date)+(t.finishedAt?' · 保存済み':t.running?' · 計測中':'')+'</small><strong>'+esc(t.name)+'</strong><small>'+t.shots.length+' ショット</small></div><div class="history-avg num">'+sec(stats(t.shots).mean)+'<small>平均 / 秒 →</small></div></button>').join(''):'<div class="empty full"><strong>該当する履歴がありません</strong>計測したトライは自動でここに残ります。</div>';
 }
 function showTab(name){document.activeElement?.blur?.();view=name;for(const v of ['measure','history'])$(v+'Page').hidden=v!==name;document.querySelectorAll('[data-tab]').forEach(b=>{b.setAttribute('aria-selected',String(b.dataset.tab===name));b.tabIndex=b.dataset.tab===name?0:-1;});if(name==='history')renderHistory();if(name==='measure')renderMeasure();window.scrollTo(0,0);syncViewport();}
 function renderAll(){applyTheme();renderMeasure();renderHistory();$('rescueArea').hidden=!damaged;}
@@ -486,7 +506,7 @@ function renderCompare(t){
 }
 function renderDetail(){
   const t=db.trials.find(x=>x.id===detailId);if(!t)return;
-  $('detailTitle').textContent=t.name;$('detailBody').innerHTML='<dl class="info">'+[['トライ名',t.name],['日付',t.date]].map(([k,v])=>'<div><dt>'+k+'</dt><dd>'+esc(v)+'</dd></div>').join('')+'</dl><div class="row"><button data-resume="'+esc(t.id)+'" class="primary">計測画面へ</button><button data-edit-trial="'+esc(t.id)+'">情報編集</button><button data-copy-trial="'+esc(t.id)+'">同じ名前で新規</button><button data-csv="'+esc(t.id)+'">CSV</button><button data-delete-trial="'+esc(t.id)+'" class="danger">削除</button></div><div id="detailStats" class="stats">'+statsHTML(t)+'</div><section><h3 style="margin-bottom:10px">イベント記録（'+t.events.length+'件）</h3><div id="detailEvents" class="event-list">'+eventHTML(t,'detail')+'</div></section><section><h3 style="margin-bottom:10px">同じトライ名の平均値を比較</h3><div class="table-wrap"><table><thead><tr><th>日付</th><th>平均 / 秒</th><th>有効数</th></tr></thead><tbody id="compareBody"></tbody></table></div><small>表示中のトライ ＋ 過去・他トライの直近19件。除外は集計に含みません。</small></section><section><h3 style="margin-bottom:10px">全ショット（新しい順）</h3><div id="detailShots" class="shots">'+shotHTML(t,'detail')+'</div></section>';renderCompare(t);
+  $('detailTitle').textContent=t.name;$('detailBody').innerHTML='<dl class="info">'+[['トライ名',t.name],['日付',t.date],['状態',t.finishedAt?'保存済み':'編集中']].map(([k,v])=>'<div><dt>'+k+'</dt><dd>'+esc(v)+'</dd></div>').join('')+'</dl>'+(t.finishedAt&&t.pendingMemo?'<p class="muted">終了時の未確定メモ：'+esc(t.pendingMemo)+'</p>':'')+'<div class="row"><button data-resume="'+esc(t.id)+'" class="primary">計測画面へ</button><button data-edit-trial="'+esc(t.id)+'">情報編集</button><button data-copy-trial="'+esc(t.id)+'">同じ名前で新規</button><button data-csv="'+esc(t.id)+'">CSV</button><button data-delete-trial="'+esc(t.id)+'" class="danger">削除</button></div><div id="detailStats" class="stats">'+statsHTML(t)+'</div><section><h3 style="margin-bottom:10px">イベント記録（'+t.events.length+'件）</h3><div id="detailEvents" class="event-list">'+eventHTML(t,'detail')+'</div></section><section><h3 style="margin-bottom:10px">同じトライ名の平均値を比較</h3><div class="table-wrap"><table><thead><tr><th>日付</th><th>平均 / 秒</th><th>有効数</th></tr></thead><tbody id="compareBody"></tbody></table></div><small>表示中のトライ ＋ 過去・他トライの直近19件。除外は集計に含みません。</small></section><section><h3 style="margin-bottom:10px">全ショット（新しい順）</h3><div id="detailShots" class="shots">'+shotHTML(t,'detail')+'</div></section>';renderCompare(t);
 }
 function drawWake(){if(!active()?.running){$('wakeState').textContent='スリープ防止：待機中';return;}$('wakeState').textContent=wake?'スリープ防止：ON':'スリープ防止：OFF / 利用不可';}
 async function requestWake(){
@@ -548,7 +568,7 @@ $('finishButton').addEventListener('click',()=>{
   t.finishedAt=Date.now();t.updatedAt=t.finishedAt;
   const saved=save();releaseWake();renderMeasure();renderHistory();
   if(saved)toast('トライを保存して終了しました。履歴から確認できます。');
-  else toast('保存できません。データ画面で保存状態を確認してください。');
+  else{t.finishedAt=null;renderMeasure();toast('保存できません。データ画面で保存状態を確認してください。');}
 });
 $('stopButton').addEventListener('click',()=>{if(!editable()||!clock)return;clock.pause();touch(active());releaseWake();renderMeasure();toast('停止しました。未確定のショットは再開後に続きます。');});
 $('undoButton').addEventListener('click',()=>{if(!editable()||!active()?.shots.length)return;clock.undo();touch(active());renderMeasure();toast('直前の区切りを取り消しました。時間は現在のショットに戻ります。');});
