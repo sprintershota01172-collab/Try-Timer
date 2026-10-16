@@ -57,6 +57,37 @@ dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:
  .event-tap{min-height:42px}
 }
 @media(min-width:800px){#measurePage .timer-button{height:max(235px,30svh)}}
+
+@media(max-width:799px){
+ header{padding-top:calc(6px + env(safe-area-inset-top,0px));padding-bottom:6px}
+ .brand-icon{width:36px;height:38px}.brand h1{font-size:17px}.eyebrow{font-size:9px}#saveStatus{font-size:10px}
+ main{padding-top:9px}
+ #measurePage .page-head{margin-bottom:7px}
+ #measurePage .trial-summary{padding:8px 11px}
+ #measurePage .trial-title{font-size:16px}
+ #measurePage .trial-meta{margin-top:2px;font-size:12px}
+ #measurePage .measure-grid{margin-top:9px}
+ #measurePage .measure-left{gap:7px}
+ #measurePage .timer-button{height:155px;gap:3px;border-radius:16px}
+ #measurePage .timer-action{font-size:23px}
+ #measurePage .timer-sub{font-size:11px}
+ #measurePage .controls button{min-height:46px}
+ .action-pad{gap:6px}.action-box{padding:8px 10px}
+ .action-title{margin-bottom:5px}
+ #quickMemoInput{height:41px;min-height:41px}
+ .memo-caption{margin-top:2px;font-size:10px}
+ .quick-events{gap:6px;max-height:100px}
+ .event-tap{min-height:45px;padding:6px 7px}
+ .recent-event{margin-top:4px}
+}
+@media(max-width:799px) and (max-height:750px){
+ #measurePage .timer-button{height:136px}
+ #measurePage .timer-value{font-size:clamp(36px,10vw,52px)}
+ #measurePage .timer-sub{display:none}
+ #measurePage .controls button{min-height:43px}
+ .event-tap{min-height:42px}
+ .quick-events{max-height:92px}
+}
 </style>
 </head>
 <body>
@@ -144,7 +175,7 @@ const TryTimerCore = (() => {
     start(){if(this.t.running)return;this.anchor=this.mono();this.cp=this.anchor;this.cw=this.wall();this.t.running=true;}
     pause(){if(!this.t.running)return;this.checkGap();this.t.elapsedMs=this.now();this.t.running=false;}
     lap(){if(!this.t.running)return null;this.checkGap();const s={id:uid(),ms:Math.max(0,this.now()-total(this.t)),memo:[this.t.pendingMemo,this.t.uncertain?'要確認：再読込・端末休止等':''].filter(Boolean).join(' / ').slice(0,240),excluded:!!this.t.uncertain,review:!!this.t.uncertain};this.t.shots.push(s);this.t.pendingMemo='';this.t.uncertain=false;return s;}
-    undo(){const s=this.t.shots.pop();if(s?.review)this.t.uncertain=true;return s;}
+    undo(){const s=this.t.shots.pop();if(s?.review)this.t.uncertain=true;if(s){const memo=s.memo.replace(/(?: \/ )?要確認：再読込・端末休止等$/,'');this.t.pendingMemo=[memo,this.t.pendingMemo].filter(Boolean).join(' / ').slice(0,240);}return s;}
     reset(){this.t.running=false;this.t.elapsedMs=0;this.t.shots=[];this.t.events=[];this.t.pendingMemo='';this.t.uncertain=false;this.anchor=this.mono();}
     snapshot(){return {...this.t,elapsedMs:this.now(),savedAt:this.wall()};}
   }
@@ -245,7 +276,7 @@ function renderActionPad(){
   $('memoLast').disabled=!last||blocked;$('memoCurrent').disabled=!t||blocked;
   $('quickMemoInput').disabled=!t||blocked;
   $('quickMemoInput').placeholder=!t?'トライを登録するとメモできます':memoMode==='last'?'直前ショットの内容を編集':'今回のショットの気づきを入力';
-  $('memoTarget').textContent=memoMode==='last'?'確定済み #'+t.shots.length+' のメモ':'今回 #'+(t?.shots.length||0)+1+' のショットに紐づけ';
+  $('memoTarget').textContent=memoMode==='last'?'確定済み #'+t.shots.length+' のメモ':'今回 #'+((t?.shots.length||0)+1)+' のショットに紐づけ';
   if(document.activeElement!==$('quickMemoInput'))$('quickMemoInput').value=t?(memoMode==='last'?last?.memo||'':t.pendingMemo||''):'';
   $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" '+(!t||blocked?'disabled':'')+'>'+esc(x.name)+'</button>').join(''):'<span class="muted" style="font-size:13px">「項目設定」からボタンを追加できます。</span>';
   $('configEvents').disabled=blocked;
@@ -322,7 +353,7 @@ $('trialForm').addEventListener('submit',e=>{
 });
 $('lapButton').addEventListener('click',()=>{
   if(!editable())return;const t=active();if(!t){openTrial();return;}
-  if(t.running){if(t.shots.length>=10000){toast('1トライの上限は10,000ショットです。新しいトライを作成してください。');return;}if(db.trials.reduce((n,x)=>n+x.shots.length,0)>=100000){toast('全体の上限は100,000ショットです。バックアップ後に履歴を整理してください。');return;}clock.lap();}else clock.start();
+  if(t.running){if(t.shots.length>=10000){toast('1トライの上限は10,000ショットです。新しいトライを作成してください。');return;}if(db.trials.reduce((n,x)=>n+x.shots.length,0)>=100000){toast('全体の上限は100,000ショットです。バックアップ後に履歴を整理してください。');return;}clock.lap();memoMode='current';}else clock.start();
   try{navigator.vibrate?.(12);}catch(e){}touch(t);renderMeasure();requestWake();
 });
 
@@ -387,7 +418,7 @@ document.addEventListener('click',e=>{
 document.addEventListener('input',e=>{
   const d=e.target.dataset;if(!d.shotMemo)return;if(!editable())return;
   const t=db.trials.find(x=>x.id===d.trial),s=t?.shots.find(x=>x.id===d.shotMemo);if(!s)return;
-  s.memo=e.target.value;touch(t);
+  s.memo=e.target.value;touch(t);if(memoMode==='last'&&t.id===db.activeId&&t.shots.at(-1)?.id===s.id){$('quickMemoInput').value=s.memo;}
 });
 document.addEventListener('change',e=>{
   const d=e.target.dataset;if(!d.exclude)return;const t=db.trials.find(x=>x.id===d.trial),s=t?.shots.find(x=>x.id===d.exclude);if(!s)return;
