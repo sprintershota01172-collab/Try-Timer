@@ -15,6 +15,48 @@ header{padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;border-bottom
 dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:1px solid var(--line);border-radius:20px;padding:0;background:var(--panel);color:var(--ink);box-shadow:var(--shadow);overscroll-behavior:contain}dialog::backdrop{background:#081322aa;backdrop-filter:blur(3px)}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;padding:12px 18px;border-bottom:1px solid var(--line);background:var(--panel);z-index:2}.close{width:48px;padding:0;font-size:26px}.modal-body{padding:18px}.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0}.info dt{font-size:12px;color:var(--muted)}.info dd{margin:2px 0 0;font-weight:650;overflow-wrap:anywhere}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}th,td{padding:12px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted);background:var(--soft)}tr.current{background:var(--soft);font-weight:800}.help{font-size:14px;line-height:1.8}.help li{margin:7px 0}.help ul{padding-left:22px;margin:0}#toast{position:fixed;bottom:calc(92px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);padding:12px 18px;border-radius:12px;background:var(--ink);color:var(--panel);font-size:14px;z-index:50;box-shadow:var(--shadow);pointer-events:none}
 .modal-head h2{min-width:0;overflow-wrap:anywhere;font-size:19px}.close{flex-shrink:0}
 @media(min-width:800px){.measure-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.timer-button{height:max(290px,34svh)}.history-list{grid-template-columns:repeat(2,minmax(0,1fr))}.shots-panel{align-self:start}}@media(max-width:370px){.card{padding:12px}.form-grid{grid-template-columns:1fr}.brand h1{font-size:17px}.shot-time{font-size:25px}.exclude{padding:6px;font-size:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* 計測中の操作は画面上部に集約し、メモやイベント記録のための縦スクロールを減らす。 */
+#measurePage .page-head{margin-bottom:9px}
+#measurePage .trial-summary{padding:10px 14px}
+#measurePage .measure-grid{margin-top:10px}
+#measurePage .measure-left{gap:9px}
+#measurePage .timer-button{height:clamp(155px,23svh,225px);gap:5px}
+#measurePage .timer-action{font-size:24px}
+#measurePage .timer-caption,#measurePage .timer-sub{font-size:12px}
+#measurePage .controls{margin-top:0}
+#measurePage .controls button{min-height:49px}
+.action-pad{display:grid;gap:8px}
+.action-box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.action-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;font-size:13px}
+.action-title strong{font-size:14px}
+.action-title .chip{min-height:33px;padding:4px 10px;font-size:12px}
+.memo-switch{display:flex;gap:4px}
+.memo-switch button{min-height:32px;padding:4px 10px;font-size:12px;border-radius:9px}
+.memo-switch button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#quickMemoInput{height:44px;min-height:44px;padding:8px 11px;font-size:16px}
+.memo-caption{font-size:11px;color:var(--muted);margin-top:4px;display:flex;gap:8px;justify-content:space-between}
+.quick-events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:116px;overflow-y:auto;overscroll-behavior:contain}
+.event-tap{min-height:47px;padding:8px 9px;background:var(--soft);border:1px solid var(--line);font-size:14px;line-height:1.25;overflow-wrap:anywhere}
+.event-tap:active:not(:disabled){background:var(--accent);color:var(--accent-ink)}
+.recent-event{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:7px;font-size:12px;color:var(--muted)}
+.recent-event button{min-height:32px;padding:3px 10px;font-size:12px}
+.event-list{display:grid;gap:8px}
+.event-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--soft);border-radius:10px;font-size:13px}
+.event-row>div{min-width:0}.event-row strong{display:block;overflow-wrap:anywhere}.event-row small{display:block}
+.event-row button{min-height:34px;padding:4px 9px;font-size:12px;flex-shrink:0}
+.event-settings-list{display:grid;gap:8px}.event-settings-list .event-row{background:var(--soft)}
+@media(max-height:740px) and (max-width:799px){
+ header{padding-top:calc(6px + env(safe-area-inset-top,0px));padding-bottom:6px}
+ main{padding-top:10px}
+ #measurePage .timer-button{height:clamp(135px,20svh,175px)}
+ #measurePage .timer-value{font-size:clamp(34px,10vw,54px)}
+ #measurePage .controls button{min-height:45px}
+ #measurePage .timer-state{font-size:11px}
+ .action-pad{gap:6px}.action-box{padding:7px 9px}.action-title{margin-bottom:5px}
+ .event-tap{min-height:42px}
+}
+@media(min-width:800px){#measurePage .timer-button{height:max(235px,30svh)}}
 </style>
 </head>
 <body>
@@ -23,15 +65,28 @@ dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:
 <div id="storageWarning" class="notice" role="alert" hidden></div>
 <section id="measurePage" class="page" role="tabpanel" aria-labelledby="tabMeasure">
 <div class="section-title page-head"><h2>計測</h2><button id="newTrial" class="primary">＋ 新しいトライ</button></div>
-<div class="card"><div class="row between"><div style="min-width:0;flex:1"><div id="trialTitle" class="trial-title">トライを登録して計測開始</div><div id="trialMeta" class="trial-meta">日付とトライ名だけで始められます</div></div><button id="editCurrent" class="chip" hidden>情報編集</button></div></div>
+<div class="card trial-summary"><div class="row between"><div style="min-width:0;flex:1"><div id="trialTitle" class="trial-title">トライを登録して計測開始</div><div id="trialMeta" class="trial-meta">日付とトライ名だけで始められます</div></div><button id="editCurrent" class="chip" hidden>情報編集</button></div></div>
 <div class="measure-grid"><div class="measure-left">
 <div class="timer-state"><span id="runState">待機中</span><span id="wakeState">スリープ防止：待機中</span></div>
 <div id="uncertainNotice" class="notice" hidden>再読込・端末休止・時計変更を検知しました。次のショットは「要確認」として集計から除外します。</div>
 <button id="lapButton" class="timer-button"><span id="lapCaption" class="timer-caption">今回のショット</span><span class="timer-value num"><span id="elapsed">00.00</span><span class="unit">秒</span></span><span id="lapAction" class="timer-action">トライを登録</span><span id="lapHint" class="timer-sub">1タップ目で開始、以後は1タップで1ショット</span></button>
 <div class="controls"><button id="stopButton" disabled>■ 停止</button><button id="undoButton" disabled>↶ 1つ戻す</button><button id="resetButton" class="danger" disabled>リセット</button></div>
+
+<div class="action-pad">
+<section class="action-box" aria-label="計測中のメモ">
+<div class="action-title"><strong>すぐメモ</strong><div class="memo-switch" role="group" aria-label="メモの記録先"><button id="memoCurrent" aria-pressed="true">今回</button><button id="memoLast" aria-pressed="false" disabled>直前</button></div></div>
+<input id="quickMemoInput" maxlength="240" type="text" autocomplete="off" enterkeyhint="done" placeholder="気づいたことをその場で入力" aria-label="ショットメモ">
+<div class="memo-caption"><span id="memoTarget">現在のショットに紐づけます</span><span>自動保存</span></div>
+</section>
+<section class="action-box" aria-label="ワンタッチイベント記録">
+<div class="action-title"><strong>ワンタッチ記録</strong><button id="configEvents" class="chip">項目設定</button></div>
+<div id="quickEvents" class="quick-events"></div>
+<div id="lastEvent" class="recent-event" hidden></div>
+</section>
+</div>
 <div class="timer-state"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止中の時間は含みません</span></div>
 <section><div class="section-title"><h3>集計</h3><span id="excludedCount" class="badge">0 件を除外</span></div><div id="liveStats" class="stats"></div><p class="stat-note">単位：秒 ／ σ：母標準偏差 ／ 記録済み・除外なしのショットが対象</p></section>
-</div><section class="card shots-panel"><div class="section-title"><h3>ショット一覧</h3><span id="shotCount" class="badge">0 ショット</span></div><div id="liveShots" class="shots"></div></section></div>
+<section class="card event-log-panel"><div class="section-title"><h3>トラブル・停止の記録</h3><span id="eventCount" class="badge">0 件</span></div><div id="liveEvents" class="event-list"></div></section></div><section class="card shots-panel"><div class="section-title"><h3>ショット一覧</h3><span id="shotCount" class="badge">0 ショット</span></div><div id="liveShots" class="shots"></div></section></div>
 </section>
 <section id="historyPage" class="page" role="tabpanel" aria-labelledby="tabHistory" hidden>
 <div class="section-title page-head"><h2>履歴</h2><span id="historyCount" class="badge">0 トライ</span></div>
@@ -53,7 +108,18 @@ dialog{width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:
 <label class="full">日付<input id="fDate" type="date" required min="0001-01-01" max="9999-12-31"></label>
 </div><div class="form-actions"><button type="button" data-close="trialDialog">キャンセル</button><button class="primary" type="submit">保存する</button></div></form></dialog>
 <dialog id="detailDialog" aria-labelledby="detailTitle"><div class="modal-head"><h2 id="detailTitle">トライ詳細</h2><button class="close" data-close="detailDialog" aria-label="閉じる">×</button></div><div id="detailBody" class="modal-body stack"></div></dialog>
-<dialog id="dataDialog" aria-labelledby="dataTitle"><div class="modal-head"><h2 id="dataTitle">データ・表示設定</h2><button class="close" data-close="dataDialog" aria-label="閉じる">×</button></div><div class="modal-body stack"><label>画面の配色<select id="theme"><option value="system">端末の設定に合わせる</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label><div class="card stack"><h3>書き出し / バックアップ</h3><button id="exportAll">全トライをCSVで書き出す</button><button id="exportJson" class="primary">JSONバックアップを書き出す</button><button id="importJson">JSONバックアップを読み込む</button><input id="jsonFile" type="file" accept=".json,application/json" hidden><p class="muted" style="font-size:13px">JSONの読み込みは全データを置き換えます。現在のデータを先にバックアップしてください。読み込み後のタイマーは停止状態です。旧形式のバックアップは名前を付け直して復元します。</p><div id="rescueArea" class="stack" hidden><button id="resetDamaged" class="danger">確認して新規データを開始</button></div></div><div class="help"><h3>使い方と保存について</h3><ul><li>最初のタップで開始。以後のタップで直前の区切りからの時間を記録します。</li><li>停止は一時停止です。未確定のショットは記録せず、再開時に続きを計測します。</li><li>「1つ戻す」は直前の区切りを取り消し、その時間を現在のショットに戻します。</li><li>リセットは選択中トライの全ショットと計測時間を消します。登録情報は残ります。</li><li>データはこのブラウザのlocalStorageに保存します。ブラウザのデータ削除・プライベートモード終了で失われる場合があります。</li><li>このHTMLは外部通信なしで動きます。別端末への移動にはJSONを使用してください。</li><li>スリープ防止は対応ブラウザ・安全な接続でのみ利用できます。利用不可の場合は端末の自動ロックを解除して計測してください。</li><li>通常はperformance.now()で計測します。再読込や端末休止では端末時計で補完し、該当ショットを要確認・集計除外にします。</li><li>CSVはUTF-8 BOM付きです。トライ名・日付・全ショット・集計を出力します。</li></ul></div></div></dialog>
+<dialog id="dataDialog" aria-labelledby="dataTitle"><div class="modal-head"><h2 id="dataTitle">データ・表示設定</h2><button class="close" data-close="dataDialog" aria-label="閉じる">×</button></div><div class="modal-body stack"><button id="openEventSettings">ワンタッチ項目を登録・編集</button><label>画面の配色<select id="theme"><option value="system">端末の設定に合わせる</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label><div class="card stack"><h3>書き出し / バックアップ</h3><button id="exportAll">全トライをCSVで書き出す</button><button id="exportJson" class="primary">JSONバックアップを書き出す</button><button id="importJson">JSONバックアップを読み込む</button><input id="jsonFile" type="file" accept=".json,application/json" hidden><p class="muted" style="font-size:13px">JSONの読み込みは全データを置き換えます。現在のデータを先にバックアップしてください。読み込み後のタイマーは停止状態です。旧形式のバックアップは名前を付け直して復元します。</p><div id="rescueArea" class="stack" hidden><button id="resetDamaged" class="danger">確認して新規データを開始</button></div></div><div class="help"><h3>使い方と保存について</h3><ul><li>最初のタップで開始。以後のタップで直前の区切りからの時間を記録します。</li><li>停止は一時停止です。未確定のショットは記録せず、再開時に続きを計測します。</li><li>「1つ戻す」は直前の区切りを取り消し、その時間を現在のショットに戻します。</li><li>「すぐメモ」の「今回」は進行中のショットに付けるメモです。ラップを押すとショットに保存されます。「直前」では確定済みの最後のショットを編集できます。</li><li>ワンタッチ記録は現在時刻・ショット番号・計測開始からの経過時間を保存します。計測は停止しません。ボタン名は「項目設定」から変更できます。</li><li>リセットは選択中トライの全ショットと計測時間を消します。登録情報は残ります。</li><li>データはこのブラウザのlocalStorageに保存します。ブラウザのデータ削除・プライベートモード終了で失われる場合があります。</li><li>このHTMLは外部通信なしで動きます。別端末への移動にはJSONを使用してください。</li><li>スリープ防止は対応ブラウザ・安全な接続でのみ利用できます。利用不可の場合は端末の自動ロックを解除して計測してください。</li><li>通常はperformance.now()で計測します。再読込や端末休止では端末時計で補完し、該当ショットを要確認・集計除外にします。</li><li>CSVはUTF-8 BOM付きです。トライ名・日付・全ショット・集計を出力します。</li></ul></div></div></dialog>
+
+<dialog id="eventSettingsDialog" aria-labelledby="eventSettingsTitle">
+<div class="modal-head"><h2 id="eventSettingsTitle">ワンタッチ項目設定</h2><button class="close" data-close="eventSettingsDialog" aria-label="閉じる">×</button></div>
+<div class="modal-body stack">
+<p class="muted" style="font-size:13px">計測画面のボタン名を登録・編集・削除できます。記録済みの履歴には当時の名称が残ります（最大12項目）。</p>
+<form id="eventItemForm" class="stack">
+<label>項目名<input id="eventItemName" maxlength="24" required autocomplete="off" placeholder="例：設備停止"></label>
+<div class="row"><button id="saveEventItem" class="primary" type="submit">＋ 項目を追加</button><button id="cancelEventEdit" type="button" hidden>編集をキャンセル</button></div>
+</form>
+<div id="eventSettingsList" class="event-settings-list"></div>
+</div></dialog>
 <datalist id="memoHints"><option value="材料交換"><option value="手直し"><option value="チョコ停"></datalist>
 <div id="toast" role="status" aria-live="polite" hidden></div>
 <script>
@@ -77,9 +143,9 @@ const TryTimerCore = (() => {
     checkGap(){const p=this.mono(),w=this.wall();if(this.t.running){const gap=(w-this.cw)-(p-this.cp);if(Math.abs(gap)>2000){this.t.elapsedMs+=Math.max(0,gap);this.t.uncertain=true;}}this.cp=p;this.cw=w;}
     start(){if(this.t.running)return;this.anchor=this.mono();this.cp=this.anchor;this.cw=this.wall();this.t.running=true;}
     pause(){if(!this.t.running)return;this.checkGap();this.t.elapsedMs=this.now();this.t.running=false;}
-    lap(){if(!this.t.running)return null;this.checkGap();const s={id:uid(),ms:Math.max(0,this.now()-total(this.t)),memo:this.t.uncertain?'要確認：再読込・端末休止等':'',excluded:!!this.t.uncertain,review:!!this.t.uncertain};this.t.shots.push(s);this.t.uncertain=false;return s;}
+    lap(){if(!this.t.running)return null;this.checkGap();const s={id:uid(),ms:Math.max(0,this.now()-total(this.t)),memo:[this.t.pendingMemo,this.t.uncertain?'要確認：再読込・端末休止等':''].filter(Boolean).join(' / ').slice(0,240),excluded:!!this.t.uncertain,review:!!this.t.uncertain};this.t.shots.push(s);this.t.pendingMemo='';this.t.uncertain=false;return s;}
     undo(){const s=this.t.shots.pop();if(s?.review)this.t.uncertain=true;return s;}
-    reset(){this.t.running=false;this.t.elapsedMs=0;this.t.shots=[];this.t.uncertain=false;this.anchor=this.mono();}
+    reset(){this.t.running=false;this.t.elapsedMs=0;this.t.shots=[];this.t.events=[];this.t.pendingMemo='';this.t.uncertain=false;this.anchor=this.mono();}
     snapshot(){return {...this.t,elapsedMs:this.now(),savedAt:this.wall()};}
   }
   function validate(v) {
@@ -88,20 +154,34 @@ const TryTimerCore = (() => {
     const num=x=>{if(typeof x!=='number'||!Number.isFinite(x)||x<0||x>1e14)fail();return x;};
     const bool=x=>{if(typeof x!=='boolean')fail();return x;};
     const unique=a=>{if(new Set(a.map(x=>x.id)).size!==a.length)fail();};
-    if(!v||v.app!=='try-timer'||![1,2].includes(v.version)||!Array.isArray(v.trials)||v.trials.length>3000)fail();
+    if(!v||v.app!=='try-timer'||![1,2,3].includes(v.version)||!Array.isArray(v.trials)||v.trials.length>3000)fail();
     if(!['system','light','dark'].includes(v.theme))fail();
+    const types=v.version>=3?v.eventTypes:null;
+    if(types!==null&&(!Array.isArray(types)||types.length>12))fail();
+    const eventTypes=(types||[
+      {id:'preset-stop',name:'設備停止'},{id:'preset-trouble',name:'トラブル'},
+      {id:'preset-short',name:'チョコ停'},{id:'preset-adjust',name:'条件調整'}
+    ]).map(x=>({id:str(x.id,120,true),name:str(x.name,24,true)}));
+    unique(eventTypes);
+    if(new Set(eventTypes.map(x=>x.name.trim())).size!==eventTypes.length)fail();
     let count=0;
     const trials=v.trials.map((t,index)=>{
       if(!Array.isArray(t.shots)||t.shots.length>10000||(count+=t.shots.length)>100000)fail();
       const shots=t.shots.map(s=>({id:str(s.id,120,true),ms:num(s.ms),memo:str(s.memo,240),excluded:bool(s.excluded),review:bool(s.review)}));unique(shots);
+      if(v.version>=3&&(!Array.isArray(t.events)||t.events.length>2000))fail();
+      const events=(v.version>=3?t.events:[]).map(e=>{
+        const shot=num(e.shot);if(!Number.isInteger(shot)||shot>10001)fail();
+        return {id:str(e.id,120,true),typeId:str(e.typeId,120,true),label:str(e.label,24,true),ms:num(e.ms),at:num(e.at),shot};
+      });unique(events);
+      const pendingMemo=v.version>=3?str(t.pendingMemo,240):'';
       const date=str(t.date,10,true);if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date))||new Date(date).toISOString().slice(0,10)!==date)fail();
-      const r={id:str(t.id,120,true),name:v.version===1?'トライ '+(index+1):str(t.name,120,true),date,shots,elapsedMs:num(t.elapsedMs),running:bool(t.running),uncertain:bool(t.uncertain),savedAt:num(t.savedAt),createdAt:num(t.createdAt),updatedAt:num(t.updatedAt)};
+      const r={id:str(t.id,120,true),name:v.version===1?'トライ '+(index+1):str(t.name,120,true),date,shots,events,pendingMemo,elapsedMs:num(t.elapsedMs),running:bool(t.running),uncertain:bool(t.uncertain),savedAt:num(t.savedAt),createdAt:num(t.createdAt),updatedAt:num(t.updatedAt)};
       if(r.elapsedMs+.01<total(r))fail();return r;
     });unique(trials);
     const activeId=v.activeId===null?null:str(v.activeId,120,true);
     if(activeId&&!trials.some(t=>t.id===activeId))fail();
     if(trials.some(t=>t.running&&t.id!==activeId))fail();
-    return {app:'try-timer',version:2,theme:v.theme,activeId,trials};
+    return {app:'try-timer',version:3,theme:v.theme,eventTypes,activeId,trials};
   }
   return {uid,total,stats,Clock,validate};
 })();
@@ -114,8 +194,8 @@ const $=id=>document.getElementById(id),KEY='try-timer.v1';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sec=v=>v===null?'—':(v/1000).toFixed(2),norm=v=>String(v).normalize('NFKC').toLowerCase().trim();
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
-const blank=()=>({app:'try-timer',version:2,theme:'system',activeId:null,trials:[]});
-let db=blank(),lastRaw=null,damaged=null,blocked=false,clock=null,view='measure',editingId=null,detailId=null,wake=null,wakePending=false,toastTimer,needsRewrite=false;
+const blank=()=>({app:'try-timer',version:3,theme:'system',eventTypes:[{id:'preset-stop',name:'設備停止'},{id:'preset-trouble',name:'トラブル'},{id:'preset-short',name:'チョコ停'},{id:'preset-adjust',name:'条件調整'}],activeId:null,trials:[]});
+let db=blank(),lastRaw=null,damaged=null,blocked=false,clock=null,view='measure',editingId=null,detailId=null,memoMode='current',editingEventId=null,wake=null,wakePending=false,toastTimer,needsRewrite=false;
 const shown=new Map();
 function warn(message){$('storageWarning').textContent=message;$('storageWarning').hidden=false;$('saveStatus').textContent='保存状態を確認してください';$('saveStatus').style.color='var(--danger)';}
 try{lastRaw=localStorage.getItem(KEY);if(lastRaw){db=validate(JSON.parse(lastRaw));needsRewrite=JSON.stringify(db)!==lastRaw;}}catch(e){if(lastRaw){damaged=lastRaw;blocked=true;warn('保存データを読み込めません。上書きを防止しています。「データ」からJSONの復元・初期化ができます。');}else warn('端末への保存が利用できません。「データ」からJSONをこまめに書き出してください。');}
@@ -145,12 +225,52 @@ function shotHTML(t,scope){
   if(start)html+='<button class="show-more" data-more="'+esc(t.id)+'" data-scope="'+scope+'">前の30件を表示（残り'+start+'件）</button>';return html;
 }
 function drawTime(){const t=active(),ms=clock?.now()||0;$('elapsed').textContent=sec(Math.max(0,ms-(t?total(t):0))).padStart(5,'0');$('totalElapsed').textContent=sec(ms);}
+
+function formatEventTime(at){return new Date(at).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function eventHTML(t,scope){
+  if(!t?.events?.length)return '<p class="muted" style="font-size:13px">まだイベント記録はありません。</p>';
+  const limit=shown.get('events-'+scope+t.id)||20,start=Math.max(0,t.events.length-limit);
+  let out='';
+  for(let i=t.events.length-1;i>=start;i--){const e=t.events[i];
+    out+='<div class="event-row"><div><strong>'+esc(e.label)+'</strong><small>'+esc(formatEventTime(e.at))+' ／ #'+e.shot+' 計測中 ／ '+sec(e.ms)+' 秒時点</small></div><button data-delete-event="'+esc(e.id)+'" data-trial="'+esc(t.id)+'" aria-label="'+esc(e.label)+'の記録を削除">削除</button></div>';
+  }
+  if(start)out+='<button class="show-more" data-more-events="'+esc(t.id)+'" data-scope="'+scope+'">古いイベントを表示（残り'+start+'件）</button>';
+  return out;
+}
+function renderActionPad(){
+  const t=active(),last=t?.shots.at(-1);
+  if(memoMode==='last'&&!last)memoMode='current';
+  $('memoCurrent').setAttribute('aria-pressed',String(memoMode==='current'));
+  $('memoLast').setAttribute('aria-pressed',String(memoMode==='last'));
+  $('memoLast').disabled=!last||blocked;$('memoCurrent').disabled=!t||blocked;
+  $('quickMemoInput').disabled=!t||blocked;
+  $('quickMemoInput').placeholder=!t?'トライを登録するとメモできます':memoMode==='last'?'直前ショットの内容を編集':'今回のショットの気づきを入力';
+  $('memoTarget').textContent=memoMode==='last'?'確定済み #'+t.shots.length+' のメモ':'今回 #'+(t?.shots.length||0)+1+' のショットに紐づけ';
+  if(document.activeElement!==$('quickMemoInput'))$('quickMemoInput').value=t?(memoMode==='last'?last?.memo||'':t.pendingMemo||''):'';
+  $('quickEvents').innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<button class="event-tap" data-record-event="'+esc(x.id)+'" '+(!t||blocked?'disabled':'')+'>'+esc(x.name)+'</button>').join(''):'<span class="muted" style="font-size:13px">「項目設定」からボタンを追加できます。</span>';
+  $('configEvents').disabled=blocked;
+  const e=t?.events.at(-1);
+  $('lastEvent').hidden=!e;
+  $('lastEvent').innerHTML=e?'<span>記録済：'+esc(e.label)+' '+esc(formatEventTime(e.at))+'</span><button data-undo-event="'+esc(e.id)+'">直前を取消</button>':'';
+  $('eventCount').textContent=(t?.events.length||0)+' 件';
+  $('liveEvents').innerHTML=eventHTML(t,'live');
+}
+function renderEventSettings(){
+  const list=$('eventSettingsList');
+  list.innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<div class="event-row"><strong>'+esc(x.name)+'</strong><div class="row"><button data-edit-event="'+esc(x.id)+'">編集</button><button class="danger" data-delete-type="'+esc(x.id)+'">削除</button></div></div>').join(''):'<p class="muted">項目がありません。上の欄から追加してください。</p>';
+  $('saveEventItem').textContent=editingEventId?'変更を保存':'＋ 項目を追加';$('cancelEventEdit').hidden=!editingEventId;
+}
+function openEventSettings(){
+  if(!editable())return;
+  editingEventId=null;$('eventItemForm').reset();renderEventSettings();
+  $('dataDialog').close();$('eventSettingsDialog').showModal();
+}
 function renderMeasure(){
   const t=active();$('trialTitle').textContent=t?t.name:'トライを登録して計測開始';$('trialMeta').textContent=t?t.date:'日付とトライ名だけで始められます';
   $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.running?'ラップを記録':(t.elapsedMs||t.shots.length)?'計測を再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
   $('lapHint').textContent=t?.running?'タップした瞬間に記録し、次のショットへ':'1タップ目で開始、以後は1タップで1ショット';$('runState').textContent=t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
   $('stopButton').disabled=!t?.running||blocked;$('undoButton').disabled=!t?.shots.length||blocked;$('resetButton').disabled=!t||blocked;$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=!t?.uncertain;
-  $('liveShots').innerHTML=shotHTML(t,'live');renderStats();drawTime();drawWake();
+  $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderActionPad();drawTime();drawWake();
 }
 function renderHistory(){
   const q=norm($('search').value),from=$('filterFrom').value,to=$('filterTo').value;
@@ -175,7 +295,7 @@ function renderCompare(t){
 }
 function renderDetail(){
   const t=db.trials.find(x=>x.id===detailId);if(!t)return;
-  $('detailTitle').textContent=t.name;$('detailBody').innerHTML='<dl class="info">'+[['トライ名',t.name],['日付',t.date]].map(([k,v])=>'<div><dt>'+k+'</dt><dd>'+esc(v)+'</dd></div>').join('')+'</dl><div class="row"><button data-resume="'+esc(t.id)+'" class="primary">計測画面へ</button><button data-edit-trial="'+esc(t.id)+'">情報編集</button><button data-copy-trial="'+esc(t.id)+'">同じ名前で新規</button><button data-csv="'+esc(t.id)+'">CSV</button><button data-delete-trial="'+esc(t.id)+'" class="danger">削除</button></div><div id="detailStats" class="stats">'+statsHTML(t)+'</div><section><h3 style="margin-bottom:10px">同じトライ名の平均値を比較</h3><div class="table-wrap"><table><thead><tr><th>日付</th><th>平均 / 秒</th><th>有効数</th></tr></thead><tbody id="compareBody"></tbody></table></div><small>表示中のトライ ＋ 過去・他トライの直近19件。除外は集計に含みません。</small></section><section><h3 style="margin-bottom:10px">全ショット（新しい順）</h3><div id="detailShots" class="shots">'+shotHTML(t,'detail')+'</div></section>';renderCompare(t);
+  $('detailTitle').textContent=t.name;$('detailBody').innerHTML='<dl class="info">'+[['トライ名',t.name],['日付',t.date]].map(([k,v])=>'<div><dt>'+k+'</dt><dd>'+esc(v)+'</dd></div>').join('')+'</dl><div class="row"><button data-resume="'+esc(t.id)+'" class="primary">計測画面へ</button><button data-edit-trial="'+esc(t.id)+'">情報編集</button><button data-copy-trial="'+esc(t.id)+'">同じ名前で新規</button><button data-csv="'+esc(t.id)+'">CSV</button><button data-delete-trial="'+esc(t.id)+'" class="danger">削除</button></div><div id="detailStats" class="stats">'+statsHTML(t)+'</div><section><h3 style="margin-bottom:10px">イベント記録（'+t.events.length+'件）</h3><div id="detailEvents" class="event-list">'+eventHTML(t,'detail')+'</div></section><section><h3 style="margin-bottom:10px">同じトライ名の平均値を比較</h3><div class="table-wrap"><table><thead><tr><th>日付</th><th>平均 / 秒</th><th>有効数</th></tr></thead><tbody id="compareBody"></tbody></table></div><small>表示中のトライ ＋ 過去・他トライの直近19件。除外は集計に含みません。</small></section><section><h3 style="margin-bottom:10px">全ショット（新しい順）</h3><div id="detailShots" class="shots">'+shotHTML(t,'detail')+'</div></section>';renderCompare(t);
 }
 function drawWake(){if(!active()?.running){$('wakeState').textContent='スリープ防止：待機中';return;}$('wakeState').textContent=wake?'スリープ防止：ON':'スリープ防止：OFF / 利用不可';}
 async function requestWake(){
@@ -188,8 +308,8 @@ function download(text,name,type){const url=URL.createObjectURL(new Blob([text],
 function csvCell(v){let s=String(v??'');if(/^[\s]*[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
 function exportCSV(trials){
   if(!trials.length){toast('書き出すトライがありません。');return;}
-  const rows=[['種別','トライID','トライ名','日付','ショットNo.','時間(秒)','集計から除外','ショットメモ','有効ショット数','総ショット数','平均(秒)','MAX(秒)','MIN(秒)','母標準偏差(秒)','MAX-MIN(秒)']];
-  for(const t of trials){const s=stats(t.shots),meta=[t.id,t.name,t.date];rows.push(['集計',...meta,'','','','',s.n,t.shots.length,...[s.mean,s.max,s.min,s.sd,s.range].map(v=>v===null?'':sec(v))]);t.shots.forEach((x,i)=>rows.push(['ショット',...meta,i+1,sec(x.ms),x.excluded?'はい':'いいえ',x.memo,'','','','','','','']));}
+  const rows=[['種別','トライID','トライ名','日付','ショットNo.','時間(秒)','集計から除外','ショットメモ','有効ショット数','総ショット数','平均(秒)','MAX(秒)','MIN(秒)','母標準偏差(秒)','MAX-MIN(秒)','イベント時刻(ISO)','イベント名','イベント発生時の計測経過(秒)','発生時のショットNo.']];
+  for(const t of trials){const s=stats(t.shots),meta=[t.id,t.name,t.date];rows.push(['集計',...meta,'','','','',s.n,t.shots.length,...[s.mean,s.max,s.min,s.sd,s.range].map(v=>v===null?'':sec(v)),...Array(4).fill('')]);t.shots.forEach((x,i)=>rows.push(['ショット',...meta,i+1,sec(x.ms),x.excluded?'はい':'いいえ',x.memo,...Array(7).fill(''),...Array(4).fill('')]));t.events.forEach(e=>rows.push(['イベント',...meta,...Array(11).fill(''),new Date(e.at).toISOString(),e.label,sec(e.ms),e.shot]));}
   download('\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),'try-timer_'+today()+'.csv','text/csv;charset=utf-8');toast('CSVを書き出しました。');
 }
 function exportJSON(){const data=snapshot();data.trials=data.trials.map(t=>({...t,running:false}));download(JSON.stringify({...data,exportedAt:new Date().toISOString()},null,2),'try-timer_backup_'+today()+'.json','application/json');toast('JSONバックアップを書き出しました。');}
@@ -197,7 +317,7 @@ $('trialForm').addEventListener('submit',e=>{
   e.preventDefault();if(!editable())return;
   const existing=db.trials.find(t=>t.id===editingId),fields={name:$('fName').value.trim(),date:$('fDate').value};
   if(!fields.name||fields.name.length>120||!/^\d{4}-\d{2}-\d{2}$/.test(fields.date)||!Number.isFinite(Date.parse(fields.date))||new Date(fields.date).toISOString().slice(0,10)!==fields.date){toast('トライ名と正しい日付を入力してください。');return;}
-  if(existing)Object.assign(existing,fields,{updatedAt:Date.now()});else{if(active()?.running){toast('計測を停止してください。');return;}if(db.trials.length>=3000){toast('トライは3,000件までです。バックアップ後に古い履歴を整理してください。');return;}const t={id:uid(),...fields,shots:[],elapsedMs:0,running:false,uncertain:false,savedAt:Date.now(),createdAt:Date.now(),updatedAt:Date.now()};db.trials.push(t);db.activeId=t.id;clock=new Clock(t);}
+  if(existing)Object.assign(existing,fields,{updatedAt:Date.now()});else{if(active()?.running){toast('計測を停止してください。');return;}if(db.trials.length>=3000){toast('トライは3,000件までです。バックアップ後に古い履歴を整理してください。');return;}const t={id:uid(),...fields,shots:[],events:[],pendingMemo:'',elapsedMs:0,running:false,uncertain:false,savedAt:Date.now(),createdAt:Date.now(),updatedAt:Date.now()};db.trials.push(t);db.activeId=t.id;clock=new Clock(t);}
   save();$('trialDialog').close();if(!existing){$('detailDialog').close();detailId=null;showTab('measure');}renderAll();if(detailId)renderDetail();toast(existing?'トライ情報を更新しました。':'トライを登録しました。スタートで計測できます。');
 });
 $('lapButton').addEventListener('click',()=>{
@@ -205,6 +325,27 @@ $('lapButton').addEventListener('click',()=>{
   if(t.running){if(t.shots.length>=10000){toast('1トライの上限は10,000ショットです。新しいトライを作成してください。');return;}if(db.trials.reduce((n,x)=>n+x.shots.length,0)>=100000){toast('全体の上限は100,000ショットです。バックアップ後に履歴を整理してください。');return;}clock.lap();}else clock.start();
   try{navigator.vibrate?.(12);}catch(e){}touch(t);renderMeasure();requestWake();
 });
+
+$('memoCurrent').onclick=()=>{memoMode='current';renderActionPad();$('quickMemoInput').focus({preventScroll:true});};
+$('memoLast').onclick=()=>{memoMode='last';renderActionPad();$('quickMemoInput').focus({preventScroll:true});};
+$('quickMemoInput').addEventListener('input',e=>{
+  const t=active();if(!t||!editable())return;
+  if(memoMode==='last'){const s=t.shots.at(-1);if(!s)return;s.memo=e.target.value.slice(0,240);}
+  else t.pendingMemo=e.target.value.slice(0,240);
+  touch(t);
+  if(memoMode==='last')$('liveShots').innerHTML=shotHTML(t,'live');
+});
+$('configEvents').onclick=openEventSettings;
+$('openEventSettings').onclick=openEventSettings;
+$('eventItemForm').addEventListener('submit',e=>{
+  e.preventDefault();if(!editable())return;const name=$('eventItemName').value.trim();
+  if(!name||name.length>24){toast('24文字以内で項目名を入力してください。');return;}
+  if(db.eventTypes.some(x=>x.name===name&&x.id!==editingEventId)){toast('同じ名前の項目が登録されています。');return;}
+  if(editingEventId){const x=db.eventTypes.find(x=>x.id===editingEventId);if(!x)return;x.name=name;}
+  else{if(db.eventTypes.length>=12){toast('ワンタッチ項目は12件までです。');return;}db.eventTypes.push({id:uid(),name});}
+  editingEventId=null;$('eventItemForm').reset();save();renderEventSettings();renderActionPad();toast('ワンタッチ項目を保存しました。');
+});
+$('cancelEventEdit').onclick=()=>{editingEventId=null;$('eventItemForm').reset();renderEventSettings();};
 $('stopButton').addEventListener('click',()=>{if(!editable()||!clock)return;clock.pause();touch(active());releaseWake();renderMeasure();toast('停止しました。未確定のショットは再開後に続きます。');});
 $('undoButton').addEventListener('click',()=>{if(!editable()||!active()?.shots.length)return;clock.undo();touch(active());renderMeasure();toast('直前の区切りを取り消しました。時間は現在のショットに戻ります。');});
 $('resetButton').addEventListener('click',()=>{if(!editable()||!clock)return;if(!confirm('このトライの全ショットと計測時間をリセットします。登録情報は残ります。よろしいですか？'))return;clock.reset();touch(active());releaseWake();renderMeasure();toast('計測をリセットしました。');});
@@ -227,6 +368,12 @@ $('clearFilters').onclick=()=>{['search','filterFrom','filterTo'].forEach(id=>$(
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(d.close){$(d.close).close();return;}if(d.tab){showTab(d.tab);return;}
+  if(d.recordEvent){if(!editable())return;const t=active(),type=db.eventTypes.find(x=>x.id===d.recordEvent);if(!t||!type)return;if(t.events.length>=2000){toast('イベント記録の上限は2,000件です。');return;}t.events.push({id:uid(),typeId:type.id,label:type.name,ms:clock.now(),at:Date.now(),shot:t.shots.length+1});touch(t);try{navigator.vibrate?.(18);}catch(e){}renderActionPad();toast(type.name+' を記録しました。計測は継続中です。');return;}
+  if(d.undoEvent){if(!editable())return;const t=active();if(!t||t.events.at(-1)?.id!==d.undoEvent)return;t.events.pop();touch(t);renderActionPad();toast('直前のイベント記録を取り消しました。');return;}
+  if(d.editEvent){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.editEvent);if(!x)return;editingEventId=x.id;$('eventItemName').value=x.name;renderEventSettings();$('eventItemName').focus();return;}
+  if(d.deleteType){if(!editable())return;const x=db.eventTypes.find(x=>x.id===d.deleteType);if(!x)return;if(!confirm('ワンタッチ項目「'+x.name+'」を削除しますか？既存の記録は残ります。'))return;db.eventTypes=db.eventTypes.filter(y=>y.id!==x.id);if(editingEventId===x.id){editingEventId=null;$('eventItemForm').reset();}save();renderEventSettings();renderActionPad();toast('項目を削除しました。');return;}
+  if(d.deleteEvent){if(!editable())return;const t=db.trials.find(x=>x.id===d.trial),ev=t?.events.find(x=>x.id===d.deleteEvent);if(!ev)return;if(!confirm('イベント「'+ev.label+'」の記録を削除しますか？'))return;t.events=t.events.filter(x=>x.id!==d.deleteEvent);touch(t);renderActionPad();if(detailId===t.id)renderDetail();return;}
+  if(d.moreEvents){const t=db.trials.find(x=>x.id===d.moreEvents);if(!t)return;shown.set('events-'+d.scope+t.id,(shown.get('events-'+d.scope+t.id)||20)+20);$(d.scope==='live'?'liveEvents':'detailEvents').innerHTML=eventHTML(t,d.scope);return;}
   if(d.detail){detailId=d.detail;renderDetail();$('detailDialog').showModal();return;}
   if(d.more){const t=db.trials.find(x=>x.id===d.more);shown.set(d.scope+t.id,(shown.get(d.scope+t.id)||30)+30);$(d.scope==='live'?'liveShots':'detailShots').innerHTML=shotHTML(t,d.scope);return;}
   if(d.csv){exportCSV(db.trials.filter(t=>t.id===d.csv));return;}
