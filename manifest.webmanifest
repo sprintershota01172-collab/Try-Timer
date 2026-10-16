@@ -1,0 +1,24 @@
+{
+  "name": "トライタイマー",
+  "short_name": "トライタイマー",
+  "description": "製造現場のサイクルタイム計測・メモ・設備イベント記録",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f4f3",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
