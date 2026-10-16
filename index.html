@@ -388,6 +388,15 @@ body>header #dataButton{background:var(--panel);color:var(--ink);border:1px soli
 #measurePage .event-tap .event-name{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;line-height:1.12}
 #measurePage .event-tap .event-mark{font-size:9px;font-weight:800;line-height:1;color:inherit;opacity:.85}
 #measurePage .recent-rows{grid-template-rows:repeat(5,minmax(0,1fr))}
+
+/* One compact information band per trial in History. */
+#historyPage .history-list{gap:3px;margin-top:5px}
+#historyPage .history-item{min-height:33px;padding:3px 7px;gap:6px;border-radius:5px}
+#historyPage .history-item>div:first-child{flex:1;overflow:hidden}
+#historyPage .history-item strong{font-size:11px;line-height:1.15;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;display:block}
+#historyPage .history-item small{display:block;font-size:9px;line-height:1.15;margin-top:1px;white-space:nowrap}
+#historyPage .history-avg{font-size:14px;line-height:1;flex:0 0 auto}
+#historyPage .history-avg small{font-size:8px;line-height:1}
 </style>
 </head>
 <body>
@@ -671,7 +680,7 @@ function renderHistory(){
   const q=norm($('search').value),from=$('filterFrom').value,to=$('filterTo').value;
   const list=db.trials.filter(t=>(!q||norm(t.name+' '+t.date).includes(q))&&(!from||t.date>=from)&&(!to||t.date<=to)).sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt);
   $('historyCount').textContent=list.length+' / '+db.trials.length+' トライ';
-  $('historyList').innerHTML=list.length?list.map(t=>'<button class="history-item" data-detail="'+esc(t.id)+'"><div><small>'+esc(t.date)+(t.finishedAt?' · 保存済み':t.running?' · 計測中':'')+'</small><strong>'+esc(t.name)+'</strong><small>'+t.shots.length+' ショット</small></div><div class="history-avg num">'+sec(stats(t.shots).mean)+'<small>平均 / 秒 →</small></div></button>').join(''):'<div class="empty full"><strong>該当する履歴がありません</strong>計測したトライは自動でここに残ります。</div>';
+  $('historyList').innerHTML=list.length?list.map(t=>'<button class="history-item" data-detail="'+esc(t.id)+'"><div><strong>'+esc(t.name)+'</strong><small>'+esc(t.date)+'　'+t.shots.length+'件'+(t.finishedAt?' · 保存済':t.running?' · 計測中':'')+'</small></div><div class="history-avg num">'+sec(stats(t.shots).mean)+'<small>秒 →</small></div></button>').join(''):'<div class="empty full"><strong>該当する履歴がありません</strong>計測したトライは自動でここに残ります。</div>';
 }
 function showTab(name){document.activeElement?.blur?.();view=name;for(const v of ['measure','history'])$(v+'Page').hidden=v!==name;document.querySelectorAll('[data-tab]').forEach(b=>{b.setAttribute('aria-selected',String(b.dataset.tab===name));b.tabIndex=b.dataset.tab===name?0:-1;});if(name==='history')renderHistory();if(name==='measure')renderMeasure();window.scrollTo(0,0);syncViewport();}
 function renderAll(){applyTheme();renderMeasure();renderHistory();$('rescueArea').hidden=!damaged;}
@@ -739,12 +748,12 @@ function startNextTrial(){
 }
 $('lapButton').addEventListener('click',()=>{
   if(!editable())return;const t=active();if(!t){openTrial();return;}if(t.finishedAt){startNextTrial();return;}
-  if(t.running){if(t.shots.length>=10000){toast('1トライの上限は10,000ショットです。新しいトライを作成してください。');return;}if(db.trials.reduce((n,x)=>n+x.shots.length,0)>=100000){toast('全体の上限は100,000ショットです。バックアップ後に履歴を整理してください。');return;}clock.lap();memoMode='current';}else clock.start();
+  if(t.running){if(t.shots.length>=10000){toast('1トライの上限は10,000ショットです。新しいトライを作成してください。');return;}if(db.trials.reduce((n,x)=>n+x.shots.length,0)>=100000){toast('全体の上限は100,000ショットです。バックアップ後に履歴を整理してください。');return;}clock.lap();memoMode='current';$('quickMemoInput').value='';}else clock.start();
   try{navigator.vibrate?.(12);}catch(e){}touch(t);renderMeasure();requestWake();
 });
 
-$('memoCurrent').onclick=()=>{memoMode='current';renderActionPad();$('quickMemoInput').focus({preventScroll:true});};
-$('memoLast').onclick=()=>{memoMode='last';renderActionPad();$('quickMemoInput').focus({preventScroll:true});};
+$('memoCurrent').onclick=()=>{memoMode='current';renderActionPad();};
+$('memoLast').onclick=()=>{memoMode='last';renderActionPad();};
 $('quickMemoInput').addEventListener('input',e=>{
   const t=active();if(!t||!editable())return;
   if(memoMode==='last'){const s=t.shots.at(-1);if(!s)return;s.memo=e.target.value.slice(0,240);}
