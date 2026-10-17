@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#123a61">
+<meta name="theme-color" content="#182e36">
 <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
 <link rel="manifest" href="./manifest.webmanifest">
@@ -1060,14 +1060,522 @@ dialog label,
   letter-spacing:.01em;
 }
 
+
+/* ══════════════════════════════════════════════════════════
+   TRY TIMER / ATELIER EDITION · VISUAL DESIGN SYSTEM 3.0
+   Industrial precision instrument with luxury editorial UI
+   Device-local typeface stacks; no network fonts or dependencies.
+   ══════════════════════════════════════════════════════════ */
+:root:not([data-theme="dark"]){
+  color-scheme:light;
+  --bg:#f2f0eb;--panel:#fffefa;--ink:#21343c;--muted:#68777b;
+  --line:#dad8d1;--soft:#f0eee8;--accent:#b99157;--accent-ink:#15252b;
+  --good:#37705d;--danger:#a44c4d;
+  --shadow:0 5px 17px #152e3511;
+  --accent-detail:#8c693e;--accent-surface:#eee8dd;
+  --atelier-dark:#182e36;--atelier-deep:#0e232d;--atelier-gold:#d1aa71;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1d24;--panel:#1c3039;--ink:#f3eee4;--muted:#a5b2b5;
+  --line:#3b5056;--soft:#263b43;--accent:#d1aa71;--accent-ink:#172b33;
+  --good:#91d6b8;--danger:#f3a8aa;
+  --shadow:0 6px 24px #0003;
+  --accent-detail:#d1aa71;--accent-surface:#293d44;
+  --atelier-dark:#102630;--atelier-deep:#091c25;--atelier-gold:#d1aa71;
+}
+body{color:var(--ink);background:var(--bg);letter-spacing:.014em;font-kerning:normal}
+body,button,select,input,textarea{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans",-apple-system,"Yu Gothic",sans-serif!important}
+button{font-weight:600;letter-spacing:.025em}
+button:focus-visible,input:focus-visible,select:focus-visible{
+ outline:2px solid var(--atelier-gold);outline-offset:2px
+}
+body>header{
+ background:linear-gradient(112deg,var(--atelier-deep),var(--atelier-dark) 72%,#23434b)!important;
+ border-bottom:2px solid #b8915b!important;color:#faf4e9;
+ padding-top:calc(5px + env(safe-area-inset-top,0px));padding-bottom:6px;
+ box-shadow:0 5px 18px #0b25301f
+}
+body>header .brand{gap:10px}
+body>header .brand-icon{
+ width:39px;height:39px;border:1px solid #d3aa6e80;
+ border-radius:11px;box-shadow:0 0 0 2px #d3aa6e16;
+ background:#27404c
+}
+body>header .brand h1{
+ color:#fff9ed!important;
+ font-family:"Hiragino Mincho ProN","Yu Mincho",serif!important;
+ font-size:18px!important;line-height:1.25;font-weight:600!important;letter-spacing:.10em!important
+}
+body>header .eyebrow{
+ display:block!important;
+ color:#d3b88f;font-family:"Avenir Next","Helvetica Neue",sans-serif!important;
+ font-size:8px!important;letter-spacing:.15em!important;
+ font-weight:600!important;line-height:1.2
+}
+body>header #saveStatus{display:none!important}
+body>header #dataButton{
+ background:#ffffff0d!important;color:#f7eee0!important;
+ border:1px solid #e2caa96b!important;
+ border-radius:9px!important;
+ font-size:11px!important;font-weight:600!important;
+ min-height:35px;letter-spacing:.06em;
+ box-shadow:inset 0 1px #ffffff0d
+}
+main{background:var(--bg);padding-top:8px}
+#measurePage .page-head{
+ padding-inline:3px;min-height:30px;
+ border-bottom:0;margin-bottom:5px
+}
+#measurePage .page-head h2{
+ color:var(--ink);font-size:15px!important;
+ font-family:"Hiragino Mincho ProN","Yu Mincho",serif!important;
+ letter-spacing:.04em!important;font-weight:600!important
+}
+#measurePage .page-head h2::before{
+ content:"";display:inline-block;vertical-align:middle;
+ height:13px;width:3px;background:var(--accent);border-radius:2px;margin-right:3px
+}
+#measurePage .page-head h2 small{
+ padding:0!important;background:transparent!important;border:0!important;
+ color:var(--accent-detail)!important;font-family:"Avenir Next","Helvetica Neue",sans-serif!important;
+ font-size:8px!important;letter-spacing:.13em!important
+}
+#measurePage .page-head .row{gap:5px}
+#measurePage .page-head button{
+ min-height:30px;padding:5px 9px;
+ border:1px solid var(--line);border-radius:8px;
+ color:var(--ink);background:var(--panel);
+ font-size:11px;font-weight:600
+}
+#measurePage .page-head #newTrial{
+ background:var(--atelier-dark)!important;border-color:var(--atelier-dark)!important;
+ color:#f7ecdb!important;box-shadow:none!important
+}
+#measurePage .trial-summary{
+ background:var(--panel)!important;border:1px solid var(--line)!important;
+ border-left:3px solid var(--atelier-gold)!important;border-radius:11px!important;
+ min-height:51px;padding:7px 11px!important;box-shadow:var(--shadow)!important
+}
+#measurePage .trial-summary .row{min-height:33px;gap:8px}
+#measurePage .trial-eyebrow{
+ font-family:"Avenir Next","Helvetica Neue",sans-serif!important;
+ font-size:8px;letter-spacing:.15em!important;font-weight:600!important;
+ color:var(--accent-detail)!important
+}
+#measurePage .trial-dot{background:#bf9962!important;box-shadow:none}
+#measurePage .trial-summary .trial-title{
+ color:var(--ink)!important;
+ font-family:"Hiragino Mincho ProN","Yu Mincho",serif!important;
+ font-size:15px!important;font-weight:600!important;letter-spacing:.026em!important
+}
+#measurePage .trial-summary .trial-meta{font-size:10px;color:var(--muted)}
+#measurePage .trial-summary .chip{
+ background:var(--soft)!important;color:var(--ink)!important;
+ border-color:var(--line)!important;box-shadow:none;
+ border-radius:7px!important;min-height:29px;padding:4px 10px
+}
+#measurePage .measure-left{gap:5px!important}
+#measurePage .timer-state{
+ min-height:15px;align-items:center;
+ font-size:10px;letter-spacing:.03em;
+ color:var(--muted);padding-inline:4px
+}
+#measurePage #runState{color:var(--good)!important;font-weight:650!important}
+#measurePage #wakeState{color:var(--muted)}
+/* Digital instrument display: completely distinct from old white timer */
+#measurePage .clock-face{
+ position:relative;overflow:hidden;
+ box-sizing:border-box;flex:0 0 auto;
+ background:linear-gradient(112deg,#122833,#1b3d48 62%,#183640)!important;
+ border:1px solid #294e59!important;border-radius:13px!important;
+ min-height:94px!important;height:94px!important;
+ gap:1px;padding:8px 9px 7px!important;
+ box-shadow:inset 0 1px #ffffff22,0 6px 15px #122e381b!important;
+}
+#measurePage .clock-face:before{
+ content:"";position:absolute;top:0;bottom:0;left:0;width:4px;background:#c49a60
+}
+#measurePage .clock-face:after{
+ content:"CYCLE";pointer-events:none;position:absolute;top:10px;right:12px;
+ color:#ffffff36;font:600 9px "Avenir Next","Helvetica Neue",sans-serif;letter-spacing:.16em
+}
+#measurePage .timer-caption{
+ color:#ccba9e!important;font-family:"Avenir Next","Helvetica Neue",sans-serif!important;
+ font-size:10px!important;font-weight:650!important;letter-spacing:.09em!important
+}
+#measurePage .timer-value,
+#measurePage .timer-value #elapsed{
+ color:#fffdf6!important;
+ font-family:"Avenir Next","SF Pro Display","Helvetica Neue",sans-serif!important;
+ font-size:clamp(42px,11.2vw,58px)!important;
+ font-weight:600!important;letter-spacing:-.03em!important;
+ line-height:1.05;
+ font-variant-numeric:tabular-nums lining-nums;
+ text-shadow:0 2px 10px #06182255
+}
+#measurePage .timer-value #elapsed[data-digits="8"],
+#measurePage .timer-value #elapsed[data-digits="9"]{font-size:.80em!important}
+#measurePage .timer-value #elapsed[data-digits="10"],
+#measurePage .timer-value #elapsed[data-digits="11"]{font-size:.67em!important}
+#measurePage .timer-value .unit{
+ color:#d8ba89!important;font:600 11px "Avenir Next",sans-serif!important;
+ letter-spacing:.13em!important
+}
+#measurePage .clock-previous,
+#measurePage #lastLapLabel,
+#measurePage #lastLapTime,
+#measurePage #prevLapTime,
+#measurePage .clock-previous small{color:#b6cbd0!important;font-weight:550!important}
+#measurePage .clock-face.is-running{border-color:#bd9a62!important;box-shadow:inset 0 1px #ffffff23,0 0 0 1px #bd9a623e!important}
+/* Operation keypad: geometric instead of circular */
+#measurePage .controls{
+ justify-content:stretch;align-items:center;
+ gap:7px!important;padding:0 1px!important;
+ min-height:75px!important;margin:0!important
+}
+#measurePage .controls button{
+ border-radius:11px!important;
+ font-size:12px!important;font-weight:600!important;
+ box-shadow:none!important;gap:5px;letter-spacing:.04em!important
+}
+#measurePage .controls .disc-action,
+#measurePage .controls #resetButton,
+#measurePage .controls #stopButton{
+ flex:1 1 0!important;width:auto!important;
+ height:61px!important;min-height:61px!important;max-height:61px!important;
+ background:var(--panel)!important;color:var(--ink)!important;
+ border:1px solid var(--line)!important;padding:5px 2px!important
+}
+#measurePage .controls #stopButton{
+ background:#e8e3da!important;color:#293b41!important;
+ border-color:#d0c9bc!important
+}
+:root[data-theme="dark"] #measurePage .controls #stopButton{
+ background:#33464c!important;color:#f2e8dc!important;border-color:#4d6167!important
+}
+#measurePage .controls .disc-icon{
+ font-family:"Avenir Next","Helvetica Neue",sans-serif!important;
+ font-size:16px!important;font-weight:500!important
+}
+#measurePage .controls .timer-button{
+ flex:1.45 1 0!important;width:auto!important;max-width:none!important;
+ min-width:0;min-height:74px!important;height:74px!important;max-height:74px!important;
+ border:1px solid #d8ad72!important;border-radius:12px!important;
+ background:linear-gradient(135deg,#cba46e,#b78a4d)!important;
+ color:#172a32!important;
+ padding:6px 4px!important;
+ box-shadow:inset 0 1px #fff3d6,0 3px 9px #62462721!important
+}
+#measurePage .controls .timer-button.is-running{
+ background:linear-gradient(125deg,#c69c61,#e1ba7d)!important;color:#112934!important
+}
+#measurePage .controls .timer-button:active:not(:disabled){
+ transform:translateY(1px)!important;
+ background:#ba9059!important;
+ box-shadow:inset 0 2px 8px #77532222!important
+}
+#measurePage .disc-play{
+ font-family:"Avenir Next",sans-serif!important;font-size:18px!important
+}
+#measurePage #lapAction{
+ font-size:13px!important;
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif!important;
+ font-weight:700!important;letter-spacing:.07em!important
+}
+#measurePage .control-foot{gap:6px!important;min-height:28px!important}
+#measurePage .control-foot button{
+ height:29px!important;min-height:29px!important;
+ border-radius:8px!important;font-size:11px!important;font-weight:550!important;
+ letter-spacing:.025em!important
+}
+#measurePage #undoButton{
+ background:transparent!important;border:1px solid var(--line)!important;
+ color:var(--muted)!important
+}
+#measurePage #finishButton{
+ background:var(--atelier-dark)!important;border:1px solid var(--atelier-dark)!important;
+ color:#f5edde!important
+}
+#measurePage #finishButton:disabled{
+ background:var(--soft)!important;color:var(--muted)!important;border-color:var(--line)!important
+}
+/* Shot note: a refined floating input, always above event buttons */
+#measurePage .action-box[aria-label="計測中のメモ"]{
+ order:1!important;background:transparent!important;border:0!important;
+ border-radius:0;padding:0!important
+}
+#measurePage .action-title{
+ min-height:21px!important;margin-bottom:4px!important;
+ padding-inline:2px!important
+}
+#measurePage .action-title strong{
+ color:var(--ink)!important;font-size:12px!important;
+ font-weight:650!important;letter-spacing:.055em!important
+}
+#measurePage .action-title strong small{
+ margin-left:4px;color:var(--accent-detail)!important;
+ font-family:"Avenir Next","Helvetica Neue",sans-serif!important;
+ font-size:9px!important;letter-spacing:.10em!important;font-weight:600!important
+}
+#measurePage .action-title button{
+ border-radius:7px!important;border:1px solid var(--line)!important;
+ background:var(--panel)!important;color:var(--ink)!important;
+ min-height:25px;padding:4px 9px!important;
+ font-size:10px!important
+}
+#measurePage .memo-switch button[aria-pressed=true]{
+ background:var(--atelier-dark)!important;color:#fdf4e5!important;
+ border-color:var(--atelier-dark)!important
+}
+#measurePage .memo-entry{
+ height:40px!important;min-height:40px!important;
+ padding:0 10px!important;
+ border:1px solid #d7cdbb!important;border-radius:9px!important;
+ background:var(--panel)!important;
+ box-shadow:inset 3px 0 #c19a60!important
+}
+#measurePage .memo-pencil{color:var(--accent-detail)!important;font-size:17px!important}
+#measurePage #quickMemoInput{
+ font-size:16px!important;font-weight:450!important;letter-spacing:.018em!important;
+ color:var(--ink)!important;background:transparent!important
+}
+#measurePage #quickMemoInput::placeholder{color:#92928a!important}
+#measurePage .memo-entry:focus-within{
+ border-color:var(--accent)!important;box-shadow:inset 3px 0 var(--accent),0 0 0 2px #b991572c!important
+}
+/* Quick logs: unified ivory keys rather than saturated buttons */
+#measurePage .action-box[aria-label="ワンタッチイベント記録"]{
+ order:2!important;background:transparent!important;border:0!important;
+ padding:0!important
+}
+#measurePage .quick-events[data-rows]{
+ gap:5px!important;
+ border-radius:10px;
+}
+#measurePage .event-tap,
+#measurePage .event-add-slot,#measurePage .event-empty-slot{
+ border-radius:8px!important;
+ box-shadow:0 1px 0 #ffffff8c!important
+}
+#measurePage .event-tap{
+ background:var(--panel)!important;
+ color:var(--ink)!important;border:1px solid var(--line)!important;
+ font-size:clamp(10px,2.8vw,12px)!important;
+ font-weight:600!important;letter-spacing:.02em!important;
+}
+#measurePage .event-tap.event-kind-stop{
+ border-left:3px solid #b85d54!important;
+ background:#fcf7f5!important;color:#733e39!important
+}
+#measurePage .event-tap.event-kind-trouble{
+ border-left:3px solid #b2884c!important;
+ background:#fbf8f1!important;color:#76583a!important
+}
+#measurePage .event-tap.event-kind-short{
+ border-left:3px solid #557b86!important;
+ background:#f5f9f9!important;color:#315864!important
+}
+#measurePage .event-tap.event-kind-adjust{
+ border-left:3px solid #597667!important;
+ background:#f4f9f6!important;color:#375b4a!important
+}
+:root[data-theme="dark"] #measurePage .event-tap.event-kind-stop,
+:root[data-theme="dark"] #measurePage .event-tap.event-kind-trouble,
+:root[data-theme="dark"] #measurePage .event-tap.event-kind-short,
+:root[data-theme="dark"] #measurePage .event-tap.event-kind-adjust{
+ background:var(--panel)!important;color:var(--ink)!important
+}
+#measurePage .event-tap.event-recorded{
+ background:var(--atelier-dark)!important;
+ color:#fff5e7!important;border-color:var(--atelier-dark)!important;
+ box-shadow:inset 0 0 0 1px #c9ab7f!important
+}
+#measurePage .event-tap .event-mark{
+ background:#e5ceaa!important;color:#27343b!important;
+ font-weight:750!important;border-radius:3px
+}
+#measurePage .event-empty-slot{
+ background:#e5e2db!important;border:1px dashed #c8c4b9!important;
+ opacity:.65!important
+}
+#measurePage .event-add-slot{
+ background:#eae4d8!important;border:1px dashed #c8a573!important;
+ color:#705233!important;font-weight:650!important
+}
+#measurePage #lastEvent{
+ color:var(--muted)!important;font-size:10px
+}
+#measurePage #lastEvent.has-event{
+ background:var(--accent-surface)!important;
+ color:var(--accent-detail)!important
+}
+/* The five latest cycles as a compact precision log */
+#measurePage #recentPanel{
+ order:3!important;
+ border-radius:11px!important;
+ border:1px solid var(--line)!important;
+ background:var(--panel)!important;
+ box-shadow:var(--shadow)!important;
+ padding:3px 9px!important;
+ min-height:132px!important;
+}
+#recentPanel .recent-heading{
+ border-bottom:1px solid var(--line)!important;
+ padding:0 2px 2px!important;
+ height:24px!important;
+ flex-basis:24px!important
+}
+#recentPanel .recent-heading strong{
+ font-family:"Hiragino Mincho ProN","Yu Mincho",serif!important;
+ font-size:12px!important;font-weight:600!important;
+ letter-spacing:.045em!important;color:var(--ink)!important
+}
+#recentPanel .recent-heading strong::before{
+ content:"05";color:var(--accent-detail);
+ font:700 12px "Avenir Next","Helvetica Neue",sans-serif;
+ margin-right:6px;letter-spacing:-.02em
+}
+#recentPanel .recent-heading button{
+ color:var(--accent-detail)!important;font-size:10px!important;
+ font-weight:600!important
+}
+#recentPanel .recent-rows{grid-template-rows:repeat(5,minmax(0,1fr))!important}
+#recentPanel .recent-row{
+ border-bottom:1px solid var(--line)!important;gap:8px;
+ padding:0 4px!important
+}
+#recentPanel .recent-row:last-child{border-bottom:0!important}
+#recentPanel .recent-no{
+ color:var(--accent-detail)!important;
+ font-family:"Avenir Next","Helvetica Neue",sans-serif!important;
+ font-weight:650!important;letter-spacing:.015em
+}
+#recentPanel .recent-sec{
+ color:var(--ink)!important;
+ font:650 14px "Avenir Next","Helvetica Neue",sans-serif!important;
+ font-variant-numeric:tabular-nums
+}
+#recentPanel .recent-detail{color:var(--muted)!important;font-size:10px!important}
+#recentPanel .recent-empty{color:var(--muted)}
+/* Dialogs and secondary views share the same visual identity */
+dialog{
+ background:var(--panel)!important;color:var(--ink)!important;
+ border:1px solid var(--line)!important;border-radius:15px!important;
+ box-shadow:0 22px 75px #0a222a55!important
+}
+dialog::backdrop{background:#0b202dbb!important;backdrop-filter:blur(4px)}
+dialog .modal-head,
+#trialDialog .modal-head,#eventSettingsDialog .modal-head{
+ background:var(--atelier-dark)!important;
+ border-bottom:2px solid var(--atelier-gold)!important;
+ color:#fff7e9!important;padding:10px 13px!important;
+}
+dialog .modal-head h2,
+#trialDialog .modal-head h2,#eventSettingsDialog .modal-head h2{
+ color:#fff7e9!important;font-family:"Hiragino Mincho ProN","Yu Mincho",serif!important;
+ font-size:17px!important;font-weight:600!important;letter-spacing:.07em!important
+}
+dialog .modal-head .close,#trialDialog .modal-head .close,#eventSettingsDialog .modal-head .close{
+ background:#ffffff0d!important;color:#f6ecd9!important;
+ border:1px solid #d1aa717a!important;
+ border-radius:9px!important;font-weight:400
+}
+dialog .modal-body{color:var(--ink);background:var(--panel)}
+#trialDialog .modal-body{padding:16px 14px!important}
+#trialDialog .form-grid>label,
+#eventSettingsDialog .event-item-form>label,
+dialog label{
+ color:var(--ink);font-weight:600!important;
+ letter-spacing:.035em!important
+}
+#trialDialog .form-grid input,
+#trialDialog .form-grid select,
+#eventSettingsDialog input,
+dialog input,dialog select{
+ border:1px solid var(--line)!important;border-radius:8px!important;
+ background:var(--panel)!important;color:var(--ink)!important;
+ box-shadow:none!important;font-weight:500!important
+}
+dialog input:focus,dialog select:focus{
+ border-color:var(--accent)!important;outline:2px solid #b9915740!important;outline-offset:0
+}
+dialog .primary,
+#trialDialog .form-actions .primary,
+#eventSettingsDialog #saveEventItem{
+ background:var(--atelier-dark)!important;color:#fff7e9!important;
+ border:1px solid var(--atelier-dark)!important;
+ border-radius:8px!important;font-weight:650!important
+}
+#trialDialog .form-actions button:not(.primary){
+ background:var(--soft)!important;color:var(--ink)!important;
+ border:1px solid var(--line)!important
+}
+#eventSettingsDialog .event-setting-item{
+ background:var(--soft)!important;border:1px solid var(--line)!important;
+ border-left:2px solid #b99157!important;border-radius:8px!important
+}
+#eventSettingsDialog .event-setting-number{color:var(--accent-detail)!important}
+#eventSettingsDialog .event-setting-name strong{
+ color:var(--ink)!important;font-weight:600!important
+}
+#eventSettingsDialog .event-setting-actions button{
+ background:var(--panel)!important;border-color:var(--line)!important;
+ border-radius:7px!important;color:var(--ink)!important
+}
+#eventSettingsDialog .event-setting-actions button.danger{color:var(--danger)!important}
+#historyPage .history-item{
+ background:var(--panel)!important;border:1px solid var(--line)!important;
+ border-left:3px solid #c19c66!important;border-radius:10px!important
+}
+#historyPage .history-item strong{
+ font-family:"Hiragino Mincho ProN","Yu Mincho",serif!important;
+ font-weight:600!important;font-size:13px!important
+}
+#summaryStrip .stat{
+ background:var(--soft)!important;border:1px solid var(--line)!important;
+ box-shadow:none!important
+}
+#summaryStrip .stat:first-child{box-shadow:inset 3px 0 #b99157!important}
+#recordListTabs button[aria-pressed=true]{
+ background:var(--atelier-dark)!important;color:#f6ead8!important
+}
+#recordsDialog .shot,#recordsDialog .event-row{
+ border-color:var(--line)!important;background:var(--panel)
+}
+#toast{background:var(--atelier-dark)!important;color:#fbf2e6!important}
+@media(max-width:799px) and (max-height:760px){
+ body>header{padding-bottom:4px}
+ #measurePage .clock-face{height:76px!important;min-height:76px!important;padding:5px!important}
+ #measurePage .timer-value,#measurePage .timer-value #elapsed{font-size:39px!important}
+ #measurePage .controls{min-height:67px!important}
+ #measurePage .controls .timer-button{height:67px!important;min-height:67px!important;max-height:67px!important}
+ #measurePage .controls .disc-action,
+ #measurePage .controls #resetButton,#measurePage .controls #stopButton{
+  height:56px!important;min-height:56px!important;max-height:56px!important
+ }
+ #measurePage .memo-entry{height:36px!important;min-height:36px!important}
+ #measurePage .action-title{min-height:18px!important;margin-bottom:2px!important}
+ #measurePage .page-head{margin-bottom:3px}
+}
+@media(max-width:799px) and (max-height:650px){
+ #measurePage .clock-face{height:68px!important;min-height:68px!important}
+ #measurePage .timer-value,#measurePage .timer-value #elapsed{font-size:36px!important}
+ #measurePage .controls .timer-button{height:60px!important;min-height:60px!important;max-height:60px!important}
+ #measurePage .controls .disc-action,
+ #measurePage .controls #resetButton,#measurePage .controls #stopButton{
+  height:52px!important;min-height:52px!important;max-height:52px!important
+ }
+}
+
 </style>
 </head>
 <body data-view="measure">
-<header><div class="header-inner"><div class="brand"><img class="brand-icon" src="./assets/icon.svg" alt="" width="36" height="36"><div><div class="eyebrow">CYCLE TIME RECORDER</div><h1>トライタイマー</h1><div id="saveStatus" role="status">端末内に自動保存</div></div></div><button id="dataButton">データ</button></div></header>
+<header><div class="header-inner"><div class="brand"><img class="brand-icon" src="./assets/icon.svg" alt="" width="36" height="36"><div><div class="eyebrow">PRECISION CYCLE INSTRUMENT</div><h1>トライタイマー</h1><div id="saveStatus" role="status">端末内に自動保存</div></div></div><button id="dataButton">データ</button></div></header>
 <main>
 <div id="storageWarning" class="notice" role="alert" hidden></div>
 <section id="measurePage" class="page" role="tabpanel" aria-labelledby="tabMeasure">
-<div class="section-title page-head"><h2>計測 <small>TRY TIMER</small></h2><div class="row"><button id="historyShortcut" class="chip">履歴</button><button id="openRecords" class="chip">集計</button><button id="newTrial" class="primary chip">＋ 新規</button></div></div>
+<div class="section-title page-head"><h2>計測 <small>WORKSTATION</small></h2><div class="row"><button id="historyShortcut" class="chip">履歴</button><button id="openRecords" class="chip">集計</button><button id="newTrial" class="primary chip">＋ 新規</button></div></div>
 <div class="card trial-summary"><div class="row between"><div class="trial-identity"><div class="trial-eyebrow"><span class="trial-dot"></span> CURRENT SESSION <span id="trialShotBadge">#0</span></div><div id="trialTitle" class="trial-title">トライを登録して計測開始</div><div id="trialMeta" class="trial-meta">日付とトライ名だけで始められます</div></div><button id="editCurrent" class="chip" hidden>編集</button></div></div>
 <div class="measure-grid"><div class="measure-left">
 <div class="timer-state"><span id="runState">待機中</span><span id="wakeState">スリープ防止：待機中</span></div>
@@ -1087,17 +1595,17 @@ dialog label,
 
 <div class="action-pad">
 <section class="action-box" aria-label="計測中のメモ">
-<div class="action-title"><strong>気づきメモ</strong><div class="memo-switch" role="group" aria-label="メモの記録先"><button id="memoCurrent" aria-pressed="true">今回</button><button id="memoLast" aria-pressed="false" disabled>直前</button></div></div>
+<div class="action-title"><strong>ショットの気づき <small>SHOT NOTE</small></strong><div class="memo-switch" role="group" aria-label="メモの記録先"><button id="memoCurrent" aria-pressed="true">今回</button><button id="memoLast" aria-pressed="false" disabled>直前</button></div></div>
 <div class="memo-entry"><span class="memo-pencil" aria-hidden="true">✎</span><input id="quickMemoInput" maxlength="240" type="text" autocomplete="off" enterkeyhint="done" placeholder="今回のショットの気づきを入力…" aria-label="ショットメモ"></div>
 <div class="memo-caption"><span id="memoTarget">現在のショットに紐づけます</span><span>自動保存</span></div>
 </section>
 <section class="action-box" aria-label="ワンタッチイベント記録">
-<div class="action-title"><strong>ワンタッチ記録 <small>12件表示</small></strong><button id="configEvents" class="chip">編集 ↗</button></div>
+<div class="action-title"><strong>ワンタッチ記録 <small>QUICK LOG</small></strong><button id="configEvents" class="chip">編集 ↗</button></div>
 <div id="quickEvents" class="quick-events"></div>
 <div id="lastEvent" class="recent-event" role="status" aria-live="polite"></div>
 </section>
 </div>
-<section id="recentPanel" aria-label="直近5ショット"><div class="recent-heading"><strong>計測結果・直近5ショット</strong><span id="recentCount">0件</span><button id="recentOpenAll">すべて見る ›</button></div><div id="recentRows" class="recent-rows"></div></section><div class="timer-state total-line"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止時間除外</span></div>
+<section id="recentPanel" aria-label="直近5ショット"><div class="recent-heading"><strong>直近5ショット</strong><span id="recentCount">0件</span><button id="recentOpenAll">すべて見る ›</button></div><div id="recentRows" class="recent-rows"></div></section><div class="timer-state total-line"><span>合計 <b id="totalElapsed" class="num">0.00</b> 秒</span><span>停止時間除外</span></div>
 </div></div>
 </section>
 <section id="historyPage" class="page" role="tabpanel" aria-labelledby="tabHistory" hidden>
@@ -1259,7 +1767,7 @@ function save(){
 }
 function blockOtherTab(){if(blocked)return;clock?.pause();releaseWake();blocked=true;renderMeasure();warn('別の画面でデータが更新されました。上書きを防いでいます。必要ならJSONを書き出してから再読み込みしてください。');}
 function touch(t){t.updatedAt=Date.now();save();}
-function applyTheme(){document.documentElement.dataset.theme=db.theme;$('theme').value=db.theme;document.querySelector('meta[name="theme-color"]').content='#123a61';}
+function applyTheme(){document.documentElement.dataset.theme=db.theme;$('theme').value=db.theme;document.querySelector('meta[name="theme-color"]').content=db.theme==='dark'?'#0b1d25':'#182e36';}
 function statsHTML(t){const s=stats(t?.shots||[]);return [['平均',sec(s.mean)],['MAX',sec(s.max)],['MIN',sec(s.min)],['有効',s.n+'<small> / '+(t?.shots.length||0)+'</small>'],['σ',sec(s.sd)],['範囲',sec(s.range)]].map(([k,v])=>'<div class="stat"><span>'+k+'</span><b class="num">'+v+'</b></div>').join('');}
 function renderStats(){const t=active();$('liveStats').innerHTML=statsHTML(t);$('excludedCount').textContent=(t?.shots.filter(s=>s.excluded).length||0)+' 件除外';$('shotCount').textContent=(t?.shots.length||0)+' ショット';$('tabShotCount').textContent=t?.shots.length||0;if(detailId){const d=db.trials.find(x=>x.id===detailId);if(d&&$('detailStats')){$('detailStats').innerHTML=statsHTML(d);renderCompare(d);}}}
 function shotHTML(t,scope){
@@ -1384,7 +1892,7 @@ function renderMeasure(){
   const t=active();if(t&&lastPressedEventType&&!t.events.some(e=>e.typeId===lastPressedEventType))lastPressedEventType=t.events.at(-1)?.typeId||null;$('trialTitle').textContent=t?t.name:'トライを登録して計測開始';$('trialMeta').textContent=t?t.date:'日付とトライ名だけで始められます';
   $('editCurrent').hidden=!t;$('lapCaption').textContent=t?'今回のショット #'+(t.shots.length+1):'今回のショット';$('lapAction').textContent=!t?'トライを登録':t.finishedAt?'次の計測':t.running?'ラップ':(t.elapsedMs||t.shots.length)?'再開':'スタート';$('lapButton').setAttribute('aria-label',$('lapAction').textContent);
   $('lapHint').textContent=t?.running?'ショット確定':t?.finishedAt?'#'+(t.shots.length+1)+' 開始':'計測開始';$('runState').textContent=t?.finishedAt?'✓ 保存・終了済み':t?.running?'● 計測中':t&&(t.elapsedMs||t.shots.length)?'■ 停止中':'待機中';
-  $('stopButton').disabled=!t?.running||blocked||!!t?.finishedAt;$('undoButton').disabled=!t?.shots.length||blocked||!!t?.finishedAt;$('resetButton').disabled=!t||blocked||!!t?.finishedAt;$('finishButton').disabled=!t||blocked;$('finishButton').textContent=t?.finishedAt?'▶ 次の計測':'✓ 保存して終了';$('lapButton').classList.toggle('is-running',!!t?.running);$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=true;
+  $('stopButton').disabled=!t?.running||blocked||!!t?.finishedAt;$('undoButton').disabled=!t?.shots.length||blocked||!!t?.finishedAt;$('resetButton').disabled=!t||blocked||!!t?.finishedAt;$('finishButton').disabled=!t||blocked;$('finishButton').textContent=t?.finishedAt?'▶ 次の計測':'✓ 保存して終了';$('lapButton').classList.toggle('is-running',!!t?.running);document.querySelector('#measurePage .clock-face')?.classList.toggle('is-running',!!t?.running);$('lapButton').disabled=blocked;$('newTrial').disabled=!!t?.running||blocked;$('uncertainNotice').hidden=true;
   $('liveShots').innerHTML=shotHTML(t,'live');renderStats();renderLastLaps(t);renderLiveResultBar(t);renderActionPad();renderRecentTimeline();drawTime();drawWake();
 }
 function renderHistory(){
