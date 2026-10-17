@@ -856,6 +856,210 @@ dialog .primary{background:#1c527f;border-color:#1c527f;color:#fff}
   #eventSettingsDialog .event-setting-name{gap:5px}
 }
 
+
+/* v2.5 | Refined Japanese typography.
+   Device-local font stacks keep timer operation available without a network. */
+:root{
+  --type-interface:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo",-apple-system,BlinkMacSystemFont,sans-serif;
+  --type-editorial:"Hiragino Mincho ProN","Yu Mincho","Hiragino Mincho Pro",serif;
+  --type-measure:"Avenir Next","SF Pro Display","Helvetica Neue",Arial,sans-serif;
+}
+html,body,button,input,select,textarea,summary,label,option{
+  font-family:var(--type-interface)!important;
+}
+body{
+  font-weight:450;
+  font-kerning:normal;
+  letter-spacing:.012em;
+  text-rendering:optimizeLegibility;
+}
+button,select,input,textarea{
+  font-weight:500;
+  letter-spacing:.01em;
+}
+button{font-weight:600}
+body>header .brand h1{
+  font-family:var(--type-editorial)!important;
+  font-size:18px;line-height:1.22;
+  font-weight:600!important;
+  letter-spacing:.075em!important;
+}
+body>header .eyebrow{
+  font-family:var(--type-measure)!important;
+  font-weight:600!important;
+  font-size:9px;
+  letter-spacing:.22em!important;
+}
+body>header #dataButton{
+  font-weight:600!important;
+  letter-spacing:.045em;
+}
+#measurePage .page-head h2,
+#historyPage .page-head h2{
+  font-family:var(--type-interface)!important;
+  font-weight:650!important;
+  letter-spacing:.08em!important;
+}
+#measurePage .page-head h2 small,
+#measurePage .trial-eyebrow,
+#trialShotBadge{
+  font-family:var(--type-measure)!important;
+  font-weight:600!important;
+  letter-spacing:.13em!important;
+}
+#measurePage .trial-summary .trial-title{
+  font-family:var(--type-editorial)!important;
+  font-size:15px;
+  font-weight:600!important;
+  letter-spacing:.015em!important;
+}
+#measurePage .trial-meta,
+#measurePage .timer-state{
+  font-weight:450;
+  letter-spacing:.012em;
+}
+#measurePage .timer-caption,
+#measurePage .action-title strong,
+#recentPanel .recent-heading strong,
+#measurePage .recent-heading strong{
+  font-family:var(--type-interface)!important;
+  font-weight:650!important;
+  letter-spacing:.04em!important;
+}
+#measurePage .timer-value,
+#measurePage .timer-value #elapsed,
+#measurePage #lastLapTime,
+#measurePage #prevLapTime,
+#measurePage #totalElapsed{
+  font-family:var(--type-measure)!important;
+  font-variant-numeric:tabular-nums lining-nums;
+  font-feature-settings:"tnum" 1,"lnum" 1;
+  font-weight:700!important;
+  letter-spacing:-.032em!important;
+}
+#measurePage .timer-value .unit,
+#measurePage .clock-previous,
+#measurePage .live-result-bar span{
+  font-family:var(--type-interface)!important;
+  font-weight:500!important;
+  letter-spacing:.01em;
+}
+#measurePage .controls button,
+#measurePage .control-foot button,
+#measurePage .page-head button,
+#measurePage .action-title button,
+#measurePage .memo-switch button{
+  font-family:var(--type-interface)!important;
+  font-weight:600!important;
+  letter-spacing:.025em!important;
+}
+#measurePage #lapAction{
+  font-family:var(--type-interface)!important;
+  font-weight:700!important;
+  letter-spacing:.02em!important;
+}
+#measurePage #quickMemoInput{
+  font-family:var(--type-interface)!important;
+  font-size:16px!important;
+  font-weight:450!important;
+  letter-spacing:.015em!important;
+}
+#measurePage #quickMemoInput::placeholder{
+  font-weight:400;
+  letter-spacing:.01em;
+}
+#measurePage .event-tap,
+#measurePage .event-add-slot{
+  font-family:var(--type-interface)!important;
+  font-weight:600!important;
+  letter-spacing:.012em!important;
+}
+#measurePage .event-tap .event-mark,
+#measurePage #lastEvent,
+#recentPanel .recent-no,
+#recentPanel .recent-sec,
+#measurePage .live-result-bar b{
+  font-family:var(--type-measure)!important;
+  font-variant-numeric:tabular-nums;
+  font-weight:650!important;
+  letter-spacing:-.012em!important;
+}
+#recentPanel .recent-sec{
+  font-size:13px;
+  font-weight:700!important;
+}
+#recentPanel .recent-detail{
+  font-family:var(--type-interface)!important;
+  font-weight:450;
+  letter-spacing:.01em;
+}
+dialog .modal-head h2,
+#trialDialog .modal-head h2,
+#eventSettingsDialog .modal-head h2{
+  font-family:var(--type-editorial)!important;
+  font-size:18px;
+  font-weight:600!important;
+  line-height:1.3;
+  letter-spacing:.055em!important;
+}
+dialog .modal-head .close{
+  font-family:var(--type-measure)!important;
+  font-weight:400!important;
+}
+dialog label,
+#trialDialog .form-grid>label,
+#eventSettingsDialog .event-item-form>label,
+#eventSettingsDialog .event-list-heading strong{
+  font-family:var(--type-interface)!important;
+  font-weight:600!important;
+  letter-spacing:.025em;
+}
+#trialDialog select,
+#trialDialog input,
+#eventSettingsDialog input,
+#trialDialog .form-actions button,
+#eventSettingsDialog #saveEventItem,
+#eventSettingsDialog .event-setting-actions button{
+  font-family:var(--type-interface)!important;
+  font-weight:500!important;
+  letter-spacing:.015em;
+}
+#trialDialog .form-actions .primary,
+#eventSettingsDialog #saveEventItem{font-weight:650!important}
+#eventSettingsDialog .event-setting-name strong{
+  font-family:var(--type-interface)!important;
+  font-weight:550!important;
+  letter-spacing:.01em;
+}
+#eventSettingsDialog .event-setting-number,
+#eventSettingsDialog #eventTypeCount,
+#recentPanel #recentCount,
+#historyPage .history-avg,
+#summaryStrip .stat b,
+#detailDialog .stat b,
+#recordsDialog .shot-time,
+#recordsDialog .event-row small,
+.history-item .history-avg{
+  font-family:var(--type-measure)!important;
+  font-variant-numeric:tabular-nums;
+  font-weight:650!important;
+  letter-spacing:-.018em;
+}
+#historyPage .history-item strong,
+#recordsDialog h3,
+#detailDialog h3{
+  font-family:var(--type-interface)!important;
+  font-weight:650!important;
+  letter-spacing:.025em;
+}
+#eventSettingsDialog .event-settings-note,
+#eventSettingsDialog .event-list-footnote,
+#recordsDialog .muted,
+#dataDialog .help{
+  font-weight:450;
+  letter-spacing:.01em;
+}
+
 </style>
 </head>
 <body data-view="measure">
