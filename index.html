@@ -707,6 +707,155 @@ dialog .primary{background:#1c527f;border-color:#1c527f;color:#fff}
  #measurePage #recentPanel{flex-shrink:0!important}
 }
 
+
+/* Trial and quick-event dialogs: compact, iPhone-safe forms (v2.4) */
+#trialDialog,#eventSettingsDialog{
+  box-sizing:border-box;width:min(444px,calc(100vw - 28px));
+  max-width:calc(100vw - 28px);min-width:0;
+  margin:auto;border-radius:16px;overflow-x:hidden;
+  box-shadow:0 16px 48px #091d3d33
+}
+#trialDialog .modal-head,#eventSettingsDialog .modal-head{
+  box-sizing:border-box;min-height:55px;padding:9px 14px;
+  gap:8px;position:sticky;top:0
+}
+#trialDialog .modal-head h2,#eventSettingsDialog .modal-head h2{
+  font-size:17px;font-weight:850;line-height:1.35
+}
+#trialDialog .modal-head .close,#eventSettingsDialog .modal-head .close{
+  box-sizing:border-box;min-width:36px;width:36px;
+  min-height:36px;height:36px;padding:0;
+  display:grid;place-items:center;font-size:24px;
+  border-radius:10px
+}
+#trialDialog .modal-body{
+  box-sizing:border-box;min-width:0;padding:14px;
+}
+#trialDialog .form-grid{
+  box-sizing:border-box;min-width:0;width:100%;
+  display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,.85fr);
+  column-gap:9px;row-gap:11px
+}
+#trialDialog .form-grid>label{
+  box-sizing:border-box;min-width:0;max-width:100%;width:100%;
+  display:block;font-size:12px;line-height:1.4;
+  color:var(--ink);font-weight:750
+}
+#trialDialog .form-grid>.trial-kind-field{grid-column:1}
+#trialDialog .form-grid>.trial-run-field{grid-column:2}
+#trialDialog .form-grid>.trial-date-field,
+#trialDialog .form-grid>#legacyNameWrap{grid-column:1/-1}
+#trialDialog .form-grid input,#trialDialog .form-grid select{
+  display:block;box-sizing:border-box;
+  width:100%;max-width:100%;min-width:0;
+  height:43px;min-height:43px;
+  margin:5px 0 0;padding:8px 9px;
+  font-size:16px;line-height:1.2;
+  border-radius:9px;overflow:hidden;
+}
+#trialDialog #fDate{
+  box-sizing:border-box;display:block;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  padding-left:10px;padding-right:10px;
+  text-align:left;overflow:hidden
+}
+#trialDialog #fDate::-webkit-date-and-time-value{
+  text-align:left;min-width:0;max-width:100%;margin:0
+}
+#trialDialog .form-actions{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;
+  margin-top:14px;width:100%
+}
+#trialDialog .form-actions button{
+  box-sizing:border-box;width:100%;min-width:0;
+  min-height:41px;height:41px;padding:7px 6px;
+  font-size:13px;border-radius:9px
+}
+#eventSettingsDialog{width:min(490px,calc(100vw - 28px))}
+#eventSettingsDialog .event-settings-body{
+  box-sizing:border-box;min-width:0;padding:12px 13px 13px;
+  display:flex;flex-direction:column;gap:10px
+}
+#eventSettingsDialog .event-settings-note,
+#eventSettingsDialog .event-list-footnote{
+  margin:0;color:var(--muted);
+  font-size:11px;line-height:1.5
+}
+#eventSettingsDialog .event-item-form{
+  box-sizing:border-box;min-width:0;display:grid;gap:5px
+}
+#eventSettingsDialog .event-item-form>label{
+  font-size:12px;font-weight:800
+}
+#eventSettingsDialog .event-item-entry{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:stretch;gap:7px;min-width:0
+}
+#eventSettingsDialog #eventItemName{
+  box-sizing:border-box;min-width:0;max-width:100%;width:100%;
+  margin:0;min-height:41px;height:41px;padding:7px 10px;
+  font-size:16px;border-radius:9px
+}
+#eventSettingsDialog #saveEventItem{
+  min-width:68px;min-height:41px;height:41px;
+  max-width:105px;box-sizing:border-box;
+  padding:6px 10px;font-size:12px;border-radius:9px;
+  white-space:nowrap
+}
+#eventSettingsDialog #cancelEventEdit{
+  min-height:30px;padding:4px 9px;justify-self:end;
+  font-size:11px;border-radius:7px
+}
+#eventSettingsDialog .event-list-heading{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;margin-top:2px;
+  font-size:12px;line-height:1.3
+}
+#eventSettingsDialog .event-list-heading strong{font-weight:850}
+#eventSettingsDialog .event-list-heading span{font-size:11px}
+#eventSettingsDialog .event-settings-list{
+  box-sizing:border-box;display:grid;gap:5px;
+  width:100%;min-width:0
+}
+#eventSettingsDialog .event-setting-item{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;column-gap:7px;
+  box-sizing:border-box;width:100%;min-width:0;
+  min-height:43px;padding:4px 6px 4px 9px;
+  border:1px solid var(--line);border-radius:9px;background:var(--soft)
+}
+#eventSettingsDialog .event-setting-name{
+  display:flex;align-items:center;gap:9px;min-width:0;
+}
+#eventSettingsDialog .event-setting-name strong{
+  display:block;min-width:0;font-size:13px;line-height:1.25;
+  font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+#eventSettingsDialog .event-setting-number{
+  flex:0 0 auto;color:var(--muted);
+  font:600 10px ui-monospace,SFMono-Regular,monospace
+}
+#eventSettingsDialog .event-setting-actions{
+  display:flex;align-items:center;gap:4px;flex:0 0 auto
+}
+#eventSettingsDialog .event-setting-actions button{
+  box-sizing:border-box;width:43px;min-width:43px;
+  min-height:33px;height:33px;padding:4px 2px;
+  flex-shrink:0;font-size:11px;line-height:1.2;border-radius:7px;
+  background:var(--panel);border:1px solid var(--line)
+}
+#eventSettingsDialog .event-setting-actions .danger{
+  color:var(--danger);border-color:var(--line)
+}
+#eventSettingsDialog .event-settings-empty{
+  padding:12px 4px;font-size:12px
+}
+@media(max-width:350px){
+  #trialDialog .form-grid{grid-template-columns:minmax(0,1.5fr) minmax(0,.85fr);gap:8px}
+  #eventSettingsDialog .event-setting-actions button{min-width:39px;width:39px}
+  #eventSettingsDialog .event-setting-name{gap:5px}
+}
+
 </style>
 </head>
 <body data-view="measure">
@@ -768,23 +917,26 @@ dialog .primary{background:#1c527f;border-color:#1c527f;color:#fff}
 <dialog id="trialDialog" aria-labelledby="trialDialogTitle">
 <div class="modal-head"><h2 id="trialDialogTitle">新しいトライ</h2><button class="close" data-close="trialDialog" aria-label="閉じる">×</button></div>
 <form id="trialForm" class="modal-body"><div class="form-grid">
-<label class="full">トライの種類<select id="fKind" required>
+<label class="trial-kind-field">トライの種類<select id="fKind" required>
 <option value="プレトライ">プレトライ</option><option value="工程検証トライ">工程検証トライ</option><option value="工程確認会">工程確認会</option><option value="量産トライ">量産トライ</option><option value="ハイボリュームトライ">ハイボリュームトライ</option><option value="legacy" hidden>従来の名称を保持</option>
-</select></label><label class="full">回数<select id="fRun" required aria-label="トライの回数"></select></label><label id="legacyNameWrap" class="full" hidden>従来のトライ名<input id="fLegacyName" maxlength="120" autocomplete="off"></label>
-<label class="full">日付<input id="fDate" type="date" required min="0001-01-01" max="9999-12-31"></label>
+</select></label><label class="trial-run-field">回数<select id="fRun" required aria-label="トライの回数"></select></label><label id="legacyNameWrap" class="full" hidden>従来のトライ名<input id="fLegacyName" maxlength="120" autocomplete="off"></label>
+<label class="full trial-date-field">日付<input id="fDate" type="date" required min="0001-01-01" max="9999-12-31"></label>
 </div><div class="form-actions"><button type="button" data-close="trialDialog">キャンセル</button><button class="primary" type="submit">保存する</button></div></form></dialog>
 <dialog id="detailDialog" aria-labelledby="detailTitle"><div class="modal-head"><h2 id="detailTitle">トライ詳細</h2><button class="close" data-close="detailDialog" aria-label="閉じる">×</button></div><div id="detailBody" class="modal-body stack"></div></dialog>
 <dialog id="dataDialog" aria-labelledby="dataTitle"><div class="modal-head"><h2 id="dataTitle">データ・表示設定</h2><button class="close" data-close="dataDialog" aria-label="閉じる">×</button></div><div class="modal-body stack"><button id="openEventSettings">ワンタッチ項目を登録・編集</button><label>画面の配色<select id="theme"><option value="system">端末の設定に合わせる</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label><div class="card stack"><h3>書き出し / バックアップ</h3><button id="exportAll">全トライをCSVで書き出す</button><button id="exportJson" class="primary">JSONバックアップを書き出す</button><button id="importJson">JSONバックアップを読み込む</button><input id="jsonFile" type="file" accept=".json,application/json" hidden><p class="muted" style="font-size:13px">JSONの読み込みは全データを置き換えます。現在のデータを先にバックアップしてください。読み込み後のタイマーは停止状態です。旧形式のバックアップは名前を付け直して復元します。</p><div id="rescueArea" class="stack" hidden><button id="resetDamaged" class="danger">確認して新規データを開始</button></div></div><div class="help"><h3>使い方と保存について</h3><ul><li>最初のタップで開始。以後のタップで直前の区切りからの時間を記録します。</li><li>停止は一時停止です。未確定のショットは記録せず、再開時に続きを計測します。</li><li>「1つ戻す」は直前の区切りを取り消し、その時間を現在のショットに戻します。</li><li>「すぐメモ」の「今回」は進行中のショットに付けるメモです。ラップを押すとショットに保存されます。「直前」では確定済みの最後のショットを編集できます。</li><li>ワンタッチ記録は現在時刻・ショット番号・計測開始からの経過時間を保存します。計測は停止しません。ボタン名は「項目設定」から変更できます。</li><li>リセットは選択中トライの全ショットと計測時間を消します。登録情報は残ります。</li><li>データはこのブラウザのlocalStorageに保存します。ブラウザのデータ削除・プライベートモード終了で失われる場合があります。</li><li>このHTMLは外部通信なしで動きます。別端末への移動にはJSONを使用してください。</li><li>スリープ防止は対応ブラウザ・安全な接続でのみ利用できます。利用不可の場合は端末の自動ロックを解除して計測してください。</li><li>通常はperformance.now()で計測します。再読込や端末休止では端末時計で補完し、該当ショットを要確認・集計除外にします。</li><li>CSVはUTF-8 BOM付きです。トライ名・日付・全ショット・集計を出力します。</li></ul></div></div></dialog>
 
 <dialog id="eventSettingsDialog" aria-labelledby="eventSettingsTitle">
 <div class="modal-head"><h2 id="eventSettingsTitle">ワンタッチ項目設定</h2><button class="close" data-close="eventSettingsDialog" aria-label="閉じる">×</button></div>
-<div class="modal-body stack">
-<p class="muted" style="font-size:13px">計測画面のボタン名を登録・編集・削除できます。記録済みの履歴には当時の名称が残ります。4列×3行の12件を一度に表示し、13件目からはボタン欄内でスクロールできます（最大24件）。</p>
-<form id="eventItemForm" class="stack">
-<label>項目名<input id="eventItemName" maxlength="24" required autocomplete="off" placeholder="例：設備停止"></label>
-<div class="row"><button id="saveEventItem" class="primary" type="submit">＋ 項目を追加</button><button id="cancelEventEdit" type="button" hidden>編集をキャンセル</button></div>
+<div class="modal-body event-settings-body">
+<p class="event-settings-note">項目名を登録すると計測画面に表示されます。記録済みの履歴は変更されません。</p>
+<form id="eventItemForm" class="event-item-form">
+<label for="eventItemName">項目名</label>
+<div class="event-item-entry"><input id="eventItemName" maxlength="24" required autocomplete="off" placeholder="例：設備停止"><button id="saveEventItem" class="primary" type="submit">＋ 追加</button></div>
+<button id="cancelEventEdit" type="button" hidden>編集をキャンセル</button>
 </form>
+<div class="event-list-heading"><strong>登録済みの項目</strong><span id="eventTypeCount" class="muted">0 / 24件</span></div>
 <div id="eventSettingsList" class="event-settings-list"></div>
+<p class="event-list-footnote">最初の12項目は4列×3行に表示。13件目以降はボタン欄内をスクロールできます。</p>
 </div></dialog>
 <datalist id="memoHints"><option value="材料交換"><option value="手直し"><option value="チョコ停"></datalist>
 <div id="toast" role="status" aria-live="polite" hidden></div>
@@ -1015,8 +1167,9 @@ $('recordShotsTab').onclick=()=>setRecordsTab('shots');
 $('recordEventsTab').onclick=()=>setRecordsTab('events');
 function renderEventSettings(){
   const list=$('eventSettingsList');
-  list.innerHTML=db.eventTypes.length?db.eventTypes.map(x=>'<div class="event-row"><strong>'+esc(x.name)+'</strong><div class="row"><button data-edit-event="'+esc(x.id)+'">編集</button><button class="danger" data-delete-type="'+esc(x.id)+'">削除</button></div></div>').join(''):'<p class="muted">項目がありません。上の欄から追加してください。</p>';
-  $('saveEventItem').textContent=editingEventId?'変更を保存':'＋ 項目を追加';$('cancelEventEdit').hidden=!editingEventId;
+  $('eventTypeCount').textContent=db.eventTypes.length+' / 24件';
+  list.innerHTML=db.eventTypes.length?db.eventTypes.map((x,i)=>'<div class="event-setting-item"><span class="event-setting-name"><small class="event-setting-number">'+String(i+1).padStart(2,'0')+'</small><strong>'+esc(x.name)+'</strong></span><div class="event-setting-actions"><button type="button" data-edit-event="'+esc(x.id)+'" aria-label="'+esc(x.name)+'を編集">編集</button><button type="button" class="danger" data-delete-type="'+esc(x.id)+'" aria-label="'+esc(x.name)+'を削除">削除</button></div></div>').join(''):'<p class="muted event-settings-empty">まだ項目がありません。上から追加してください。</p>';
+  $('saveEventItem').textContent=editingEventId?'変更を保存':'＋ 追加';$('cancelEventEdit').hidden=!editingEventId;
 }
 function openEventSettings(){
   if(!editable())return;
